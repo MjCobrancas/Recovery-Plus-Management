@@ -4,10 +4,11 @@ interface IFormAdressesProps {
     updatePage: (index: number) => void
     setAdressesFormValue: (value: IFormAdresses[]) => void
     adressesForm: IFormAdresses[]
+    userAdresses?: IFormAdresses[]
 }
 
 interface IFormAdresses {
-    id: number
+    id: string
     address: string
     address2: string
     postalCode: string
@@ -16,6 +17,7 @@ interface IFormAdresses {
     city: string
     states: string
     saved: boolean
+    status?: boolean | string
 }
 
 interface IFormAdressesCard {
@@ -24,9 +26,11 @@ interface IFormAdressesCard {
     removeAddress: (index: number) => void
     saveAddress: (index: number, data: IFormAdresses) => void 
     resetSaveAddress: (index: number) => void
+    changeAddressStatus?: (index: number) => void
 }
 
 export const createFormAdressesSchema = z.object({
+    id: z.string(),
     address: z.string().min(1),
     address2: z.string(),
     cep: z.string().min(1),
@@ -39,7 +43,8 @@ export const createFormAdressesSchema = z.object({
         }
 
         return true
-    })
+    }),
+    status: z.boolean().or(z.string())
 })
 
 export type createFormAdressesData = z.infer<typeof createFormAdressesSchema>

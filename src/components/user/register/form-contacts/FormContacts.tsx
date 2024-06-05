@@ -85,11 +85,13 @@ export function FormContacts({ updatePage, setContactsFormValue, contactsForm }:
             <aside className={`flex justify-between`}>
                 <ButtonNextOrBack
                     OnClick={() => updatePage(1)}
+                    type="button"
                     title="Voltar"
                     styles={`rounded-br-none rounded-bl-lg`}
                 />
                 <ButtonNextOrBack
                     OnClick={() => handleUpdateNextPage()}
+                    type="button"
                     title="Avançar"
                     styles={`rounded-bl-none rounded-br-lg`}
                 />

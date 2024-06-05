@@ -1,6 +1,5 @@
 import { twMerge } from "tailwind-merge";
 
-
 export function PaperBlock({ styles, children }: Readonly<{ styles?: string, children: React.ReactNode }>) {
 
     return (

@@ -14,7 +14,7 @@ export async function getCreditorById(id: number) {
         Authorization: "Bearer " + userParse.accessToken,
       },
     })
-      .then(async (value: any) => {
+      .then(async (value) => {
         const data = await value.json()
   
         if (value.status == 400) {

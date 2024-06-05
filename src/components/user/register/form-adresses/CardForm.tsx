@@ -11,10 +11,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
-export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAddress }: IFormAdressesCard) {
+export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAddress, changeAddressStatus }: IFormAdressesCard) {
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<createFormAdressesData>({
         resolver: zodResolver(createFormAdressesSchema)
     })
+
+    function handleChangeAddressStatus(index: number) {
+        if (changeAddressStatus) {
+            changeAddressStatus(index)
+        }
+    }
 
     async function getCepFromApi(cep: string) {
         const cepNumber = cep?.replace("-", "")
@@ -46,16 +52,18 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
     }
 
     function saveAddressForm(data: FieldValues) {
-        const objectValues = {
+
+        let objectValues = {
             address: data.address,
             address2: data.address2,
             city: data.city,
             country: data.country,
-            id: Math.random(),
+            id: data.id == "" ? "" : data.id,
             neighborhood: data.neighborhood,
             postalCode: data.cep,
             saved: true,
-            states: data.states
+            states: data.states,
+            status: data.status == "" ? "" : (data.status == "true" ? true : false)
         }
 
         saveAddress(index, objectValues)
@@ -64,15 +72,17 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
     return (
         <form onSubmit={handleSubmit(saveAddressForm)}>
             <div className={`grid tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 gap-4 py-4 pl-2`}>
+                <input {...register("id")} value={item.id == null ? "" : item.id} className="sr-only"/>
+                <input {...register("status")} value={item.status == true || item.status == false ? String(item.status) : ""} className="sr-only"/>
                 <FieldForm
-                    label={"postalCode" + item.id}
+                    label={"postalCode" + index}
                     name="CEP"
                     error={errors.cep && " "}
                 >
                     <Input
                         onInput={(event: ChangeEvent<HTMLInputElement>) => handleResetSaveAddress(index, event.target.value)}
                         type="number"
-                        id={"postalCode" + item.id}
+                        id={"postalCode" + index}
                         name="cep"
                         placeholder="CEP"
                         required
@@ -91,7 +101,7 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                 </FieldForm>
 
                 <FieldForm
-                    label={"address" + item.id}
+                    label={"address" + index}
                     name="Endereço"
                     error={errors.address && " "}
                 >
@@ -99,7 +109,7 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                         onInput={() => resetSaveAddress(index)}
                         value={watch("address", item.address != "" ? item.address : "")}
                         type="text"
-                        id={"address" + item.id}
+                        id={"address" + index}
                         name="address"
                         placeholder="Endereço"
                         maxlength={50}
@@ -116,7 +126,7 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                 </FieldForm>
 
                 <FieldForm
-                    label={"neighborhood" + item.id}
+                    label={"neighborhood" + index}
                     name="Bairro"
                     error={errors.neighborhood && " "}
                 >
@@ -124,7 +134,7 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                         onInput={() => resetSaveAddress(index)}
                         value={watch("neighborhood", item.neighborhood != "" ? item.neighborhood : "")}
                         type="text"
-                        id={"neighborhood" + item.id}
+                        id={"neighborhood" + index}
                         name="neighborhood"
                         placeholder="Bairo"
                         maxlength={50}
@@ -141,7 +151,7 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                 </FieldForm>
 
                 <FieldForm
-                    label={"address2" + item.id}
+                    label={"address2" + index}
                     name="Complemento"
                     error={errors.address2 && " "}
                     obrigatory={false}
@@ -150,7 +160,7 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                         onInput={() => resetSaveAddress(index)}
                         value={watch("address2", item.address2 != "" ? item.address2 : "")}
                         type="string"
-                        id={"address2" + item.id}
+                        id={"address2" + index}
                         name="address2"
                         placeholder="Complemento"
                         maxlength={50}
@@ -167,7 +177,7 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                 </FieldForm>
 
                 <FieldForm
-                    label={"city" + item.id}
+                    label={"city" + index}
                     name="Cidade"
                     error={errors.city && " "}
                 >
@@ -175,7 +185,7 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                         onInput={() => resetSaveAddress(index)}
                         value={watch("city", item.city != "" ? item.city : "")}
                         type="text"
-                        id={"city" + item.id}
+                        id={"city" + index}
                         name="city"
                         placeholder="Cidade"
                         maxlength={60}
@@ -193,14 +203,14 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                 </FieldForm>
 
                 <FieldForm
-                    label={"states" + item.id}
+                    label={"states" + index}
                     name="Estado"
                     error={errors.states && " "}
                 >
                     <SelectField
                         OnChange={() => resetSaveAddress(index)}
                         name="states"
-                        id={"states" + item.id}
+                        id={"states" + index}
                         required
                         styles={`${
                                 errors.states
@@ -328,7 +338,7 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                 </FieldForm>
 
                 <FieldForm
-                    label={"country" + item.id}
+                    label={"country" + index}
                     name="País"
                     error={errors.country && " "}
                 >
@@ -336,7 +346,7 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
                         onInput={() => resetSaveAddress(index)}
                         value={watch("country", item.country != "" ? item.country : "")}
                         type="text"
-                        id={"country" + item.id}
+                        id={"country" + index}
                         name="country"
                         placeholder="País"
                         maxlength={60}
@@ -355,7 +365,25 @@ export function CardForm({ item, removeAddress, index, saveAddress, resetSaveAdd
             </div>
 
             <div className={`flex items-center gap-2 mb-4 pl-2 py-2`}>
-                <ButtonError type="button" name="Remover" onClick={() => removeAddress(index)} />
+                {typeof item.status == "boolean" ? (
+                    <button
+                        type="button"
+                        onClick={() => handleChangeAddressStatus(index) }
+                        className={`
+                        border-2 p-2 px-4 rounded-md duration-150
+                        font-semibold hover:text-white
+                    
+                        ${item.status
+                                ? `hover:bg-blue-400 border-blue-400`
+                                : ` hover:bg-red-400 border-red-400`
+                            }
+                    `}
+                    >
+                        {item.status ? "Habilitado" : "Desabilitado"}
+                    </button>
+                ) : (
+                    <ButtonError type="button" name="Remover" onClick={() => removeAddress(index)} />
+                )}
 
                 {item.saved ? (
                     <ButtonSave

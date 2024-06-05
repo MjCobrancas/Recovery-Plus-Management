@@ -6,15 +6,23 @@ import { IFormEmailCardProps, createFormEmailData, createFormEmailSchema } from 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 
-export function CardEmailForm({ index, item, removeUserEmail, resetEmail, saveEmail,  }: IFormEmailCardProps) {
+export function CardEmailForm({ index, item, removeUserEmail, resetEmail, saveEmail, changeEmailStatus, id }: IFormEmailCardProps) {
     const { register, handleSubmit, clearErrors, watch, formState: { errors } } = useForm<createFormEmailData>({
         resolver: zodResolver(createFormEmailSchema)
     })
 
+    function handleChangeEmailStatus(index: number) {
+        if (changeEmailStatus) {
+            changeEmailStatus(index)
+        }
+    }
+
     function saveEmailForm(data: FieldValues) {
         const objectValues = {
+            id: id ? id : "",
             userEmail: String(data.userEmail),
-            saved: true
+            saved: true,
+            status: data.status == "" ? "" : (data.status == "true" ? true : false)
         }
 
         saveEmail(index, objectValues)
@@ -28,6 +36,7 @@ export function CardEmailForm({ index, item, removeUserEmail, resetEmail, saveEm
 
     return (
         <form key={index} onSubmit={handleSubmit(saveEmailForm)}>
+            <input {...register("status")} value={item.status == true || item.status == false ? String(item.status) : ""} className="sr-only"/>
             <div className="grid tablet:grid-cols-2 laptop:grid-cols-2 desktop:grid-cols-3 gap-4 py-4 pl-2 ">
                 <FieldForm
                     label={"userEmail" + index}
@@ -42,8 +51,7 @@ export function CardEmailForm({ index, item, removeUserEmail, resetEmail, saveEm
                         name="userEmail"
                         placeholder="abc@gmail.com"
                         required
-                        styles={`${
-                                errors.userEmail
+                        styles={`${errors.userEmail
                                 ? "border-[--label-color-error] dark:border-[--label-color-error]"
                                 : ""
                             }
@@ -55,7 +63,25 @@ export function CardEmailForm({ index, item, removeUserEmail, resetEmail, saveEm
             </div>
 
             <div className={`flex items-center gap-2 mb-4 pl-2`}>
-                <ButtonError type="button" name="Remover" onClick={() => removeUserEmail(index)} />
+                {typeof item.status == "boolean" ? (
+                    <button
+                        type="button"
+                        onClick={() => handleChangeEmailStatus(index)}
+                        className={`
+                            border-2 p-2 px-4 rounded-md duration-150
+                            font-semibold hover:text-white
+                        
+                            ${item.status
+                                ? `hover:bg-blue-400 border-blue-400`
+                                : ` hover:bg-red-400 border-red-400`
+                            }
+                        `}
+                    >
+                        {item.status ? "Habilitado" : "Desabilitado"}
+                    </button>
+                ) : (
+                    <ButtonError type="button" name="Remover" onClick={() => removeUserEmail(index)} />
+                )}
                 {item.saved ? (
                     <ButtonSave
                         OnClick={() => resetFormErrors()}

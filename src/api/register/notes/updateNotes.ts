@@ -17,7 +17,7 @@ export async function updateNotes<T>(value: T) {
       },
       body: JSON.stringify(value),
     })
-      .then(async (value: any) => {  
+      .then(async (value) => {  
         if (value.status == 400) {
           return false
         }

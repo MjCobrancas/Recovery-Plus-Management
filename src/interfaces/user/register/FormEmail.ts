@@ -4,19 +4,24 @@ interface IFormEmailProps {
     updatePage: (index: number) => void
     setEmailsFormValue: (value: IFormEmail[], isFetchRequest: boolean) => void
     emailsForm: IFormEmail[]
+    userEmails?: IFormEmail[]
 }
 
 interface IFormEmail {
     userEmail: string
     saved: boolean
+    status?: string | boolean
+    id?: string
 }
 
 interface IFormEmailCardProps {
+    id?: string
     index: number
     item: IFormEmail
     removeUserEmail: (index: number) => void
     resetEmail: (index: number) => void
     saveEmail: (index: number, objectData: IFormEmail) => void
+    changeEmailStatus?: (index: number) => void
 }
 
 export const createFormEmailSchema = z.object({
@@ -24,7 +29,8 @@ export const createFormEmailSchema = z.object({
         const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
 
         return regexEmail.test(value)
-    })
+    }),
+    status: z.string().or(z.boolean())
 })
 
 export type createFormEmailData = z.infer<typeof createFormEmailSchema>

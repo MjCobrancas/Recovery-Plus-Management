@@ -11,6 +11,7 @@ export function FormEmail({ updatePage, setEmailsFormValue, emailsForm }: IFormE
     const [disableButton, setDisableButton] = useState(false)
 
     async function handleUpdateNextPage() {
+        setDisableButton(true)
         if (emails.length > 0) {
             for (let i = 0; i < emails.length; i++) {
                 if (!emails[i].saved) {
@@ -93,12 +94,14 @@ export function FormEmail({ updatePage, setEmailsFormValue, emailsForm }: IFormE
                 <ButtonNextOrBack
                     OnClick={() => updatePage(2)}
                     title="Voltar"
+                    type="button"
                     styles={`rounded-br-none rounded-bl-lg`}
                     disabled={disableButton}
                 />
                 <ButtonNextOrBack
                     OnClick={() => handleUpdateNextPage()}
                     title="Salvar"
+                    type="button"
                     styles={`rounded-bl-none rounded-br-lg`}
                     disabled={disableButton}
                 />

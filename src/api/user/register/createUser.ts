@@ -18,7 +18,7 @@ export async function createUser<T>(object: T) {
         },
         body: JSON.stringify(object),
     })
-        .then(async (data: any) => {
+        .then(async (data) => {
             const datas = await data.json()
 
             const { message, page, position } = datas

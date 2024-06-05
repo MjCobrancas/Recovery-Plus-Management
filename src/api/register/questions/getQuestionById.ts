@@ -1,0 +1,43 @@
+'use server'
+
+import { ITokenUserInitialValues } from "@/interfaces/Generics"
+import { GetUserToken } from "@/utils/GetUserToken"
+
+export async function getQuestionById(id_question: string) {
+    const userParse: ITokenUserInitialValues = GetUserToken()
+
+    const resp = await fetch(
+        `${process.env.BACKEND_DOMAIN}/get-question-by-id/${id_question}`,
+        {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + userParse.accessToken,
+            },
+        }
+    )
+        .then(async (value) => {
+            const data = await value.json()
+
+            if (value.status == 400) {
+                return {
+                    data: null,
+                    status: false
+                }
+            }
+
+            return {
+                data,
+                status: true
+            }
+        })
+        .catch(() => {
+            return {
+                data: null,
+                status: false
+            }
+        })
+
+    return resp
+}

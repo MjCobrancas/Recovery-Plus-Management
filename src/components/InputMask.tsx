@@ -1,7 +1,7 @@
 import { IInputMask } from "@/interfaces/components/InputMask";
 import { twMerge } from "tailwind-merge";
 
-export function InputMask({ id, name, placeholder, required = false, maxlength = undefined, maskCpfCnpj, autocomplete = "off", styles, value, onForm, register, onInput }: IInputMask) {
+export function InputMask({ id, name, placeholder, required = false, maxlength = undefined, maskCpfCnpj, autocomplete = "off", styles, value, onForm, register, onInput, disabled = false }: IInputMask) {
 
     return (
         <>
@@ -15,6 +15,7 @@ export function InputMask({ id, name, placeholder, required = false, maxlength =
                     maxLength={maxlength}
                     autoComplete={autocomplete}
                     data-moreCSS={styles}
+                    disabled={disabled}
                     className={twMerge(
                         `
                         mt-1 p-2 border-2 rounded outline-none transition
@@ -40,6 +41,7 @@ export function InputMask({ id, name, placeholder, required = false, maxlength =
                     maxLength={maxlength}
                     autoComplete={autocomplete}
                     data-moreCSS={styles}
+                    disabled={disabled}
                     className={twMerge(
                         `
                         mt-1 p-2 border-2 rounded outline-none transition

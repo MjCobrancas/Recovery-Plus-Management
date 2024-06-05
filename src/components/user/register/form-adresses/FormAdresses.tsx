@@ -28,7 +28,7 @@ export function FormAdresses({ updatePage, setAdressesFormValue, adressesForm }:
         const data: IFormAdresses[] = []
 
         data.push({
-            id: Math.random(),
+            id: String(Math.random()),
             address: "",
             address2: "",
             city: "",
@@ -96,11 +96,13 @@ export function FormAdresses({ updatePage, setAdressesFormValue, adressesForm }:
             <aside className={`flex justify-between`}>
                 <ButtonNextOrBack
                     OnClick={() => updatePage(0)}
+                    type="button"
                     title="Voltar"
                     styles={`rounded-br-none rounded-bl-lg`}
                 />
                 <ButtonNextOrBack
                     OnClick={() => handleUpdateNextPage()}
+                    type="button"
                     title="Avançar"
                     styles={`rounded-bl-none rounded-br-lg`}
                 />

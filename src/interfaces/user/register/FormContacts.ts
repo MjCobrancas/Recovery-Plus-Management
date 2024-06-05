@@ -5,6 +5,7 @@ interface IFormContactsProps {
     updatePage: (index: number) => void
     setContactsFormValue: (value: IFormContacts[]) => void
     contactsForm: IFormContacts[]
+    userContacts?: IFormContacts[]
 }
 
 interface IFormContacts {
@@ -12,14 +13,18 @@ interface IFormContacts {
     phone: string
     type: string
     saved: boolean
+    status?: boolean | string
+    id?: string
 }
 
 interface IFormContactCardFormProps {
+    id?: string
     item: IFormContacts
     index: number
     removeContact: (index: number) => void
     resetContact: (index: number) => void
     saveContact: (index: number, objectData: IFormContacts) => void
+    changeContactsStatus?: (index: number) => void
 }
 
 export const createFormContactsSchema = z.object({
@@ -40,7 +45,8 @@ export const createFormContactsSchema = z.object({
     }),
     type: z.string().refine((value) => {
         return value == "Residencial" || value == "Pessoal"
-    })
+    }),
+    status: z.string().or(z.boolean())
 })
 
 export type createFormContactsData = z.infer<typeof createFormContactsSchema>

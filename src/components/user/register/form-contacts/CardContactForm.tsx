@@ -8,17 +8,25 @@ import { IFormContactCardFormProps, createFormContactsData, createFormContactsSc
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 
-export function CardContactForm({ item, index, removeContact, resetContact, saveContact }: IFormContactCardFormProps) {
+export function CardContactForm({ id, item, index, removeContact, resetContact, saveContact, changeContactsStatus }: IFormContactCardFormProps) {
     const { register, handleSubmit, watch, formState: { errors } } = useForm<createFormContactsData>({
         resolver: zodResolver(createFormContactsSchema)
     })
 
+    function handleChangeContactsStatus(index: number) {
+        if (changeContactsStatus) {
+            changeContactsStatus(index)
+        }
+    }
+
     function saveContactsForm(data: FieldValues) {
         const objectValues = {
+            id: id ? id : "",
             ddd: String(data.ddd),
             phone: String(data.phone),
             type: String(data.type),
-            saved: true
+            saved: true,
+            status: data.status == "" ? "" : (data.status == "true" ? true : false)
         }
 
         saveContact(index, objectValues)
@@ -26,6 +34,7 @@ export function CardContactForm({ item, index, removeContact, resetContact, save
 
     return (
         <form onSubmit={handleSubmit(saveContactsForm)}>
+            <input {...register("status")} value={item.status == true || item.status == false ? String(item.status) : ""} className="sr-only"/>
             <div
                 className={`grid tablet:grid-cols-2 laptop:grid-cols-2 desktop:grid-cols-3 gap-4 py-4 pl-2 `}
             >
@@ -68,8 +77,7 @@ export function CardContactForm({ item, index, removeContact, resetContact, save
                         onForm={true}
                         register={register}
                         styles={`
-                            ${
-                                errors.phone
+                            ${errors.phone
                                 ? "border-[--label-color-error] dark:border-[--label-color-error]"
                                 : ""
                             }`}
@@ -87,8 +95,7 @@ export function CardContactForm({ item, index, removeContact, resetContact, save
                         required
                         value={watch("type", item.type != "" ? item.type : "")}
                         styles={`
-                            ${
-                                errors.type
+                            ${errors.type
                                 ? "border-[--label-color-error] dark:border-[--label-color-error]"
                                 : ""
                             }
@@ -118,7 +125,26 @@ export function CardContactForm({ item, index, removeContact, resetContact, save
             </div>
 
             <div className={`flex items-center gap-2 mb-4 pl-2`}>
-                <ButtonError type="button" name="Remover" onClick={() => removeContact(index)} />
+                {typeof item.status == "boolean" ? (
+                    <button
+                        type="button"
+                        onClick={() => handleChangeContactsStatus(index)}
+                        className={`
+                        border-2 p-2 px-4 rounded-md duration-150
+                        font-semibold hover:text-white
+                    
+                        ${item.status
+                                ? `hover:bg-blue-400 border-blue-400`
+                                : ` hover:bg-red-400 border-red-400`
+                            }
+                    `}
+                    >
+                        {item.status ? "Habilitado" : "Desabilitado"}
+                    </button>
+                ) : (
+                    <ButtonError type="button" name="Remover" onClick={() => removeContact(index)} />
+                )}
+
                 {item.saved ? (
                     <ButtonSave
                         styles="bg-green-500 text-white border-green-500"

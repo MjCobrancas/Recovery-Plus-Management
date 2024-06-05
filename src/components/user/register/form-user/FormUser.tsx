@@ -567,6 +567,7 @@ export function FormUser({ creditors, updatePage, setUserFormValue, userForm }: 
                                     key={company.Id_Creditor}
                                     value={company.Id_Creditor}
                                     firstValue={company.Creditor}
+                                    selectedValue={userForm != null ? userForm.id_credor : ""}
                                 />
                             )
                         })}

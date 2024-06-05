@@ -29,18 +29,18 @@ export const CreateUserFormSchema = z.object({
     }),
     dismissal: z.string(),
     position: z.string().min(1).max(50),
-    permission: z.enum(["", "1", "2", "3", "4", "5", "6"]).refine((value) => {
+    permission: z.string().refine((value) => {
         if (Number(value) >= 1 && Number(value) <= 6) {
             return true
         }
     }),
-    maritalStatus: z.enum(["", "1", "2", "3", "4", "5"]).refine((value) => {
-        if (Number(value) >= 1 && Number(value) <= 6) {
+    maritalStatus: z.string().refine((value) => {
+        if (Number(value) >= 1 && Number(value) <= 5) {
             return true
         }
     }),
-    educationStatus: z.enum(["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]).refine((value) => {
-        if (Number(value) >= 1 && Number(value) <= 6) {
+    educationStatus: z.string().refine((value) => {
+        if (Number(value) >= 1 && Number(value) <= 9) {
             return true
         }
     }),

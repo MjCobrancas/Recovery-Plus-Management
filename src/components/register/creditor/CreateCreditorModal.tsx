@@ -15,13 +15,14 @@ export function CreateCreditorModal() {
     const [saveForm, setSaveForm] = useState(false)
     const [disableButton, setDisableButton] = useState(false)
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<createCreditorModalData>({
+    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<createCreditorModalData>({
         resolver: zodResolver(createCreditorModalSchema)
     })
 
     const dialog = useRef<HTMLDialogElement>(null)
 
     async function handleCreateCreditor(data: FieldValues) {
+        setDisableButton(true)
 
         const object = {
             creditors: {
@@ -221,7 +222,7 @@ export function CreateCreditorModal() {
                                 type="button"
                                 text="Fechar"
                                 styles={`w-fit h-10 border-red-400 bg-red-400 text-white hover:bg-red-500 focus:bg-red-400 text-md px-2 py-2 hover:border-red-500`}
-                                OnClick={() => dialog.current?.close()}
+                                OnClick={() => {reset(); dialog.current?.close()}}
                             />
 
                             <Button

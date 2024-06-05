@@ -9,7 +9,8 @@ interface IInputMask {
     maxlength: number | undefined
     maskCpfCnpj?: string
     autocomplete?: string
-    styles: string
+    disabled?: boolean
+    styles?: string
     value?: string | number
     onForm?: boolean
     register?: UseFormRegister<FieldValue<any>>

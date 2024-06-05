@@ -8,7 +8,20 @@ export function middleware(request: NextRequest) {
 	const token = request.cookies.get('user')?.value
 
 	let validRoute = false
+	const regex = /\/[a-z-]+\/*\w*/g
 	const { pathname } = request.nextUrl
+
+	console.log(pathname)
+
+	let path = pathname.match(regex) 
+
+	if (!path) {
+		return
+	}
+	
+	const pathName = path.join('')
+
+	console.log(pathName)
 
 	if (!token) {
 		return NextResponse.redirect(`${process.env.FRONTEND_DOMAIN}/login`)
@@ -27,7 +40,7 @@ export function middleware(request: NextRequest) {
 	})
 
 	validRoutes.map((item: SecondRoutes) => {
-		if (item.route == pathname) {
+		if (item.route == pathName) {
 			validRoute = true
 		}
 	})
@@ -40,7 +53,7 @@ export function middleware(request: NextRequest) {
 		})
 
 		validActionRoutes.map((item: ActionRoutes) => {
-			if (item.route == pathname) {
+			if (item.route == pathName) {
 				validRoute = true
 			}
 		})
@@ -54,5 +67,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/', '/user', '/user/:path*']
+	matcher: ['/', '/user', '/user/:path*', '/register', '/register/:path*']
 }

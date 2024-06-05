@@ -3,8 +3,8 @@ interface IResult {
 }
 
 interface IResultDefaultResponse<T> {
-    data?: T
-    status?: boolean
+    data: T
+    status: boolean
 }
 
 interface ITokenUserInitialValues {
@@ -38,5 +38,12 @@ interface RespCep {
     value?: CepValues
 }
 
+type Identity<T> = { [P in keyof T]: T[P] }
 
-export type { IResult, IResultDefaultResponse, ITokenUserValues, ITokenUserInitialValues, CepValues, RespCep }
+type ReplaceValue<T, K extends keyof T, TReplace> = Identity<Pick<T, Exclude<keyof T, K>> & {
+    [P in K] : TReplace
+}>
+
+type RenameKey<T, K extends keyof T, N extends string> = Pick<T, Exclude<keyof T, K>> & { [P in N]: T[K] }
+
+export type { IResult, IResultDefaultResponse, ITokenUserValues, ITokenUserInitialValues, CepValues, RespCep, Identity, RenameKey, ReplaceValue }
