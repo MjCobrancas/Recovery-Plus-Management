@@ -8,10 +8,8 @@ export function middleware(request: NextRequest) {
 	const token = request.cookies.get('user')?.value
 
 	let validRoute = false
-	const regex = /\/[a-z-]+\/*\w*/g
+	const regex = /\/[a-z-]+\/*[\w-]*/g
 	const { pathname } = request.nextUrl
-
-	console.log(pathname)
 
 	let path = pathname.match(regex) 
 
@@ -20,8 +18,6 @@ export function middleware(request: NextRequest) {
 	}
 	
 	const pathName = path.join('')
-
-	console.log(pathName)
 
 	if (!token) {
 		return NextResponse.redirect(`${process.env.FRONTEND_DOMAIN}/login`)

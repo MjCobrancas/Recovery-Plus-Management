@@ -1,4 +1,5 @@
 import { validDate } from "@/utils/ValidDate";
+import { ValidateCpf } from "@/utils/ValidateCpf";
 import { z } from "zod";
 
 export const CreateUserFormSchema = z.object({
@@ -23,6 +24,13 @@ export const CreateUserFormSchema = z.object({
         const regexCNPJ = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/g
 
         const isCPF = regexCPF.test(value)
+
+        if (isCPF) {
+            const isValidateCpf = ValidateCpf(value.replace('.', '').replace('.', '').replace('-', '').replace('/', '').toString())
+
+            return isValidateCpf
+        }
+
         const isCNPJ = regexCNPJ.test(value)
 
         return isCPF || isCNPJ

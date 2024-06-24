@@ -33,6 +33,17 @@ export function UserCard({ Id_User, Name, Last_Name, UserName, Position, Backend
                 </div>
             </div>
             <div
+                className={`absolute right-[34px] bottom-0 overflow-hidden transition-all delay-300`}
+            >
+                <Link
+                    href={`/user/quick-edit/${Id_User}`}
+                    type="button"
+                    className={`w-full h-full flex items-center justify-center rounded-tr-md p-1 transition-all delay-100`}
+                >
+                    <FontAwesomeIcon icon={faPencil} className="fa-solid fa-pencil fa-sm text-white bg-emerald-500 px-2 py-2 rounded-md rounded-br-md hover:bg-emerald-400 duration-100" />
+                </Link>
+            </div>
+            <div
                 className={`absolute right-0 bottom-0 overflow-hidden transition-all delay-300`}
             >
                 <Link
