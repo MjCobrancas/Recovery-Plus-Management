@@ -14,8 +14,6 @@ export default async function Page({ params }: { params: { id_user: string } }) 
     const user: IResultDefaultResponse<IGetUserInfo | null> = await getUserInfo(params.id_user)
     const creditors: ICreditorGetAllCreditors[] = await getAllCreditors()
 
-    console.log(user)
-
     return (
         <PaperBlock>
             <TextPrincipal text="Edição rápida de usuário" />
