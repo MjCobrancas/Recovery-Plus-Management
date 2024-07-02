@@ -23,17 +23,17 @@ const nextConfig = {
     async redirects() {
         return [
             {
-                source: '/coaching/:path',
+                source: '/coaching/:path*',
                 destination: `${process.env.COACHING_DOMAIN}/coaching/:path*`,
                 permanent: true
             },
             {
-                source: '/monitoring/:path',
+                source: '/monitoring/:path*',
                 destination: `${process.env.MONITORING_DOMAIN}/monitoring/:path*`,
                 permanent: true
             },
             {
-                source: '/workout/:path',
+                source: '/workout/:path*',
                 destination: `${process.env.WORKOUT_DOMAIN}/workout/:path*`,
                 permanent: true
             },

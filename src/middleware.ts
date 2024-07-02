@@ -42,6 +42,8 @@ export function middleware(request: NextRequest) {
 	})
 
 	if (!validRoute) {
+		const pathNameWithRegex = pathname.match(/\/[\w-]+\/[\w-]+/g)
+		const pathNameWithRegex2 = pathNameWithRegex != null ? pathNameWithRegex.join('') : ""
 		const validActionRoutes: Array<ActionRoutes> = actionRoutes.filter((e) => {
 			return e.permissions.some((e: number) => {
 				return e == Number(tokenUserValues.permission)
@@ -49,7 +51,7 @@ export function middleware(request: NextRequest) {
 		})
 
 		validActionRoutes.map((item: ActionRoutes) => {
-			if (item.route == pathName) {
+			if (item.route == pathNameWithRegex2) {
 				validRoute = true
 			}
 		})
