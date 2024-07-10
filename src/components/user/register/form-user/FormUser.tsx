@@ -287,8 +287,7 @@ export function FormUser({ creditors, updatePage, setUserFormValue, userForm }: 
                         name="admission"
                         required
                         styles={`
-                        ${
-                            errors.admission
+                        ${errors.admission
                                 ? "border-[--label-color-error] dark:border-[--label-color-error]"
                                 : ""
                             }
@@ -357,8 +356,8 @@ export function FormUser({ creditors, updatePage, setUserFormValue, userForm }: 
                         required
 
                         styles={`${errors.permission
-                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
-                                : ""
+                            ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                            : ""
                             }`}
                         onForm={true}
                         register={register}
@@ -561,6 +560,10 @@ export function FormUser({ creditors, updatePage, setUserFormValue, userForm }: 
                         register={register}
                         value={watch("id_credor", userForm != null ? userForm.id_credor : "")}
                     >
+                        <Option
+                            value={"Selecione"}
+                        />
+
                         {creditors.length > 0 && creditors.map((company: ICreditors) => {
                             return (
                                 <Option

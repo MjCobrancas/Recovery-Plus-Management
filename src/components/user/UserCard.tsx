@@ -1,12 +1,35 @@
 'use client'
 
+import { verifyUserPermission } from "@/api/user/verifyUserPermission";
 import { IUserCard } from "@/interfaces/user/UserCard";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export function UserCard({ Id_User, Name, Last_Name, UserName, Position, Backend_Domain }: IUserCard) {
+    const router = useRouter()
+
+    async function redirectUserToEditPage(id_operator: number, isQuickEdit: boolean) {
+        const { status, canChange } = await verifyUserPermission(id_operator)
+
+        if (!status || !canChange) {
+            toast.error("Você não tem permissão suficiente para fazer alterações nesse usuário!", {
+                duration: 5000
+            })
+
+            return
+        }
+
+        if (isQuickEdit) {
+            router.push(`/user/quick-edit/${id_operator}`)
+
+            return
+        }
+
+        router.push(`/user/edit/${id_operator}`)
+    }
 
     return (
         <article
@@ -35,24 +58,24 @@ export function UserCard({ Id_User, Name, Last_Name, UserName, Position, Backend
             <div
                 className={`absolute right-[34px] bottom-0 overflow-hidden transition-all delay-300`}
             >
-                <Link
-                    href={`/user/quick-edit/${Id_User}`}
+                <button
                     type="button"
                     className={`w-full h-full flex items-center justify-center rounded-tr-md p-1 transition-all delay-100`}
+                    onClick={() => redirectUserToEditPage(Number(Id_User), true)}
                 >
                     <FontAwesomeIcon icon={faPencil} className="fa-solid fa-pencil fa-sm text-white bg-emerald-500 px-2 py-2 rounded-md rounded-br-md hover:bg-emerald-400 duration-100" />
-                </Link>
+                </button>
             </div>
             <div
                 className={`absolute right-0 bottom-0 overflow-hidden transition-all delay-300`}
             >
-                <Link
-                    href={`/user/edit/${Id_User}`}
+                <button
                     type="button"
                     className={`w-full h-full flex items-center justify-center rounded-tr-md p-1 transition-all delay-100`}
+                    onClick={() => redirectUserToEditPage(Number(Id_User), false)}
                 >
                     <FontAwesomeIcon icon={faPencil} className="fa-solid fa-pencil fa-sm text-white bg-blue-500 px-2 py-2 rounded-md rounded-br-md hover:bg-blue-400 duration-100" />
-                </Link>
+                </button>
             </div>
         </article>
     )
