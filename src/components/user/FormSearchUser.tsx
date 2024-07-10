@@ -8,20 +8,42 @@ import { createSearchUserFormData, createSearchUserFormSchema } from "@/interfac
 import { zodResolver } from "@hookform/resolvers/zod"
 import { getUsersByName } from "@/api/user/getUsersByName"
 import { IncompleteUserValuesData } from "@/interfaces/user/UserCard"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAngleLeft, faAngleRight, faAnglesLeft, faAnglesRight } from "@fortawesome/free-solid-svg-icons"
 import { getUsersPagination } from "@/api/user/getUsersPagination"
 
-export function SearchUser({ filterData, totalPage, backend_domain, token }: { filterData: Function, totalPage: number, backend_domain: string, token: string }) {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<createSearchUserFormData>({
+export function SearchUser({ allUsers, filterData, totalPage, backend_domain, token }: { allUsers: IncompleteUserValuesData, filterData: Function, totalPage: number, backend_domain: string, token: string }) {
+
+    const [disableButton, setDisableButton] = useState(false)
+
+    const { register, handleSubmit, watch, formState: { errors }, setError, clearErrors } = useForm<createSearchUserFormData>({
         resolver: zodResolver(createSearchUserFormSchema)
     })
 
     const [actualPage, setActualPage] = useState(1)
 
+    function resetValues(event: ChangeEvent<HTMLInputElement>) {
+        if (event.target.value.length == 0) {
+            filterData(allUsers)
+        }
+    }
+
     async function handleFormSubmit(data: FieldValues) {
+        if (String(data.searchUser).length <= 0) {
+            setError("searchUser", {
+                message: "Digite no campo de usuário!"
+            })
+
+            setTimeout(() => {
+                clearErrors()
+            }, 5000);
+
+            return
+        }
+        setDisableButton(true)
         const result: IncompleteUserValuesData = await getUsersByName(data.searchUser) as IncompleteUserValuesData
+        setDisableButton(false)
 
         filterData(result)
     }
@@ -79,12 +101,14 @@ export function SearchUser({ filterData, totalPage, backend_domain, token }: { f
                                 }`}
                             onForm={true}
                             register={register}
+                            onChangeFunction={(event: ChangeEvent<HTMLInputElement>) => resetValues(event)}
                         />
 
                         <Button
                             type="submit"
                             text="Buscar"
                             styles={`w-24 h-[43px] p-0 ml-1 text-[17px] max-sm:ml-0 max-sm:w-full`}
+                            disabled={disableButton}
                         />
                     </div>
                 </FieldForm>
@@ -95,21 +119,21 @@ export function SearchUser({ filterData, totalPage, backend_domain, token }: { f
                         type="button"
                         name="page"
                         title="Primeira página"
-                        disabled={actualPage == 1}
+                        disabled={actualPage == 1 || disableButton}
                         onClick={() => handleInitialPage()}
                     >
-                        <FontAwesomeIcon icon={faAnglesLeft} className={ actualPage != 1 ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
+                        <FontAwesomeIcon icon={faAnglesLeft} className={ actualPage != 1 && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
                     </button>
 
                     <button
                         type="button"
                         name="page"
                         title="Página anterior"
-                        disabled={actualPage == 1}
+                        disabled={actualPage == 1 || disableButton}
                         onClick={() => handleBackPage(actualPage - 1)}
                     >
 
-                        <FontAwesomeIcon icon={faAngleLeft} className={ actualPage != 1 ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
+                        <FontAwesomeIcon icon={faAngleLeft} className={ actualPage != 1 && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
                     </button>
 
                     <div className={`rounded-full flex items-start justify-center px-1`}>
@@ -125,19 +149,19 @@ export function SearchUser({ filterData, totalPage, backend_domain, token }: { f
                         name="page"
                         title="Próxima página"
                         onClick={() => handleNextPage(actualPage + 1)}
-                        disabled={actualPage == totalPage}
+                        disabled={actualPage == totalPage || disableButton}
                     >
-                        <FontAwesomeIcon icon={faAngleRight} className={ actualPage != totalPage ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
+                        <FontAwesomeIcon icon={faAngleRight} className={ actualPage != totalPage && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
                     </button>
 
                     <button
                         type="button"
                         name="page"
                         title="Última página"
-                        disabled={actualPage == totalPage}
+                        disabled={actualPage == totalPage || disableButton}
                         onClick={() => handleEndPage()}
                     >
-                        <FontAwesomeIcon icon={faAnglesRight} className={ actualPage != totalPage ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
+                        <FontAwesomeIcon icon={faAnglesRight} className={ actualPage != totalPage && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
                     </button>
                 </div>
             </form>

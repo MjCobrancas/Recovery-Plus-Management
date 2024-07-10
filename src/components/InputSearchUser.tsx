@@ -1,7 +1,7 @@
 import { IInputSearchUser } from "@/interfaces/components/InputSearchUser";
 import { twMerge } from "tailwind-merge";
 
-export function InputSearchUser({ id, name, title, value, placeholder, maxlength = undefined, searchUser, styles, onForm, register }: IInputSearchUser) {
+export function InputSearchUser({ id, name, title, value, placeholder, maxlength = undefined, searchUser, styles, onForm, register, onChangeFunction }: IInputSearchUser) {
 
     return (
         <>
@@ -26,7 +26,11 @@ export function InputSearchUser({ id, name, title, value, placeholder, maxlength
                         `,
                         styles
                     )}
-                    {...register!(name)}
+                    {...register!(name, {
+                        onChange(event) {
+                            onChangeFunction!(event)
+                        },
+                    })}
                 />
             ) : (
                 <input
