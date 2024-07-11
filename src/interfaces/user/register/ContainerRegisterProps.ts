@@ -7,11 +7,29 @@ import { IFormEmail } from "./FormEmail";
 
 interface IContainerRegisterProps {
     creditors: ICreditors[]
+    userRoles: IUserRoles[]
+    userEducation: IUserEducation[]
+    userMaritalStatus: IUserMaritalStatus[]
     user?: IUserProps
     userAdressesFormat?: IFormAdresses[]
     userContactsFormat?: IFormContacts[]
     userEmailsFormat?: IFormEmail[]
     idUser?: string
+}
+
+interface IUserRoles {
+    Id_Permissions: number
+    Permission: string
+}
+
+interface IUserEducation {
+    Id_Education: number
+    Education_Status: string
+}
+
+interface IUserMaritalStatus {
+    Id_Marital: number
+    Marital_Status: string
 }
 
 interface IFormUser extends IContainerRegisterProps {
@@ -22,4 +40,4 @@ interface IFormUser extends IContainerRegisterProps {
     userStatus?: boolean
 }
 
-export type { IContainerRegisterProps, IFormUser }
+export type { IContainerRegisterProps, IFormUser, IUserRoles, IUserEducation, IUserMaritalStatus }

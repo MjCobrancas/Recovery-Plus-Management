@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react"
 import { FieldValue, UseFormRegister } from "react-hook-form"
 
 interface IInputSearchUser {
@@ -11,6 +12,7 @@ interface IInputSearchUser {
     onForm: boolean
     value: string
     register?: UseFormRegister<FieldValue<any>>
+    onChangeFunction?: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 export type { IInputSearchUser }

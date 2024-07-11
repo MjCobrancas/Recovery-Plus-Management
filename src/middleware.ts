@@ -3,25 +3,37 @@ import { parseJWT } from "./utils/ParseJWT";
 import { ITokenUserValues } from "./interfaces/Generics";
 import { secondRoutes, actionRoutes } from "@/api/routes"
 import { ActionRoutes, SecondRoutes } from "./interfaces/IRoutes";
+import { verifyUserToken } from "./api/generics/verifyToken";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
 	const token = request.cookies.get('user')?.value
 
 	let validRoute = false
 	const regex = /\/[a-z-]+\/*[\w-]*/g
 	const { pathname } = request.nextUrl
 
-	let path = pathname.match(regex) 
-
-	if (!path) {
-		return
-	}
-	
-	const pathName = path.join('')
+	let path = pathname.match(regex)
 
 	if (!token) {
 		return NextResponse.redirect(`${process.env.FRONTEND_DOMAIN}/login`)
 	}
+
+	const isValidToken = await verifyUserToken()
+
+	if (!isValidToken) {
+		return NextResponse.redirect(`${process.env.FRONTEND_DOMAIN}/login`)
+	}
+
+	if (!path) {
+
+		if (pathname == "/") {
+			return NextResponse.next()
+		}
+
+		return NextResponse.redirect(`${process.env.FRONTEND_DOMAIN}/login`)
+	}
+	
+	const pathName = path.join('')
 
 	const tokenUserValues: ITokenUserValues | null = parseJWT(token)
 

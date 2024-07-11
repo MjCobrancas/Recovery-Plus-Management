@@ -52,7 +52,21 @@ export const CreateUserFormSchema = z.object({
             return true
         }
     }),
-    id_credor: z.string().min(1)
+    id_credor: z.string().min(1).refine((value) => {
+        if (value == "Selecione") {
+            return false
+        }
+
+        if (String(Number(value)) == "NaN") {
+            return false
+        }
+
+        if (Number(value) <= 0) {
+            return false
+        }
+
+        return true
+    })
 })
 
 export type CreateUserFormData = z.infer<typeof CreateUserFormSchema>

@@ -16,7 +16,7 @@ import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
-export function FormUser({ creditors, updatePage, setUserFormValue, userForm, user, userStatus, changeUserStatus }: IFormUser) {
+export function FormUser({ creditors, updatePage, setUserFormValue, userForm, user, userStatus, changeUserStatus, userRoles, userEducation, userMaritalStatus }: IFormUser) {
     const { register, handleSubmit, watch, clearErrors, formState: { errors } } = useForm<CreateUserFormDataEdit>({
         resolver: zodResolver(CreateUserFormSchemaEdit)
     })
@@ -302,41 +302,17 @@ export function FormUser({ creditors, updatePage, setUserFormValue, userForm, us
                             selectedValue={userForm != null ? String(userForm.permission) : String(user!.Permission_Level_Id)}
                             firstValue="Permissão"
                         />
-                        <Option
-                            value="1"
-                            selectedValue={userForm != null ? String(userForm.permission) : String(user!.Permission_Level_Id)}
-                            firstValue="Super Admin"
-                        />
 
-                        <Option
-                            value="2"
-                            selectedValue={userForm != null ? String(userForm.permission) : String(user!.Permission_Level_Id)}
-                            firstValue="Gerente"
-                        />
-
-                        <Option
-                            value="3"
-                            selectedValue={userForm != null ? String(userForm.permission) : String(user!.Permission_Level_Id)}
-                            firstValue="Diretor"
-                        />
-
-                        <Option
-                            value="4"
-                            selectedValue={userForm != null ? String(userForm.permission) : String(user!.Permission_Level_Id)}
-                            firstValue="Supervisor"
-                        />
-
-                        <Option
-                            value="5"
-                            selectedValue={userForm != null ? String(userForm.permission) : String(user!.Permission_Level_Id)}
-                            firstValue="Coordenador"
-                        />
-
-                        <Option
-                            value="6"
-                            selectedValue={userForm != null ? String(userForm.permission) : String(user!.Permission_Level_Id)}
-                            firstValue="Back-Office"
-                        />
+                        {userRoles.map((role) => {
+                            return (
+                                <Option
+                                    key={role.Id_Permissions}
+                                    value={role.Id_Permissions}
+                                    selectedValue={userForm != null ? String(userForm.permission) : String(user!.Permission_Level_Id)}
+                                    firstValue={role.Permission}
+                                />
+                            ) 
+                        })}
                     </SelectField>
                 </FieldForm>
 
@@ -364,35 +340,16 @@ export function FormUser({ creditors, updatePage, setUserFormValue, userForm, us
                             firstValue="Status Civil"
                         />
 
-                        <Option
-                            value="1"
-                            selectedValue={userForm != null ? String(userForm.maritalStatus) : String(user!.Marital_Status_Id)}
-                            firstValue="Solteiro"
-                        />
-
-                        <Option
-                            value="2"
-                            selectedValue={userForm != null ? String(userForm.maritalStatus) : String(user!.Marital_Status_Id)}
-                            firstValue="Casado"
-                        />
-
-                        <Option
-                            value="3"
-                            selectedValue={userForm != null ? String(userForm.maritalStatus) : String(user!.Marital_Status_Id)}
-                            firstValue="Divorciado"
-                        />
-
-                        <Option
-                            value="4"
-                            selectedValue={userForm != null ? String(userForm.maritalStatus) : String(user!.Marital_Status_Id)}
-                            firstValue="Viúvo"
-                        />
-
-                        <Option
-                            value="5"
-                            selectedValue={userForm != null ? String(userForm.maritalStatus) : String(user!.Marital_Status_Id)}
-                            firstValue="Separado"
-                        />
+                        {userMaritalStatus.map((item) => {
+                            return (
+                                <Option
+                                    key={item.Id_Marital}
+                                    value={item.Id_Marital}
+                                    selectedValue={userForm != null ? String(userForm.maritalStatus) : String(user!.Marital_Status_Id)}
+                                    firstValue={item.Marital_Status}
+                                />
+                            )
+                        })}
                     </SelectField>
                 </FieldForm>
 
@@ -420,59 +377,16 @@ export function FormUser({ creditors, updatePage, setUserFormValue, userForm, us
                             firstValue="Educação"
                         />
 
-                        <Option
-                            value="1"
-                            selectedValue={userForm != null ? String(userForm.educationStatus) : String(user?.Education_Level_Id)}
-                            firstValue="Fundamental || Completo"
-                        />
-
-                        <Option
-                            value="2"
-                            selectedValue={userForm != null ? String(userForm.educationStatus) : String(user?.Education_Level_Id)}
-                            firstValue="Fundamental || Incompleto"
-                        />
-
-                        <Option
-                            value="3"
-                            selectedValue={userForm != null ? String(userForm.educationStatus) : String(user?.Education_Level_Id)}
-                            firstValue="Fundamental || Cursando"
-                        />
-
-                        <Option
-                            value="4"
-                            selectedValue={userForm != null ? String(userForm.educationStatus) : String(user?.Education_Level_Id)}
-                            firstValue="Médio Completo"
-                        />
-
-                        <Option
-                            value="5"
-                            selectedValue={userForm != null ? String(userForm.educationStatus) : String(user?.Education_Level_Id)}
-                            firstValue="Médio Incompleto"
-                        />
-
-                        <Option
-                            value="6"
-                            selectedValue={userForm != null ? String(userForm.educationStatus) : String(user?.Education_Level_Id)}
-                            firstValue="Médio Cursando"
-                        />
-
-                        <Option
-                            value="7"
-                            selectedValue={userForm != null ? String(userForm.educationStatus) : String(user?.Education_Level_Id)}
-                            firstValue="Superior Completo"
-                        />
-
-                        <Option
-                            value="8"
-                            selectedValue={userForm != null ? String(userForm.educationStatus) : String(user?.Education_Level_Id)}
-                            firstValue="Superior Incompleto"
-                        />
-
-                        <Option
-                            value="9"
-                            selectedValue={userForm != null ? String(userForm.educationStatus) : String(user?.Education_Level_Id)}
-                            firstValue="Superior Cursando"
-                        />
+                        {userEducation.map((item) => {
+                            return (
+                                <Option
+                                    key={item.Id_Education}
+                                    value={item.Id_Education}
+                                    selectedValue={userForm != null ? String(userForm.educationStatus) : String(user?.Education_Level_Id)}
+                                    firstValue={item.Education_Status}
+                                />
+                            )
+                        })}
                     </SelectField>
                 </FieldForm>
 

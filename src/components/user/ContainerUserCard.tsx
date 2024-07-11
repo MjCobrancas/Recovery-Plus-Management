@@ -4,6 +4,7 @@ import { IUserContainerCard, IncompleteUserValues, IncompleteUserValuesData } fr
 import { useState } from "react";
 import { UserCard } from "./UserCard";
 import { SearchUser } from "./FormSearchUser";
+import { Toaster } from "react-hot-toast";
 
 export function ContainerUserCard({ all, backend_domain, token }: IUserContainerCard) {
     const [data, setData] = useState(all)
@@ -27,7 +28,7 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
     return (
         <>
 
-            <SearchUser backend_domain={backend_domain} filterData={filterUsers} totalPage={totalPage} token={token} />
+            <SearchUser allUsers={all} backend_domain={backend_domain} filterData={filterUsers} totalPage={totalPage} token={token} />
 
             <label
                 htmlFor="isInactive"
@@ -80,6 +81,10 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
                     })}
                 </section>
             </div>
+            <Toaster
+                position="bottom-right"
+                reverseOrder={false}
+            />
         </>
     )
 }
