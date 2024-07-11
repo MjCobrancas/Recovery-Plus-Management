@@ -14,7 +14,7 @@ import { IFormEmail } from "@/interfaces/user/register/FormEmail"
 import { createUser } from "@/api/user/register/createUser"
 import toast, { Toaster } from "react-hot-toast"
 
-export function ContainerRegister({ creditors }: IContainerRegisterProps) {
+export function ContainerRegister({ creditors, userRoles, userEducation, userMaritalStatus }: IContainerRegisterProps) {
     const [page, setPage] = useState(0)
     const [userForm, setUserForm] = useState<CreateUserFormData | null>(null)
     const [adressesForm, setAdressesForm] = useState<IFormAdresses[]>([])
@@ -94,7 +94,7 @@ export function ContainerRegister({ creditors }: IContainerRegisterProps) {
                 <HeaderRegister page={page} />
             </header>
             <section>
-                {page == 0 && <FormUser userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} />}
+                {page == 0 && <FormUser userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} />}
                 {page == 1 && <FormAdresses adressesForm={adressesForm} setAdressesFormValue={setAdressesFormValue} updatePage={updatePage} />}
                 {page == 2 && <FormContacts contactsForm={contactsForm} setContactsFormValue={setContactsFormValue} updatePage={updatePage} />}
                 {page == 3 && <FormEmail emailsForm={emailsForm} setEmailsFormValue={setEmailsFormValue} updatePage={updatePage} />}

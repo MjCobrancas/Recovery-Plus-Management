@@ -15,7 +15,7 @@ import { FormEmail } from "./form-email/FormEmail"
 import { IAdressesFormat, IContactsFormat, IEmailFormat } from "@/interfaces/user/edit/EditFormat"
 import { updateUser } from "@/api/user/edit/updateUser"
 
-export function ContainerEdit({ creditors, user, userAdressesFormat, userContactsFormat, userEmailsFormat, idUser }: IContainerRegisterProps) {
+export function ContainerEdit({ creditors, user, userAdressesFormat, userContactsFormat, userEmailsFormat, idUser, userRoles, userEducation, userMaritalStatus }: IContainerRegisterProps) {
     const [page, setPage] = useState(0)
     const [userForm, setUserForm] = useState<CreateUserFormData | null>(null)
     const [adressesForm, setAdressesForm] = useState<IFormAdresses[]>([])
@@ -142,7 +142,7 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
                 <HeaderRegister page={page} />
             </header>
             <section>
-                {page == 0 && <FormUser changeUserStatus={changeUserStatus} userStatus={userStatus} user={user} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} />}
+                {page == 0 && <FormUser userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} changeUserStatus={changeUserStatus} userStatus={userStatus} user={user} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} />}
                 {page == 1 && <FormAdresses userAdresses={userAdressesFormat!} adressesForm={adressesForm} setAdressesFormValue={setAdressesFormValue} updatePage={updatePage} />}
                 {page == 2 && <FormContacts userContacts={userContactsFormat!} contactsForm={contactsForm} setContactsFormValue={setContactsFormValue} updatePage={updatePage} />}
                 {page == 3 && <FormEmail userEmails={userEmailsFormat!} emailsForm={emailsForm} setEmailsFormValue={setEmailsFormValue} updatePage={updatePage} />}
