@@ -14,14 +14,25 @@ import { FormContacts } from "./form-contacts/FormContacts"
 import { FormEmail } from "./form-email/FormEmail"
 import { IAdressesFormat, IContactsFormat, IEmailFormat } from "@/interfaces/user/edit/EditFormat"
 import { updateUser } from "@/api/user/edit/updateUser"
+import { uploadImageOfUser } from "@/api/user/uploadUserPicture"
 
-export function ContainerEdit({ creditors, user, userAdressesFormat, userContactsFormat, userEmailsFormat, idUser, userRoles, userEducation, userMaritalStatus }: IContainerRegisterProps) {
+export function ContainerEdit({ creditors, user, userAdressesFormat, userContactsFormat, userEmailsFormat, idUser, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN }: IContainerRegisterProps) {
     const [page, setPage] = useState(0)
     const [userForm, setUserForm] = useState<CreateUserFormData | null>(null)
     const [adressesForm, setAdressesForm] = useState<IFormAdresses[]>([])
     const [contactsForm, setContactsForm] = useState<IFormContacts[]>([])
     const [emailsForm, setEmailsForm] = useState<IFormEmail[]>([])
     const [userStatus, setUserStatus] = useState(user ? user.Status : true)
+    const [avatar, setAvatar] = useState<string>("")
+    const [picture, setPicture] = useState<string | File>("")
+
+    function setValuePicture(value: string | File) {
+        setPicture(value)
+    }
+
+    function setValueAvatar(value: string) {
+        setAvatar(value)
+    }
 
     function changeUserStatus(status: boolean) {
         setUserStatus(status)
@@ -45,13 +56,6 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
 
     async function setEmailsFormValue(value: IFormEmail[], isFetchRequest: boolean) {
         setEmailsForm(value)
-
-        console.log(userStatus)
-
-        console.log(userForm)
-        console.log(adressesForm)
-        console.log(contactsForm)
-        console.log(value)
 
         if (userForm == null || !isFetchRequest) {
             return
@@ -126,6 +130,13 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
             return
         }
 
+        const formData = new FormData()
+        formData.append("picture", picture)
+
+        if (picture != "") {
+            await uploadImageOfUser(user!.UserName, formData, true)
+        }
+
         toast.success("Usuário atualizado com sucesso!", {
             duration: 7000
         })
@@ -142,7 +153,7 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
                 <HeaderRegister page={page} />
             </header>
             <section>
-                {page == 0 && <FormUser userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} changeUserStatus={changeUserStatus} userStatus={userStatus} user={user} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} />}
+                {page == 0 && <FormUser BACKEND_DOMAIN={BACKEND_DOMAIN} userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} changeUserStatus={changeUserStatus} userStatus={userStatus} user={user} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} avatar={avatar} setAvatar={setValueAvatar} setPicture={setValuePicture} />}
                 {page == 1 && <FormAdresses userAdresses={userAdressesFormat!} adressesForm={adressesForm} setAdressesFormValue={setAdressesFormValue} updatePage={updatePage} />}
                 {page == 2 && <FormContacts userContacts={userContactsFormat!} contactsForm={contactsForm} setContactsFormValue={setContactsFormValue} updatePage={updatePage} />}
                 {page == 3 && <FormEmail userEmails={userEmailsFormat!} emailsForm={emailsForm} setEmailsFormValue={setEmailsFormValue} updatePage={updatePage} />}

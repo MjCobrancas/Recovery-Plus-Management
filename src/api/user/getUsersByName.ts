@@ -25,16 +25,7 @@ export async function getUsersByName(userName: string) {
             if (data1.message) {
                 return {
                     users: {
-                        data: [
-                            {
-                                Id_User: 0,
-                                Name: "",
-                                Last_Name: "",
-                                Position: "",
-                                UserName: "",
-                            }
-                            
-                        ],
+                        data: [],
                         count: 0
                     },
                     take: 0,
@@ -48,16 +39,7 @@ export async function getUsersByName(userName: string) {
         .catch(() => {
             return {
                 users: {
-                    data: [
-                        {
-                            Id_User: 0,
-                            Name: "",
-                            Last_Name: "",
-                            Position: "",
-                            UserName: "",
-                        }
-                        
-                    ],
+                    data: [],
                     count: 0
                 },
                 take: 0,

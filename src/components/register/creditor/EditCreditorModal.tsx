@@ -13,23 +13,27 @@ import { FieldValues, useForm } from "react-hook-form";
 
 export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
 
-    const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<editCreditorModalData>({
+    const { register, handleSubmit, watch, setValue, formState: { errors }, getValues } = useForm<editCreditorModalData>({
         resolver: zodResolver(editCreditorModalSchema)
     })
+
+    const [isLoadingData, setIsLoadingData] = useState(false)
 
     const dialog = useRef<HTMLDialogElement>(null)
 
     const [result, setResult] = useState(false)
     const [saveForm, setSaveForm] = useState(false)
     const [disableButton, setDisableButton] = useState(false)
-
+    const [isCreditorActive, setIsCreditorActive] = useState(false)
 
     async function handleRequestEditCreditor() {
         dialog.current?.showModal()
 
+        setIsLoadingData(true)
+
         const cGetCreditorById: IEditRequestCreditorModal | false = await getCreditorById(Number(Id_Creditor))
 
-        console.log(cGetCreditorById)
+        setIsLoadingData(false)
 
         if (!cGetCreditorById) {
             return
@@ -41,6 +45,9 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
         setValue("meta", String(cGetCreditorById.Target))
         setValue("operatorsNumber", String(cGetCreditorById.Number_Operators))
         setValue("workingDays", String(cGetCreditorById.Working_Days))
+        setValue("active", cGetCreditorById.Active)
+
+        setIsCreditorActive(cGetCreditorById.Active)
     }
 
     async function handleUpdateCreditor(data: FieldValues) {
@@ -54,7 +61,8 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                 target: Number(data.meta),
                 numberOperators: Number(data.operatorsNumber),
                 workingDays: Number(data.workingDays),
-                idCreditor: Id_Creditor
+                idCreditor: Id_Creditor,
+                active: data.active
             }
         }
 
@@ -68,6 +76,11 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
             setResult(false)
             setDisableButton(false)
         }, 3000);
+    }
+
+    function handleIsCreditorActive(isCreditorActive: boolean) {
+        setIsCreditorActive(!isCreditorActive)
+        setValue("active", !isCreditorActive)
     }
 
     return (
@@ -87,170 +100,195 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                 className={`w-5/6 max-lg:w-3/4 h-fit p-2 rounded-lg dark:bg-slate-600 max-sm:w-full`}
                 ref={dialog}
             >
-                <h2
-                    className={`text-2xl font-bold text-center text-slate-500 my-2 mb-8 dark:text-slate-100`}
-                >
-                    Editar Credor
-                </h2>
-
-                <form
-                    onSubmit={handleSubmit(handleUpdateCreditor)}
-                >
-                    <div className={`grid grid-cols-3 gap-2 mb-6`}>
-                        <FieldForm
-                            label="creditor"
-                            name="Edite o credor:"
-                            obrigatory={false}
-                            error={errors.creditor && " "}
+                {isLoadingData ? (
+                    <p className="text-left font-bold">Carregando...</p>
+                ) : (
+                    <>
+                        <h2
+                            className={`text-2xl font-bold text-center text-slate-500 my-2 mb-8 dark:text-slate-100`}
                         >
-                            <Input
-                                type="text"
-                                id="creditor"
-                                name="creditor"
-                                placeholder="Digite o credor"
-                                maxlength={150}
-                                required
-                                onForm={true}
-                                value={watch("creditor")}
-                                register={register}
-                                styles={`
+                            Editar Credor
+                        </h2>
+
+                        <form
+                            onSubmit={handleSubmit(handleUpdateCreditor)}
+                        >
+                            <div className={`grid grid-cols-3 gap-2 mb-6`}>
+                                <FieldForm
+                                    label="creditor"
+                                    name="Edite o credor:"
+                                    obrigatory={false}
+                                    error={errors.creditor && " "}
+                                >
+                                    <Input
+                                        type="text"
+                                        id="creditor"
+                                        name="creditor"
+                                        placeholder="Digite o credor"
+                                        maxlength={150}
+                                        required
+                                        onForm={true}
+                                        value={watch("creditor")}
+                                        register={register}
+                                        styles={`
                                     ${errors.creditor ? "border-[label-color-error] dark:border-[label-color-error]" : ""}
                                 `}
-                            />
-                        </FieldForm>
+                                    />
+                                </FieldForm>
 
-                        <FieldForm
-                            label="identifier"
-                            name="Identificador:"
-                            obrigatory={false}
-                            error={errors.identifier && " "}
-                        >
-                            <Input
-                                type="number"
-                                id="identifier"
-                                name="identifier"
-                                placeholder="Digite o identificador"
-                                min={0}
-                                onForm={true}
-                                value={watch("identifier")}
-                                register={register}
-                                required
-                                styles={` 
+                                <FieldForm
+                                    label="identifier"
+                                    name="Identificador:"
+                                    obrigatory={false}
+                                    error={errors.identifier && " "}
+                                >
+                                    <Input
+                                        type="number"
+                                        id="identifier"
+                                        name="identifier"
+                                        placeholder="Digite o identificador"
+                                        min={0}
+                                        onForm={true}
+                                        value={watch("identifier")}
+                                        register={register}
+                                        required
+                                        styles={` 
                                     ${errors.identifier ? "border-[label-color-error] dark:border-[label-color-error]" : ""}
                                 `}
-                            />
-                        </FieldForm>
+                                    />
+                                </FieldForm>
 
-                        <FieldForm
-                            label="returns"
-                            name="Número 0800"
-                            obrigatory={false}
-                            error={errors.returns && " "}
-                        >
-                            <InputWithMask
-                                id="returns"
-                                name="returns"
-                                placeholder="Digite o número"
-                                required
-                                onForm={true}
-                                value={watch("returns")}
-                                register={register}
-                                styles={`
+                                <FieldForm
+                                    label="returns"
+                                    name="Número 0800"
+                                    obrigatory={false}
+                                    error={errors.returns && " "}
+                                >
+                                    <InputWithMask
+                                        id="returns"
+                                        name="returns"
+                                        placeholder="Digite o número"
+                                        required
+                                        onForm={true}
+                                        value={watch("returns")}
+                                        register={register}
+                                        styles={`
                                     ${errors.returns ? "border-[label-color-error] dark:border-[label-color-error]" : ""}
                                 `}
-                            />
-                        </FieldForm>
+                                    />
+                                </FieldForm>
 
-                        <FieldForm
-                            label="meta"
-                            name="Meta:"
-                            obrigatory={false}
-                            error={errors.meta && " "}
-                        >
-                            <Input
-                                type="number"
-                                id="meta"
-                                name="meta"
-                                placeholder="Defina a meta"
-                                required
-                                onForm={true}
-                                value={watch("meta")}
-                                register={register}
-                                min={0}
-                                styles={` 
+                                <FieldForm
+                                    label="meta"
+                                    name="Meta:"
+                                    obrigatory={false}
+                                    error={errors.meta && " "}
+                                >
+                                    <Input
+                                        type="number"
+                                        id="meta"
+                                        name="meta"
+                                        placeholder="Defina a meta"
+                                        required
+                                        onForm={true}
+                                        value={watch("meta")}
+                                        register={register}
+                                        min={0}
+                                        styles={` 
                                     ${errors.meta ? "border-[label-color-error] dark:border-[label-color-error]" : ""} 
                                 `}
-                            />
-                        </FieldForm>
+                                    />
+                                </FieldForm>
 
-                        <FieldForm
-                            label="operatorsNumber"
-                            name="Operadores:"
-                            obrigatory={false}
-                            error={errors.operatorsNumber && " "}
-                        >
-                            <Input
-                                type="number"
-                                id="operatorsNumber"
-                                name="operatorsNumber"
-                                placeholder="Digite a quantidade de operadores"
-                                required
-                                onForm={true}
-                                value={watch("operatorsNumber")}
-                                register={register}
-                                min={0}
-                                styles={`
+                                <FieldForm
+                                    label="operatorsNumber"
+                                    name="Operadores:"
+                                    obrigatory={false}
+                                    error={errors.operatorsNumber && " "}
+                                >
+                                    <Input
+                                        type="number"
+                                        id="operatorsNumber"
+                                        name="operatorsNumber"
+                                        placeholder="Digite a quantidade de operadores"
+                                        required
+                                        onForm={true}
+                                        value={watch("operatorsNumber")}
+                                        register={register}
+                                        min={0}
+                                        styles={`
                                     ${errors.operatorsNumber ? "border-[label-color-error] dark:border-[label-color-error]" : ""}
                                 `}
-                            />
-                        </FieldForm>
+                                    />
+                                </FieldForm>
 
-                        <FieldForm
-                            label="workingDays"
-                            name="Dias Trabalhados"
-                            obrigatory={false}
-                            error={errors.workingDays && " "}
-                        >
-                            <Input
-                                type="number"
-                                id="workingDays"
-                                name="workingDays"
-                                placeholder="Digite a quantidade de dias trabalhados"
-                                required
-                                onForm={true}
-                                value={watch("workingDays")}
-                                register={register}
-                                min={0}
-                                styles={`
+                                <FieldForm
+                                    label="workingDays"
+                                    name="Dias Trabalhados"
+                                    obrigatory={false}
+                                    error={errors.workingDays && " "}
+                                >
+                                    <Input
+                                        type="number"
+                                        id="workingDays"
+                                        name="workingDays"
+                                        placeholder="Digite a quantidade de dias trabalhados"
+                                        required
+                                        onForm={true}
+                                        value={watch("workingDays")}
+                                        register={register}
+                                        min={0}
+                                        styles={`
                                     ${errors.workingDays ? "border-[label-color-error] dark:border-[label-color-error]" : ""}
                                 `}
-                            />
-                        </FieldForm>
-                    </div>
+                                    />
+                                </FieldForm>
+
+                                {getValues("active") ? (
+                                    <button
+                                        type="button"
+                                        className="w-1/2 bg-red-400 text-white font-bold px-2 py-2 mt-10 rounded-md hover:bg-red-500 duration-300"
+                                        onClick={() => handleIsCreditorActive(isCreditorActive)}
+                                    >
+                                        Desativar credor
+                                    </button>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        className="w-1/2 bg-green-400 text-white font-bold px-2 py-2 mt-10 rounded-md hover:bg-green-500 duration-300"
+                                        onClick={() => handleIsCreditorActive(isCreditorActive)}
+                                    >
+                                        Ativar credor
+                                    </button>
+                                )}
+                            </div>
 
 
-                    <div className={`flex items-end justify-end gap-2 mt-[3rem]`}>
-                        <div className={`flex justify-between items-center mr-2 gap-2`}>
-                            {saveForm &&
-                                <p className={result == true ? `font-bold text-green-500` : `font-bold text-red-500`}>{result == true ? "Dados cadastrados!" : "Erro ao cadastrar os dados"}</p>
-                            }
+                            <div className={`flex items-end justify-end gap-2 mt-[3rem]`}>
+                                <div className={`flex justify-between items-center mr-2 gap-2`}>
+                                    {saveForm &&
+                                        <p className={result == true ? `font-bold text-green-500` : `font-bold text-red-500`}>{result == true ? "Dados atualizados com sucesso!" : "Erro ao atualizar os dados"}</p>
+                                    }
 
-                            <Button
-                                type="reset"
-                                text="Fechar"
-                                styles={`w-fit text-md h-12 border-red-400 bg-red-400 text-white focus:bg-red-400 hover:bg-red-500 rounded-md `}
-                                OnClick={() => dialog.current?.close()}
-                            />
+                                    <Button
+                                        type="reset"
+                                        text="Fechar"
+                                        styles={`w-fit text-md h-12 border-red-400 bg-red-400 text-white focus:bg-red-400 hover:bg-red-500 rounded-md `}
+                                        OnClick={() => dialog.current?.close()}
+                                    />
 
-                            <Button
-                                type="submit"
-                                text="Salvar Alterações"
-                                styles={`w-fit text-md h-12`}
-                                disabled={disableButton}
-                            />
-                        </div>
-                    </div>
-                </form>
+                                    <Button
+                                        type="submit"
+                                        text="Salvar Alterações"
+                                        styles={`w-fit text-md h-12`}
+                                        disabled={disableButton}
+                                    />
+                                </div>
+                            </div>
+                        </form>
+                    </>
+                )}
+
             </dialog>
 
         </>

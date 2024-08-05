@@ -26,6 +26,7 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
     function resetValues(event: ChangeEvent<HTMLInputElement>) {
         if (event.target.value.length == 0) {
             filterData(allUsers)
+            setActualPage(1)
         }
     }
 

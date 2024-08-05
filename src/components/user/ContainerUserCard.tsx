@@ -32,7 +32,7 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
                     className={`p-2 flex-1 grid gap-y-2 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 gap-x-2 overflow-y-auto`}
                 >
 
-                    {data.users.data.map((user: IncompleteUserValues) => {
+                    {data.users.data.length > 0 ? data.users.data.map((user: IncompleteUserValues) => {
                         return (
                             <UserCard
                                 key={user.Id_User}
@@ -44,7 +44,9 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
                                 Backend_Domain={backend_domain}
                             />
                         )
-                    })}
+                    }): (
+                        <p className="font-bold text-base text-red-500">Usuários não encontrados!</p>
+                    )}
                 </section>
             </div>
             <Toaster

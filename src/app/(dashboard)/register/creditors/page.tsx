@@ -1,4 +1,5 @@
 import { getAllCreditors } from "@/api/generics/getAllCreditors"
+import { getAllDisabledCreditors } from "@/api/generics/getAllDisabledCreditors"
 import { Ancora } from "@/components/Ancora"
 import { PaperBlock } from "@/components/PaperBlock"
 import { TextPrincipal } from "@/components/TextPrincipal"
@@ -7,6 +8,7 @@ import { ICreditorGetAllCreditors } from "@/interfaces/generics/GetAllCreditors"
 
 export default async function registerCreditor() {
     const registerCreditor: ICreditorGetAllCreditors[] = await getAllCreditors()
+    const disabledCreditors: ICreditorGetAllCreditors[] = await getAllDisabledCreditors()
 
     return (
         <PaperBlock>
@@ -14,6 +16,7 @@ export default async function registerCreditor() {
 
             <CreditorTable
                 Creditors={registerCreditor}
+                DisabledCreditors={disabledCreditors}
             />
 
             <Ancora

@@ -12,7 +12,7 @@ import { ChangeEvent, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-export function ContainerQuickRegister({ creditors }: IContainerQuickRegisterProps) {
+export function ContainerQuickRegister({ creditors, userRoles }: IContainerQuickRegisterProps) {
 
     const { register, handleSubmit, watch, formState: { errors }, setValue, reset } = useForm<IContainerQuickRegisterForm>({
         defaultValues: {
@@ -20,7 +20,8 @@ export function ContainerQuickRegister({ creditors }: IContainerQuickRegisterPro
             lastName: "",
             userName: "",
             cpf: "",
-            creditor: "0"
+            creditor: "0",
+            profession: "0"
         },
         resolver: zodResolver(IContainerQuickRegisterFormSchema)
     })
@@ -50,7 +51,8 @@ export function ContainerQuickRegister({ creditors }: IContainerQuickRegisterPro
             user_name: String(data.userName),
             cpf: String(data.cpf).replace('.', '').replace('.', '').replace('-', '')
             .replace('/', '').toString(),
-            id_creditor: Number(data.creditor)
+            id_creditor: Number(data.creditor),
+            user_role: Number(data.profession)
         }
 
         setDisableAllButtons(true)
@@ -214,24 +216,28 @@ export function ContainerQuickRegister({ creditors }: IContainerQuickRegisterPro
             <FieldForm
                 label="profession"
                 name="Cargo"
-                error={""}
+                error={errors.profession && "Inválido"}
             >
-                <Input
-                    value={"Operador"}
-                    type="text"
-                    id="profession"
+                <SelectField 
+                    id="profession" 
                     name="profession"
-                    placeholder="Cargo"
-                    styles={`
-                    ${String("error") == "profession"
-                            ? "border-[--label-color-error] dark:border-[--label-color-error]"
-                            : ""
-                        } 
-                `}
-                    maxlength={50}
-                    required
-                    disabled={true}
-                />
+                    onForm={true}
+                    register={register}
+                    value={watch("profession")}
+                    styles={errors.profession ? "border-[--label-color-error] dark:border-[--label-color-error]" : ""}
+                >
+                    <Option value={"0"} firstValue="Selecione" />
+
+                    {userRoles.map((role) => {
+                        return (
+                            <Option
+                                key={role.Id_Permissions}
+                                value={role.Id_Permissions}
+                                firstValue={role.Permission}
+                            />
+                        )
+                    })}
+                </SelectField>
             </FieldForm>
 
             <Button

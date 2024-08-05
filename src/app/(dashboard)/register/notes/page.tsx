@@ -10,7 +10,7 @@ export default async function RegisterNotes() {
     const notes: IGetAllNotes[] = await getAllNotes()
 
     return (
-        <PaperBlock>
+        <PaperBlock styles="mb-4">
             <TextPrincipal text="Configure as notas" styles={`max-md:text-[2rem] mb-6`} />
 
             <EditNotesTable

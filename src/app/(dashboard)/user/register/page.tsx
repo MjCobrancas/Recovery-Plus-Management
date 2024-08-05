@@ -14,10 +14,11 @@ export default async function Register() {
     const userRoles: IResultDefaultResponse<IUserRoles[] | []> = await getUserRoles()
     const userEducation: IResultDefaultResponse<IUserEducation[] | []> = await getUserEducation()
     const userMaritalStatus: IResultDefaultResponse<IUserMaritalStatus[] | []> = await getUserMaritalStatus()
+    const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN
 
     return (
         <PaperBlock>
-            <ContainerRegister userMaritalStatus={userMaritalStatus.data!} userEducation={userEducation.data!} userRoles={userRoles.data!} creditors={creditors} />
+            <ContainerRegister BACKEND_DOMAIN={BACKEND_DOMAIN!} userMaritalStatus={userMaritalStatus.data!} userEducation={userEducation.data!} userRoles={userRoles.data!} creditors={creditors} />
         </PaperBlock>
     )
 }

@@ -20,6 +20,7 @@ export default async function EditUser({ params }: IEditUserProps) {
     const userRoles: IResultDefaultResponse<IUserRoles[] | []> = await getUserRoles()
     const userEducation: IResultDefaultResponse<IUserEducation[] | []> = await getUserEducation()
     const userMaritalStatus: IResultDefaultResponse<IUserMaritalStatus[] | []> = await getUserMaritalStatus()
+    const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN
 
     const userAdresses: IFormAdresses[] = []
     const userContacts: IFormContacts[] = []
@@ -69,6 +70,7 @@ export default async function EditUser({ params }: IEditUserProps) {
     return (
         <PaperBlock>
             <ContainerEdit 
+                BACKEND_DOMAIN={BACKEND_DOMAIN!}
                 userMaritalStatus={userMaritalStatus.data!}
                 userEducation={userEducation.data!}
                 userRoles={userRoles.data!}

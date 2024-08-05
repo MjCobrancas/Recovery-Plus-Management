@@ -15,15 +15,7 @@ export async function getUsersPagination(backend_domain: string, skip: number, t
         .catch((error) => {
             return {
                 users: {
-                    data: [
-                        {
-                            Id_User: 0,
-                            Name: "",
-                            Last_Name: "",
-                            Position: "",
-                            UserName: "",
-                        },
-                    ],
+                    data: [],
                     count: 0
                 },
                 skip: 0,

@@ -1,9 +1,11 @@
 import { ICreditorGetAllCreditors } from "@/interfaces/generics/GetAllCreditors";
 import { ValidateCpf } from "@/utils/ValidateCpf";
 import { z } from "zod";
+import { IUserRoles } from "../register/ContainerRegisterProps";
 
 interface IContainerQuickRegisterProps {
     creditors: ICreditorGetAllCreditors[]
+    userRoles: IUserRoles[]
 }
 
 interface IContainerQuickRegisterForm {
@@ -12,6 +14,7 @@ interface IContainerQuickRegisterForm {
     userName: string
     cpf: string
     creditor: string
+    profession: string
 }
 
 export const IContainerQuickRegisterFormSchema = z.object({
@@ -31,6 +34,17 @@ export const IContainerQuickRegisterFormSchema = z.object({
         return true
     }),
     creditor: z.string().min(1).refine((value) => {
+        if (String(Number(value)) == "NaN") {
+            return false
+        }
+
+        if (Number(value) <= 0) {
+            return false
+        }
+
+        return true
+    }),
+    profession: z.string().min(1).refine((value) => {
         if (String(Number(value)) == "NaN") {
             return false
         }

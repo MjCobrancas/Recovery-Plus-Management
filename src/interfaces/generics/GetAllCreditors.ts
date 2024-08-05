@@ -10,6 +10,7 @@ interface ICreditorGetAllCreditors {
 
 interface ICreditorTable {
     Creditors: ICreditorGetAllCreditors[]
+    DisabledCreditors: ICreditorGetAllCreditors[]
 }
 
 export type { ICreditorGetAllCreditors, ICreditorTable }

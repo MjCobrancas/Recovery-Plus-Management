@@ -5,6 +5,7 @@ interface IEditCreditorModal {
 }
 
 interface IEditRequestCreditorModal {
+    Active: boolean
     Creditor: string
     Identifier: number
     Returns: number
@@ -16,12 +17,17 @@ interface IEditRequestCreditorModal {
 export const editCreditorModalSchema = z.object({
     creditor:  z.string().min(1),
     identifier: z.string().refine((value) => {
-        return value == "1"
+        if (value == "1") {
+            return true
+        }
+
+        return false
     }),
     returns: z.string().min(1),
     meta: z.string().min(1),
     operatorsNumber: z.string().min(1),
-    workingDays: z.string().min(1)
+    workingDays: z.string().min(1),
+    active: z.boolean()
 })
 
 export type { IEditCreditorModal, IEditRequestCreditorModal }

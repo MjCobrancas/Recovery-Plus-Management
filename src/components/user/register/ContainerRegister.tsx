@@ -13,13 +13,24 @@ import { IFormContacts } from "@/interfaces/user/register/FormContacts"
 import { IFormEmail } from "@/interfaces/user/register/FormEmail"
 import { createUser } from "@/api/user/register/createUser"
 import toast, { Toaster } from "react-hot-toast"
+import { uploadImageOfUser } from "@/api/user/uploadUserPicture"
 
-export function ContainerRegister({ creditors, userRoles, userEducation, userMaritalStatus }: IContainerRegisterProps) {
+export function ContainerRegister({ creditors, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN }: IContainerRegisterProps) {
     const [page, setPage] = useState(0)
     const [userForm, setUserForm] = useState<CreateUserFormData | null>(null)
     const [adressesForm, setAdressesForm] = useState<IFormAdresses[]>([])
     const [contactsForm, setContactsForm] = useState<IFormContacts[]>([])
     const [emailsForm, setEmailsForm] = useState<IFormEmail[]>([])
+    const [avatar, setAvatar] = useState<string>("")
+    const [picture, setPicture] = useState<string | File>("")
+
+    function setValuePicture(value: string | File) {
+        setPicture(value)
+    }
+
+    function setValueAvatar(value: string) {
+        setAvatar(value)
+    }
 
     function updatePage(pageNumber: number) {
         setPage(pageNumber)
@@ -70,12 +81,19 @@ export function ContainerRegister({ creditors, userRoles, userEducation, userMar
             email: value
         }
 
+        const formData = new FormData()
+        formData.append("picture", picture)
+
         const result = await createUser<typeof objectValues>(objectValues)
 
         if (!result.status) {
             toast.error("Houve um erro na criação do usuário")
 
             return
+        }
+
+        if (picture != "") {
+            await uploadImageOfUser(userName, formData, true)
         }
 
         toast.success("Usuário criado com sucesso!", {
@@ -94,7 +112,7 @@ export function ContainerRegister({ creditors, userRoles, userEducation, userMar
                 <HeaderRegister page={page} />
             </header>
             <section>
-                {page == 0 && <FormUser userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} />}
+                {page == 0 && <FormUser BACKEND_DOMAIN={BACKEND_DOMAIN} userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} avatar={avatar} setAvatar={setValueAvatar} setPicture={setValuePicture} />}
                 {page == 1 && <FormAdresses adressesForm={adressesForm} setAdressesFormValue={setAdressesFormValue} updatePage={updatePage} />}
                 {page == 2 && <FormContacts contactsForm={contactsForm} setContactsFormValue={setContactsFormValue} updatePage={updatePage} />}
                 {page == 3 && <FormEmail emailsForm={emailsForm} setEmailsFormValue={setEmailsFormValue} updatePage={updatePage} />}

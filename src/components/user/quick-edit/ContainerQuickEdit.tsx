@@ -12,17 +12,18 @@ import { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-export function ContainerQuickEdit({ creditors, userInfo }: IContainerQuickEdit) {
+export function ContainerQuickEdit({ creditors, userInfo, userRoles }: IContainerQuickEdit) {
 
     const [disableAllButtons, setDisableAllButtons] = useState(false)
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<IContainerQuickEditForm>({
+    const { register, handleSubmit, watch, formState: { errors }, getValues } = useForm<IContainerQuickEditForm>({
         defaultValues: {
             name: userInfo.Name,
             lastName: userInfo.Last_Name,
             userName: userInfo.UserName,
             operatorStatus: userInfo.Status ? "1" : "0",
-            creditor: String(userInfo.id_credor)
+            creditor: String(userInfo.id_credor),
+            profession: String(userInfo.Permission_Level_Id)
         },
         resolver: zodResolver(IContainerQuickEditFormSchema)
     })
@@ -34,7 +35,8 @@ export function ContainerQuickEdit({ creditors, userInfo }: IContainerQuickEdit)
             last_name: String(data.lastName),
             user_name: String(data.userName),
             status: String(data.operatorStatus) == "1" ? true : false,
-            id_creditor: Number(data.creditor)
+            id_creditor: Number(data.creditor),
+            user_role: Number(data.profession)
         }
 
         setDisableAllButtons(true)
@@ -201,24 +203,29 @@ export function ContainerQuickEdit({ creditors, userInfo }: IContainerQuickEdit)
             <FieldForm
                 label="profession"
                 name="Cargo"
-                error={""}
+                error={errors.profession && "Inválido!"}
             >
-                <Input
-                    value={"Operador"}
-                    type="text"
+                <SelectField
                     id="profession"
                     name="profession"
-                    placeholder="Cargo"
-                    styles={`
-                    ${String("error") == "profession"
-                            ? "border-[--label-color-error] dark:border-[--label-color-error]"
-                            : ""
-                        } 
-                `}
-                    maxlength={50}
-                    required
-                    disabled={true}
-                />
+                    styles={errors.profession ? "border-[--label-color-error] dark:border-[--label-color-error]" : ""}
+                    onForm={true}
+                    register={register}
+                    value={watch("profession")}
+                >
+                    <Option value="0" firstValue="Selecione" />
+
+                    {userRoles.map((role) => {
+                        return (
+                            <Option 
+                                key={role.Id_Permissions}
+                                value={role.Id_Permissions}
+                                firstValue={role.Permission}
+                                selectedValue={getValues("profession")}
+                            />
+                        )
+                    })}
+                </SelectField>
             </FieldForm>
 
             <Button

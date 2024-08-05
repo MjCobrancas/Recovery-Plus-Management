@@ -9,6 +9,7 @@ interface IContainerRegisterProps {
     creditors: ICreditors[]
     userRoles: IUserRoles[]
     userEducation: IUserEducation[]
+    BACKEND_DOMAIN: string
     userMaritalStatus: IUserMaritalStatus[]
     user?: IUserProps
     userAdressesFormat?: IFormAdresses[]
@@ -38,6 +39,9 @@ interface IFormUser extends IContainerRegisterProps {
     userForm: CreateUserFormData | null
     changeUserStatus?: (status: boolean) => void
     userStatus?: boolean
+    avatar: string | ArrayBuffer
+    setAvatar: (value: string) => void
+    setPicture: (value: string | File) => void
 }
 
 export type { IContainerRegisterProps, IFormUser, IUserRoles, IUserEducation, IUserMaritalStatus }

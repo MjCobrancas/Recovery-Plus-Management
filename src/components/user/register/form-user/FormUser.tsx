@@ -16,12 +16,10 @@ import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
-export function FormUser({ creditors, userRoles, userEducation, userMaritalStatus, updatePage, setUserFormValue, userForm }: IFormUser) {
+export function FormUser({ creditors, userRoles, userEducation, userMaritalStatus, updatePage, setUserFormValue, userForm, BACKEND_DOMAIN, avatar, setAvatar, setPicture }: IFormUser) {
     const { register, handleSubmit, watch, setValue, setError, clearErrors, formState: { errors } } = useForm<CreateUserFormData>({
         resolver: zodResolver(CreateUserFormSchema)
     })
-
-    const [avatar, setAvatar] = useState<string | ArrayBuffer>("")
 
     async function handleFormUserSubmit(data: FieldValues) {
 
@@ -49,9 +47,10 @@ export function FormUser({ creditors, userRoles, userEducation, userMaritalStatu
 
         if (image) {
             if (image.length > 0) {
+                setPicture(image[0])
                 reader.readAsDataURL(image[0])
                 reader.onload = ((event) => {
-                    setAvatar(event?.target?.result || "")
+                    setAvatar(event?.target?.result as string || "")
                 })
             }
         }
@@ -59,6 +58,7 @@ export function FormUser({ creditors, userRoles, userEducation, userMaritalStatu
 
     function removePhoto() {
         setAvatar("")
+        setPicture("")
     }
 
     function resetFormErrors() {
@@ -528,7 +528,7 @@ export function FormUser({ creditors, userRoles, userEducation, userMaritalStatu
                         ) : (
                             <Image
                                 className={`rounded-full w-[5rem] h-[5rem] object-cover cursor-pointer absolute top-[-2rem] right-0 z-20`}
-                                src={`${/*routeImg*/ "http://144.91.80.153:9999"}/get-image-users/userNotFound.png`}
+                                src={`${BACKEND_DOMAIN}/get-image-users/userNotFound.png`}
                                 alt="Foto Default"
                                 width={100}
                                 height={100}

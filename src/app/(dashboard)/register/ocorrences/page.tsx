@@ -13,7 +13,7 @@ export default async function Page() {
     const statusOcorrences: IResultDefaultResponse<IStatusOcorrence[]> = await getAllStatusOcorrences()
 
     return (
-        <PaperBlock>
+        <PaperBlock styles="mb-8">
             <TextPrincipal text="Ocorrências" />
 
             <ContainerOcorrence ocorrences={ocorrences} statusOcorrences={statusOcorrences.data} />
@@ -21,7 +21,7 @@ export default async function Page() {
             <Ancora
                 title="Voltar"
                 toGo="/register"
-                styles={`m-1 mt-32 w-16`}
+                styles={`m-1 mt-6 w-16`}
             />
         </PaperBlock>
     )
