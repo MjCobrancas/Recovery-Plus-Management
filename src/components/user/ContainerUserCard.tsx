@@ -10,6 +10,7 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
     const [data, setData] = useState(all)
     const [totalPage, setTotalPage] = useState(getTotalPages)
     const [isInactive, setIsInactive] = useState(false)
+    const [showOnlyInactive, setShowOnlyInactive] = useState(false)
 
     function getTotalPages() {
         const totalPages = Math.trunc(all.users.count / 24)
@@ -25,25 +26,58 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
         setData(data)
     }
 
+    function checkSelectIsInactive(state: boolean) {
+        setIsInactive(state)
+
+        if (state) {
+            setShowOnlyInactive(false)
+        }
+    }
+
+    function checkSelectShowOnlyInactive(state: boolean) {
+        setShowOnlyInactive(state)
+
+        if (state) {
+            setIsInactive(false)
+        }
+    }
+
     return (
         <>
 
             <SearchUser allUsers={all} backend_domain={backend_domain} filterData={filterUsers} totalPage={totalPage} token={token} />
 
-            <label
-                htmlFor="isInactive"
-                className="flex gap-2 items-center font-medium my-2 ml-2 cursor-pointer"
-            >
-                Esconder usuários inativos
-                <input
-                    type="checkbox"
-                    id="isInactive"
-                    name="isInactive"
-                    checked={isInactive}
-                    className="cursor-pointer"
-                    onClick={() => setIsInactive((state) => !state)}
-                />
-            </label>
+            <div className={`flex`}>
+                <label
+                    htmlFor="isInactive"
+                    className="flex gap-2 items-center font-medium my-2 ml-2 cursor-pointer"
+                >
+                    Esconder usuários inativos
+                    <input
+                        type="checkbox"
+                        id="isInactive"
+                        name="isInactive"
+                        checked={isInactive}
+                        className="cursor-pointer"
+                        onClick={() => checkSelectIsInactive(!isInactive)}
+                    />
+                </label>
+
+                <label
+                    htmlFor="showOnlyInactive"
+                    className="flex gap-2 items-center font-medium my-2 ml-2 cursor-pointer"
+                >
+                    Mostrar somente usuários inativos
+                    <input
+                        type="checkbox"
+                        id="showOnlyInactive"
+                        name="showOnlyInactive"
+                        checked={showOnlyInactive}
+                        className="cursor-pointer"
+                        onClick={() => checkSelectShowOnlyInactive(!showOnlyInactive)}
+                    />
+                </label>
+            </div>
 
             <div className={`flex justify-between items-end px-2`}>
                 <section
@@ -66,17 +100,34 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
 
                             }
                         } else {
-                            return (
-                                <UserCard
-                                    key={user.Id_User}
-                                    Id_User={user.Id_User}
-                                    Name={user.Name}
-                                    Last_Name={user.Last_Name}
-                                    Position={user.Position}
-                                    UserName={user.UserName}
-                                    Backend_Domain={backend_domain}
-                                />
-                            )
+                            if (showOnlyInactive) {
+                                if (!user.Status) {
+                                    return (
+                                        <UserCard
+                                            key={user.Id_User}
+                                            Id_User={user.Id_User}
+                                            Name={user.Name}
+                                            Last_Name={user.Last_Name}
+                                            Position={user.Position}
+                                            UserName={user.UserName}
+                                            Backend_Domain={backend_domain}
+                                        />
+                                    )
+                                }
+                            } else {
+                                return (
+                                    <UserCard
+                                        key={user.Id_User}
+                                        Id_User={user.Id_User}
+                                        Name={user.Name}
+                                        Last_Name={user.Last_Name}
+                                        Position={user.Position}
+                                        UserName={user.UserName}
+                                        Backend_Domain={backend_domain}
+                                    />
+                                )
+                            }
+
                         }
                     })}
                 </section>
