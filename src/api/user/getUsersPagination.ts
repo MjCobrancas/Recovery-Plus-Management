@@ -1,5 +1,5 @@
-export async function getUsersPagination(backend_domain: string, skip: number, take: number, accessToken: string) {
-    return await fetch(`${backend_domain}/get-users-pagination?&skip=${skip}&take=${take}`, {
+export async function getUsersPagination(backend_domain: string, skip: number, take: number, accessToken: string, inactive: string) {
+    return await fetch(`${backend_domain}/get-users-pagination?&skip=${skip}&take=${take}&inactive=${inactive}`, {
         method: "GET",
         headers: {
             Accept: "application/json",

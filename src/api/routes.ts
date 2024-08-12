@@ -127,6 +127,11 @@ export const actionRoutes: Array<ActionRoutes> = [
     {
         level: 6,
         permissions: [1, 2, 3, 4],
+        route: "/user/inactive-users"
+    },
+    {
+        level: 6,
+        permissions: [1, 2, 3, 4],
         route: "/register/creditors",
     },
     {
