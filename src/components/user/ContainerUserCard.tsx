@@ -9,13 +9,11 @@ import { Toaster } from "react-hot-toast";
 export function ContainerUserCard({ all, backend_domain, token }: IUserContainerCard) {
     const [data, setData] = useState(all)
     const [totalPage, setTotalPage] = useState(getTotalPages)
-    const [isInactive, setIsInactive] = useState(false)
-    const [showOnlyInactive, setShowOnlyInactive] = useState(false)
 
     function getTotalPages() {
         const totalPages = Math.trunc(all.users.count / 24)
 
-        if ((totalPages % 24) >= 1) {
+        if ((all.users.count % 24) >= 1) {
             return totalPages + 1
         }
 
@@ -24,22 +22,6 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
 
     function filterUsers(data: IncompleteUserValuesData) {
         setData(data)
-    }
-
-    function checkSelectIsInactive(state: boolean) {
-        setIsInactive(state)
-
-        if (state) {
-            setShowOnlyInactive(false)
-        }
-    }
-
-    function checkSelectShowOnlyInactive(state: boolean) {
-        setShowOnlyInactive(state)
-
-        if (state) {
-            setIsInactive(false)
-        }
     }
 
     return (

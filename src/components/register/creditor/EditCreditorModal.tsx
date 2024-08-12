@@ -288,9 +288,7 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                         </form>
                     </>
                 )}
-
             </dialog>
-
         </>
     )
 }

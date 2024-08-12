@@ -128,8 +128,6 @@ export function CreditorTable({ Creditors, DisabledCreditors }: ICreditorTable) 
                                     })}
                                 </>
                             )}
-                            
-
                         </tbody>
                     </table>
                 </section>
