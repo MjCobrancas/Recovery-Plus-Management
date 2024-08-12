@@ -1,9 +1,6 @@
 'use client'
 
 import { FieldValues, useForm } from "react-hook-form"
-import { Button } from "../Button"
-import { FieldForm } from "../FieldForm"
-import { InputSearchUser } from "../InputSearchUser"
 import { createSearchUserFormData, createSearchUserFormSchema } from "@/interfaces/user/SearchUser"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { getUsersByName } from "@/api/user/getUsersByName"
@@ -12,11 +9,11 @@ import { ChangeEvent, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAngleLeft, faAngleRight, faAnglesLeft, faAnglesRight } from "@fortawesome/free-solid-svg-icons"
 import { getUsersPagination } from "@/api/user/getUsersPagination"
-import { verifyUserToken } from "@/api/generics/verifyToken"
-import { useRouter } from "next/navigation"
+import { FieldForm } from "@/components/FieldForm"
+import { InputSearchUser } from "@/components/InputSearchUser"
+import { Button } from "@/components/Button"
 
-export function SearchUser({ allUsers, filterData, totalPage, backend_domain, token }: { allUsers: IncompleteUserValuesData, filterData: Function, totalPage: number, backend_domain: string, token: string }) {
-    const router = useRouter()
+export function SearchInactiveUser({ allUsers, filterData, totalPage, backend_domain, token }: { allUsers: IncompleteUserValuesData, filterData: Function, totalPage: number, backend_domain: string, token: string }) {
 
     const [disableButton, setDisableButton] = useState(false)
 
@@ -34,13 +31,6 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
     }
 
     async function handleFormSubmit(data: FieldValues) {
-
-        const isValidToken = await verifyUserToken()
-
-        if (!isValidToken) {
-            return router.push('/login')
-        }
-
         if (String(data.searchUser).length <= 0) {
             setError("searchUser", {
                 message: "Digite no campo de usuário!"
@@ -61,25 +51,25 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
 
     async function handleNextPage(nextPage: number) {
         setActualPage(nextPage)
-        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((nextPage - 1) * 24), 24, token, "true")
+        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((nextPage - 1) * 24), 24, token, "false")
         filterData(result)
     }
 
     async function handleBackPage(backPage: number) {
         setActualPage(backPage)
-        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((backPage - 1) * 24), 24, token, "true")
+        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((backPage - 1) * 24), 24, token, "false")
         filterData(result)
     }
 
     async function handleInitialPage() {
         setActualPage(1)
-        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, (0 * 24), 24, token, "true")
+        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, (0 * 24), 24, token, "false")
         filterData(result)
     }
 
     async function handleEndPage() {
         setActualPage(totalPage)
-        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((totalPage - 1) * 24), 24, token, "true")
+        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((totalPage - 1) * 24), 24, token, "false")
         filterData(result)
     }
 
@@ -178,4 +168,5 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
             </form>
         </div>
     )
+
 }
