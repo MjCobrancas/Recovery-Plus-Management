@@ -34,6 +34,7 @@ export function ContainerInactiveUserCard({ all, backend_domain, token }: IUserC
                     className={`p-2 flex-1 grid gap-y-2 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 gap-x-2 overflow-y-auto`}
                 >
                     {data.users.data.length > 0 ? data.users.data.map((user: IncompleteUserValues) => {
+                        if (!user.Status) {
                             return (
                                 <InactiveUserCard
                                     key={user.Id_User}
@@ -45,6 +46,7 @@ export function ContainerInactiveUserCard({ all, backend_domain, token }: IUserC
                                     Backend_Domain={backend_domain}
                                 />
                             )
+                        }
                     }) : (
                         <p className="text-red-500 font-bold">Dados não encontrados.</p>
                     )}
