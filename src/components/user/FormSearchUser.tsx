@@ -12,8 +12,11 @@ import { ChangeEvent, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAngleLeft, faAngleRight, faAnglesLeft, faAnglesRight } from "@fortawesome/free-solid-svg-icons"
 import { getUsersPagination } from "@/api/user/getUsersPagination"
+import { verifyUserToken } from "@/api/generics/verifyToken"
+import { useRouter } from "next/navigation"
 
 export function SearchUser({ allUsers, filterData, totalPage, backend_domain, token }: { allUsers: IncompleteUserValuesData, filterData: Function, totalPage: number, backend_domain: string, token: string }) {
+    const router = useRouter()
 
     const [disableButton, setDisableButton] = useState(false)
 
@@ -31,6 +34,13 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
     }
 
     async function handleFormSubmit(data: FieldValues) {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         if (String(data.searchUser).length <= 0) {
             setError("searchUser", {
                 message: "Digite no campo de usuário!"

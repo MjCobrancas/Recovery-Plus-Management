@@ -1,3 +1,4 @@
+import { verifyUserToken } from "@/api/generics/verifyToken";
 import { getCreditorById } from "@/api/register/creditor/getCreditorById";
 import { updateCreditor } from "@/api/register/creditor/updateCreditor";
 import { Button } from "@/components/Button";
@@ -8,10 +9,12 @@ import { IEditCreditorModal, IEditRequestCreditorModal, editCreditorModalData, e
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
 export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
+    const router = useRouter()
 
     const { register, handleSubmit, watch, setValue, formState: { errors }, getValues } = useForm<editCreditorModalData>({
         resolver: zodResolver(editCreditorModalSchema)
@@ -51,6 +54,13 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
     }
 
     async function handleUpdateCreditor(data: FieldValues) {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         setDisableButton(true)
 
         const object = {

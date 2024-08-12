@@ -13,8 +13,11 @@ import { Toaster } from "react-hot-toast"
 import { EditScheduleForm } from "./EditScheduleForm"
 import { getCreditorRelationToCreateSchedule } from "@/api/register/agendas/getCreditorRelationCreateSchedule"
 import { getCreditorRelationWithOcorrence } from "@/api/register/agendas/getCreditorRelationWithOcorrence"
+import { verifyUserToken } from "@/api/generics/verifyToken"
+import { useRouter } from "next/navigation"
 
 export function ContainerSchedule({ creditors, ocorrences, agings }: IContainerScheduleProps) {
+    const router = useRouter()
 
     const [idCreditor, setIdCreditor] = useState(creditors.length > 0 ? creditors[0].Id_Creditor : 0)
     const [errorCreditor, setErrorCreditor] = useState(false)
@@ -40,6 +43,13 @@ export function ContainerSchedule({ creditors, ocorrences, agings }: IContainerS
     }
 
     async function handleCreateForm(formTypeValue: "create-form" | "edit-form") {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         const ocorrencesOptions = handleSelectOptions()
         let error = false
         setDisableButtons(true)

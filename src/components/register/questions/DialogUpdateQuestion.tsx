@@ -1,3 +1,4 @@
+import { verifyUserToken } from "@/api/generics/verifyToken";
 import { changeStatusOfSubQuestion } from "@/api/register/questions/changeStatusOfSubQuestion";
 import { updateQuestion } from "@/api/register/questions/updateQuestion";
 import { Button } from "@/components/Button";
@@ -8,11 +9,13 @@ import { IDialogUpdateForm, IDialogUpdateQuestion, IDialogUpdateQuestionSchedule
 import { faThumbsDown, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 export function DialogUpdateQuestion({ question, closeDialog }: IDialogUpdateQuestion) {
+    const router = useRouter()
 
     const [disableButton, setDisableButton] = useState(false)
 
@@ -69,6 +72,13 @@ export function DialogUpdateQuestion({ question, closeDialog }: IDialogUpdateQue
     }
 
     async function updateQuestionForm(data: FieldValues) {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         setDisableButton(true)
 
         const object = {

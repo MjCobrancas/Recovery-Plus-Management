@@ -1,3 +1,4 @@
+import { verifyUserToken } from "@/api/generics/verifyToken";
 import { createNewQuestion } from "@/api/register/questions/createQuestion";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
@@ -7,11 +8,13 @@ import { IDialogCreateForm, IDialogCreateQuestionProps, IDialogCreateQuestionSch
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 export function DialogCreateQuestion({ closeDialog }: IDialogCreateQuestionProps) {
+    const router = useRouter()
 
     const [openSubQuestions, setOpenSubQuestions] = useState(false)
     const [disableButton, setDisableButton] = useState(false)
@@ -43,6 +46,13 @@ export function DialogCreateQuestion({ closeDialog }: IDialogCreateQuestionProps
     }
 
     async function createQuestion(data: FieldValues) {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         setDisableButton(true)
 
         const object = {

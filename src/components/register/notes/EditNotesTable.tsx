@@ -1,5 +1,6 @@
 'use client'
 
+import { verifyUserToken } from "@/api/generics/verifyToken"
 import { updateNotes } from "@/api/register/notes/updateNotes"
 import { Button } from "@/components/Button"
 import { Input } from "@/components/Input"
@@ -7,11 +8,14 @@ import { IGetAllNotes, INotes, editNotesSchema } from "@/interfaces/register/not
 import { faPencil, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { FieldValues, useFieldArray, useForm } from "react-hook-form"
 import toast, { Toaster } from "react-hot-toast"
 
 export function EditNotesTable({ Notes }: INotes) {
+
+    const router = useRouter()
 
     const { control, register, handleSubmit, watch, formState: { errors } } = useForm<{ Notes: IGetAllNotes[] }>({
         defaultValues: {
@@ -30,6 +34,13 @@ export function EditNotesTable({ Notes }: INotes) {
     }
 
     async function handleUpdateNotes(data: FieldValues) {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         setDisableButton(true)
         const objectResponse = []
 

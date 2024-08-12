@@ -1,3 +1,4 @@
+import { verifyUserToken } from "@/api/generics/verifyToken"
 import { changeStatusOcorrence } from "@/api/register/ocorrences/changeStatusOcorrence"
 import { updateOcorrenceStatus } from "@/api/register/ocorrences/updateOcorrence"
 import { Option } from "@/components/Option"
@@ -6,11 +7,13 @@ import { IUpdateOcorrenceForm, IUpdateOcorrenceFormProps, updateOcorrenceSchedul
 import { faPencil } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
 export function UpdateOcorrenceForm({ idOcorrence, editOcorrence, ocorrences, statusOcorrences, cancelOcorrenceEdit, enableEdit }: IUpdateOcorrenceFormProps) {
+    const router = useRouter()
 
     const [disableButton, setDisableButton] = useState(false)
 
@@ -26,6 +29,13 @@ export function UpdateOcorrenceForm({ idOcorrence, editOcorrence, ocorrences, st
     })
 
     async function updateOcorrence(data: FieldValues) {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         setDisableButton(true)
         const valueObject = {
             ocorrences: [
@@ -63,6 +73,13 @@ export function UpdateOcorrenceForm({ idOcorrence, editOcorrence, ocorrences, st
     }
 
     async function changeOcorrenceStatus(id: number) {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         setDisableButton(true)
         const status = await changeStatusOcorrence(String(id))
 

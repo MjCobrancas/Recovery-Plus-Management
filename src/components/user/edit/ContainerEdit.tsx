@@ -15,8 +15,12 @@ import { FormEmail } from "./form-email/FormEmail"
 import { IAdressesFormat, IContactsFormat, IEmailFormat } from "@/interfaces/user/edit/EditFormat"
 import { updateUser } from "@/api/user/edit/updateUser"
 import { uploadImageOfUser } from "@/api/user/uploadUserPicture"
+import { verifyUserToken } from "@/api/generics/verifyToken"
+import { useRouter } from "next/navigation"
 
 export function ContainerEdit({ creditors, user, userAdressesFormat, userContactsFormat, userEmailsFormat, idUser, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN }: IContainerRegisterProps) {
+    const router = useRouter()
+
     const [page, setPage] = useState(0)
     const [userForm, setUserForm] = useState<CreateUserFormData | null>(null)
     const [adressesForm, setAdressesForm] = useState<IFormAdresses[]>([])
@@ -55,6 +59,13 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
     }
 
     async function setEmailsFormValue(value: IFormEmail[], isFetchRequest: boolean) {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push("/login")
+        }
+
         setEmailsForm(value)
 
         if (userForm == null || !isFetchRequest) {

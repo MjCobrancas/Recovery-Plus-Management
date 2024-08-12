@@ -1,5 +1,6 @@
 'use client'
 
+import { verifyUserToken } from "@/api/generics/verifyToken"
 import { createQuickUser } from "@/api/user/quick-register/createQuickUser"
 import { Button } from "@/components/Button"
 import { FieldForm } from "@/components/FieldForm"
@@ -8,11 +9,13 @@ import { Option } from "@/components/Option"
 import { SelectField } from "@/components/SelectField"
 import { IContainerQuickRegisterForm, IContainerQuickRegisterFormSchema, IContainerQuickRegisterProps } from "@/interfaces/user/quick-register/IContainerQuickRegister"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
 import { ChangeEvent, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
 export function ContainerQuickRegister({ creditors, userRoles }: IContainerQuickRegisterProps) {
+    const router = useRouter()
 
     const { register, handleSubmit, watch, formState: { errors }, setValue, reset } = useForm<IContainerQuickRegisterForm>({
         defaultValues: {
@@ -44,7 +47,14 @@ export function ContainerQuickRegister({ creditors, userRoles }: IContainerQuick
         return formatValue(cpf)
     }
 
-    async function handleQuickRegister(data: FieldValues) {        
+    async function handleQuickRegister(data: FieldValues) {  
+        
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push("/login")
+        }
+
         const requestObject = {
             name: String(data.name),
             last_name: String(data.lastName),

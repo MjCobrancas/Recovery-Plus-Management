@@ -1,5 +1,6 @@
 'use client'
 
+import { verifyUserToken } from "@/api/generics/verifyToken"
 import { updateQuickUser } from "@/api/user/quick-edit/updateQuickUser"
 import { Button } from "@/components/Button"
 import { FieldForm } from "@/components/FieldForm"
@@ -8,6 +9,7 @@ import { Option } from "@/components/Option"
 import { SelectField } from "@/components/SelectField"
 import { IContainerQuickEdit, IContainerQuickEditForm, IContainerQuickEditFormSchema } from "@/interfaces/user/quick-edit/IContainerQuickEdit"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -15,6 +17,7 @@ import toast from "react-hot-toast"
 export function ContainerQuickEdit({ creditors, userInfo, userRoles }: IContainerQuickEdit) {
 
     const [disableAllButtons, setDisableAllButtons] = useState(false)
+    const router = useRouter()
 
     const { register, handleSubmit, watch, formState: { errors }, getValues } = useForm<IContainerQuickEditForm>({
         defaultValues: {
@@ -29,6 +32,13 @@ export function ContainerQuickEdit({ creditors, userInfo, userRoles }: IContaine
     })
 
     async function handleUpdateUser(data: FieldValues) {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         const requestObject = {
             id_user: userInfo.Id_User,
             name: String(data.name),

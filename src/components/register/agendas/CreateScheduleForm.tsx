@@ -1,3 +1,4 @@
+import { verifyUserToken } from "@/api/generics/verifyToken";
 import { createRelationToSchedules } from "@/api/register/agendas/createRelationSchedules";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
@@ -9,11 +10,13 @@ import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 export function CreateScheduleForm({ ocorrences, schedules, disableAllButtons, disableButtons, resetFormType }: ICreateScheduleFormProps) {
+    const router = useRouter()
 
     const [isDuplicateAging, setIsDuplicateAging] = useState(false)
 
@@ -76,6 +79,12 @@ export function CreateScheduleForm({ ocorrences, schedules, disableAllButtons, d
     }
 
     async function createSchedules(data: FieldValues) {
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         let findAgingDuplicate = false
         disableAllButtons(true)
 

@@ -8,8 +8,11 @@ import { DialogUpdateQuestion } from "../register/questions/DialogUpdateQuestion
 import { getQuestionById } from "@/api/register/questions/getQuestionById";
 import { IResultDefaultResponse } from "@/interfaces/Generics";
 import { IGetQuestionById } from "@/interfaces/register/questions/IDialogUpdateQuestion";
+import { verifyUserToken } from "@/api/generics/verifyToken";
+import { useRouter } from "next/navigation";
 
 export function CardMonitory({ questions }: ICardMonitoryProps) {
+    const router = useRouter()
 
     const [isActive, setIsActive] = useState(true)
     const [isBehavioral, setIsBehavioral] = useState(false)
@@ -18,6 +21,12 @@ export function CardMonitory({ questions }: ICardMonitoryProps) {
     const dialogRef = useRef<HTMLDialogElement>(null)
 
     async function changeQuestionStatus(id_question: number) {
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         setDisableButton(true)
         const updateStatusQuestion = await changeStatusOfQuestion(String(id_question))
         setDisableButton(false)

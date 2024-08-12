@@ -25,10 +25,9 @@ export function LoginForm() {
         const result: unknown = await AuthenticateUser(data)
         const result2: IResultDefaultResponse<string> = result as IResultDefaultResponse<string>
 
-        setDisableButton(false)
-
         if (result2 != undefined && result2 != null) {
             if (!result2.status) {
+                setDisableButton(false)
                 setLoginError(true)
 
                 setTimeout(() => {

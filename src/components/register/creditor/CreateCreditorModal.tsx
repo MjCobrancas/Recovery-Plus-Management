@@ -1,3 +1,4 @@
+import { verifyUserToken } from "@/api/generics/verifyToken";
 import { createCreditor } from "@/api/register/creditor/createCreditor";
 import { Ancora } from "@/components/Ancora";
 import { Button } from "@/components/Button";
@@ -6,10 +7,12 @@ import { Input } from "@/components/Input";
 import { InputWithMask } from "@/components/InputWithMask";
 import { createCreditorModalData, createCreditorModalSchema } from "@/interfaces/register/creditor/CreateCreditorModal";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
 export function CreateCreditorModal() {
+    const router = useRouter()
 
     const [result, setResult] = useState<"Created" | false>(false)
     const [saveForm, setSaveForm] = useState(false)
@@ -22,6 +25,13 @@ export function CreateCreditorModal() {
     const dialog = useRef<HTMLDialogElement>(null)
 
     async function handleCreateCreditor(data: FieldValues) {
+
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push("/login")
+        }
+
         setDisableButton(true)
 
         const object = {

@@ -14,8 +14,12 @@ import { IFormEmail } from "@/interfaces/user/register/FormEmail"
 import { createUser } from "@/api/user/register/createUser"
 import toast, { Toaster } from "react-hot-toast"
 import { uploadImageOfUser } from "@/api/user/uploadUserPicture"
+import { verifyUserToken } from "@/api/generics/verifyToken"
+import { useRouter } from "next/navigation"
 
 export function ContainerRegister({ creditors, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN }: IContainerRegisterProps) {
+    const router = useRouter()
+
     const [page, setPage] = useState(0)
     const [userForm, setUserForm] = useState<CreateUserFormData | null>(null)
     const [adressesForm, setAdressesForm] = useState<IFormAdresses[]>([])
@@ -49,6 +53,12 @@ export function ContainerRegister({ creditors, userRoles, userEducation, userMar
     }
 
     async function setEmailsFormValue(value: IFormEmail[], isFetchRequest: boolean) {
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push("/login")
+        }
+
         setEmailsForm(value)
 
         if (userForm == null || !isFetchRequest) {

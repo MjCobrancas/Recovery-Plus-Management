@@ -1,3 +1,4 @@
+import { verifyUserToken } from "@/api/generics/verifyToken";
 import { createOcorrence } from "@/api/register/ocorrences/createOcorrence";
 import { Button } from "@/components/Button";
 import { FieldForm } from "@/components/FieldForm";
@@ -6,11 +7,14 @@ import { Option } from "@/components/Option";
 import { SelectField } from "@/components/SelectField";
 import { IDialogCreateOcorrenceProps, IDialogForm, ocorrenceSchedule } from "@/interfaces/register/ocorrences/IDialogCreateOcorrence";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 export function DialogCreateOcorrence({ CloseDialogOcorrences, statusOcorrences }: IDialogCreateOcorrenceProps) {
+    const router = useRouter()
+
     const [disableButton, setDisableButton] = useState(false)
 
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<IDialogForm>({
@@ -18,6 +22,12 @@ export function DialogCreateOcorrence({ CloseDialogOcorrences, statusOcorrences 
     })
 
     async function createOcorrenceForm(data: FieldValues) {
+        const isValidToken = await verifyUserToken()
+
+        if (!isValidToken) {
+            return router.push('/login')
+        }
+
         setDisableButton(true)
 
         const valuesObject = {
