@@ -51,25 +51,25 @@ export function SearchInactiveUser({ allUsers, filterData, totalPage, backend_do
 
     async function handleNextPage(nextPage: number) {
         setActualPage(nextPage)
-        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((nextPage - 1) * 24), (nextPage * 24), token, "false")
+        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((nextPage - 1) * 24), 24, token, "false")
         filterData(result)
     }
 
     async function handleBackPage(backPage: number) {
         setActualPage(backPage)
-        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((backPage - 1) * 24), ((backPage) * 24), token, "false")
+        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((backPage - 1) * 24), 24, token, "false")
         filterData(result)
     }
 
     async function handleInitialPage() {
         setActualPage(1)
-        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, (0 * 24), (1 * 24), token, "false")
+        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, (0 * 24), 24, token, "false")
         filterData(result)
     }
 
     async function handleEndPage() {
         setActualPage(totalPage)
-        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((totalPage - 1) * 24), (totalPage * 24), token, "false")
+        const result: IncompleteUserValuesData = await getUsersPagination(backend_domain, ((totalPage - 1) * 24), 24, token, "false")
         filterData(result)
     }
 
