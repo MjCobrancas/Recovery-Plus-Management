@@ -15,7 +15,7 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
     function getTotalPages() {
         const totalPages = Math.trunc(all.users.count / 24)
 
-        if ((totalPages % 24) >= 1) {
+        if ((all.users.count % 24) >= 1) {
             return totalPages + 1
         }
 
