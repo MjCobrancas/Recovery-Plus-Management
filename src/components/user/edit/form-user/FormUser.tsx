@@ -13,7 +13,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
 export function FormUser({ creditors, updatePage, setUserFormValue, userForm, user, userStatus, changeUserStatus, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN, avatar, setAvatar, setPicture }: IFormUser) {
@@ -458,7 +458,7 @@ export function FormUser({ creditors, updatePage, setUserFormValue, userForm, us
                         ) : (
                             <Image
                                 className={`rounded-full w-[5rem] h-[5rem] object-cover cursor-pointer absolute top-[-2rem] right-0 z-20`}
-                                src={`${BACKEND_DOMAIN}/get-image-users/userNotFound.png`}
+                                src={`${BACKEND_DOMAIN}/get-image-users/${user?.UserName}.jpg`}
                                 alt="Foto Default"
                                 width={100}
                                 height={100}
