@@ -169,7 +169,7 @@ export function EditScheduleForm({ ocorrences, schedules, agings, disableAllButt
 
                 <div className={`max-h-96 overflow-y-auto`}>
                     <table className={`w-full my-4`}>
-                        <thead className={` bg-slate-100 dark:bg-slate-500 rounded-md`}>
+                        <thead className={` bg-slate-100 dark:bg-zinc-800 rounded-md`}>
                             <tr>
                                 <th className={`rounded-tl-md font-semibold p-2 dark:text-white/80`}>ID</th>
                                 <th className={`font-semibold p-2 dark:text-white/80`}>Credor</th>
@@ -184,7 +184,7 @@ export function EditScheduleForm({ ocorrences, schedules, agings, disableAllButt
                                 return (
                                     <tr
                                         key={item.id}
-                                        className={`odd:bg-gray-100 even:bg-gray-200 dark:odd:bg-gray-300 dark:even:bg-gray-400/80`}
+                                        className={`odd:bg-gray-100 even:bg-gray-200 dark:odd:bg-zinc-700 dark:even:bg-zinc-800`}
                                     >
                                         <td className="p-2 text-center">
                                             <button 

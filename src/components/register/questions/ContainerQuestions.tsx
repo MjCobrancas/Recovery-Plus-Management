@@ -33,7 +33,7 @@ export function ContainerQuestions({ questions }: IContainerQuestionsProps) {
                         />
                         <dialog
                             id="dialog"
-                            className={`w-[60%] h-fit p-4 rounded-lg dark:bg-slate-700 max-sm:w-full`}
+                            className={`w-[60%] h-fit p-4 rounded-lg dark:bg-zinc-800 max-sm:w-full`}
                             ref={dialogRef}
                         >
                             <DialogCreateQuestion closeDialog={closeDialog} />

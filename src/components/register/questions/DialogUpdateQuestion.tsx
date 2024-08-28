@@ -209,7 +209,7 @@ export function DialogUpdateQuestion({ question, closeDialog }: IDialogUpdateQue
                                     name={`subquestions.${index}.question`}
                                     value={watch(`subquestions.${index}.question`)}
                                     type="text"
-                                    placeholder="Nome da sub Pergunta"
+                                    placeholder="Nome da Sub Pergunta"
                                     styles={`${errors.subquestions && errors.subquestions[index]?.question
                                         ? `border-[--label-color-error] dark:border-[--label-color-error] focus:border-[--focus-input-login]`
                                         : ""
@@ -222,7 +222,7 @@ export function DialogUpdateQuestion({ question, closeDialog }: IDialogUpdateQue
                                     <button
                                         name="subQuestionId"
                                         type="button"
-                                        className={`ml-2 bg-red-400 h-full px-2 py-1 rounded hover:text-slate-200 dark:hover:bg-red-500 dark:text-white duration-200`}
+                                        className={`ml-2 bg-red-400 dark:bg-red-500 h-full px-2 py-1 rounded hover:text-slate-200 dark:hover:bg-red-600 dark:text-white duration-200`}
                                         onClick={() => changeSubQuestionStatus(item.id_subquestion, index, item.status)}
                                     >
                                         <FontAwesomeIcon icon={faThumbsDown} />

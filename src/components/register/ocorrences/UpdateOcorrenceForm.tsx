@@ -100,7 +100,7 @@ export function UpdateOcorrenceForm({ idOcorrence, editOcorrence, ocorrences, st
     return (
         <form
             onSubmit={handleSubmit(updateOcorrence)}
-            className={`flex items-center justify-between rounded-md p-1 pr-2 odd:bg-slate-200 even:bg-slate-300 dark:odd:bg-slate-500 dark:even:bg-slate-600 border-2 h-12`}
+            className={`flex items-center justify-between rounded-md p-1 pr-2 odd:bg-slate-200 even:bg-slate-300 dark:odd:bg-zinc-700 dark:even:bg-zinc-800 dark:border-[--border-dark] border-2 h-12`}
         >
             <div className={`w-full h-full flex items-center`}>
                 <span className={`ml-2 mr-1`}>Nome:</span>
@@ -113,7 +113,7 @@ export function UpdateOcorrenceForm({ idOcorrence, editOcorrence, ocorrences, st
                         Number(idOcorrence) != Number(ocorrences.Id_Ocorrence)
                         : editOcorrence &&
                         Number(idOcorrence) != Number(ocorrences.Id_Ocorrence)}
-                    className={`disabled:bg-transparent bg-white dark:disabled:bg-transparent dark:bg-slate-700 p-2 rounded-md outline-none border-none min-w-fit w-80
+                    className={`disabled:bg-transparent bg-white dark:disabled:bg-transparent dark:bg-zinc-900 p-2 rounded-md outline-none border-none min-w-fit w-80
                         ${errors.ocorrence ? `border-2 border-[--label-color-error] dark:border-[--label-color-error]` : ""}
                     `}
                     {...register("ocorrence")}
@@ -183,7 +183,7 @@ export function UpdateOcorrenceForm({ idOcorrence, editOcorrence, ocorrences, st
 
             <button
                 type="button"
-                className={`bg-blue-400 mr-2 px-2 py-1 duration-200 rounded-sm hover:text-white hover:bg-blue-500 disabled:bg-slate-300 disabled:border-slate-400 disabled:cursor-not-allowed disabled:text-gray-100 dark:disabled:bg-slate-500 dark:disabled:text-gray-200`}
+                className={`bg-blue-400 dark:bg-blue-500 dark:hover:bg-blue-600 mr-2 px-2 py-1 duration-200 rounded-sm hover:text-white hover:bg-blue-500 disabled:bg-slate-300 disabled:border-slate-400 disabled:cursor-not-allowed disabled:text-gray-100 dark:disabled:bg-slate-500 dark:disabled:text-gray-200`}
                 onClick={() => enableEdit(ocorrences.Id_Ocorrence)}
                 disabled={disableButton}
             >
@@ -195,8 +195,8 @@ export function UpdateOcorrenceForm({ idOcorrence, editOcorrence, ocorrences, st
                 value={ocorrences.Id_Ocorrence}
                 type="button"
                 className={`text-white font-bold w-64 px-2 py-1 duration-200 rounded-md hover:text-white disabled:bg-slate-300 disabled:border-slate-400 disabled:cursor-not-allowed disabled:text-gray-100 dark:disabled:bg-slate-500 dark:disabled:text-gray-200 ${ocorrences.Status
-                    ? `bg-red-400 hover:bg-red-500`
-                    : `bg-green-500 hover:bg-green-600`
+                    ? `bg-red-400 dark:bg-red-500 hover:bg-red-500 dark:hover:bg-red-600`
+                    : `bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700`
                     }`}
                 disabled={disableButton}
                 onClick={() => changeOcorrenceStatus(ocorrences.Id_Ocorrence)}

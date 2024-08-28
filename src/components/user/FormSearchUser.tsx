@@ -104,6 +104,7 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
                             title="Pressione enter ou clique no botão"
                             placeholder="Nome do usuário ou Identificador"
                             value={watch("searchUser")}
+                            autoComplete="off"
                             styles={`
                                 w-full block
                                 ${errors.searchUser

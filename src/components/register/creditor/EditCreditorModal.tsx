@@ -100,18 +100,18 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                 name="editCreditor"
                 value={String()}
                 OnClick={() => handleRequestEditCreditor()}
-                styles={`bg-blue-400 text-white px-[6px] py-[0.8px] rounded-md hover:bg-blue-500 duration-200 w-[26px] h-[26px]`}
+                styles={`bg-blue-400 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-[6px] py-[0.8px] rounded-md hover:bg-blue-500 duration-200 w-[26px] h-[26px]`}
             >
                 <FontAwesomeIcon icon={faMagnifyingGlass} fontSize={14} />
             </Button>
 
             <dialog
                 id="editCreditor"
-                className={`w-5/6 max-lg:w-3/4 h-fit p-2 rounded-lg dark:bg-slate-600 max-sm:w-full`}
+                className={`w-5/6 max-lg:w-3/4 h-fit p-2 rounded-lg dark:bg-zinc-800 max-sm:w-full`}
                 ref={dialog}
             >
                 {isLoadingData ? (
-                    <p className="text-left font-bold">Carregando...</p>
+                    <p className="text-left font-bold dark:text-white">Carregando...</p>
                 ) : (
                     <>
                         <h2
