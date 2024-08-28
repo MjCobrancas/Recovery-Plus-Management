@@ -160,5 +160,4 @@ export function CardMonitory({ questions }: ICardMonitoryProps) {
             })}
         </>
     )
-
 }

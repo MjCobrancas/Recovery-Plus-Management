@@ -93,7 +93,7 @@ export function ContainerOcorrence({ ocorrences, statusOcorrences }: IContainerO
             </div>
 
             <div className={`p-2`}>
-                <div className={`flex flex-col gap-1`}>
+                <div className={`gap-1 max-h-96 overflow-y-auto`}>
                     {ocorrences.ocorrence.map((ocorrences, index) => {
 
                         if (filterCpc != ocorrences.cpc || filterStatus != ocorrences.Status) {

@@ -150,9 +150,9 @@ export function UpdateOcorrenceForm({ idOcorrence, editOcorrence, ocorrences, st
                     })}
 
                 </SelectField>
-                <input value={watch("idOcorrence")} {...register("idOcorrence")} className="sr-only" />
-                <input value={watch("cpc", String(ocorrences.cpc))} {...register("cpc")} className="sr-only" />
-                <input value={watch("status", String(ocorrences.Status))} {...register("status")} className="sr-only" />
+                <input value={watch("idOcorrence")} {...register("idOcorrence")} className="sr-only w-0 h-0" />
+                <input value={watch("cpc", String(ocorrences.cpc))} {...register("cpc")} className="sr-only w-0 h-0" />
+                <input value={watch("status", String(ocorrences.Status))} {...register("status")} className="sr-only w-0 h-0" />
 
                 {editOcorrence && idOcorrence == ocorrences.Id_Ocorrence && (
                     <>
