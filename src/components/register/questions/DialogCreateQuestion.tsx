@@ -152,7 +152,7 @@ export function DialogCreateQuestion({ closeDialog }: IDialogCreateQuestionProps
                                     name={`subquestions.${index}.question`}
                                     value={watch(`subquestions.${index}.question`)}
                                     type="text"
-                                    placeholder="Nome da sub Pergunta"
+                                    placeholder="Nome da Sub Pergunta"
                                     required
                                     styles={`${errors.subquestions && errors.subquestions[index]?.question
                                             ? `border-[--label-color-error] dark:border-[--label-color-error] focus:border-[--focus-input-login]`

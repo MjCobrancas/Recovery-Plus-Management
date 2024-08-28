@@ -36,7 +36,7 @@ export function ContainerOcorrence({ ocorrences, statusOcorrences }: IContainerO
         <>
             <dialog
                 id="createOcorrence-dialog"
-                className={`w-3/4 max-lg:w-3/4 p-2 rounded-lg dark:bg-slate-600 max-sm:w-full`}
+                className={`w-3/4 max-lg:w-3/4 p-2 rounded-lg dark:bg-zinc-800 max-sm:w-full`}
                 ref={dialogRef}
             >
                 <DialogCreateOcorrence

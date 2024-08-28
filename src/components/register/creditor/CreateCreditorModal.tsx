@@ -63,7 +63,7 @@ export function CreateCreditorModal() {
         <>
             <dialog
                 id="createCreditorModal"
-                className={`w-3/4 max-lg:w-3/4 p-2 rounded-lg dark:bg-slate-600 max-sm:w-full`}
+                className={`w-3/4 max-lg:w-3/4 p-2 rounded-lg dark:bg-zinc-800 max-sm:w-full`}
                 ref={dialog}
             >
                 <h2
@@ -127,7 +127,7 @@ export function CreateCreditorModal() {
                                 type="number"
                                 id="identifier"
                                 name="identifier"
-                                placeholder="Digite o identificador"
+                                placeholder="Identificador tem que ser 1"
                                 min={0}
                                 required
                                 onForm={true}

@@ -28,7 +28,7 @@ export function CreditorTable({ Creditors, DisabledCreditors }: ICreditorTable) 
             <div>
                 <section className={`p-2 overflow-y-auto max-h-[30rem] h-fit`}>
                     <table className={`w-full mb-4`}>
-                        <thead className={`bg-gray-200 dark:bg-slate-600`}>
+                        <thead className={`bg-gray-200 dark:bg-zinc-800`}>
                             <tr>
 
                                 <th className={`rounded-tl-md font-semibold p-2 dark:text-white/80`}>
@@ -62,7 +62,7 @@ export function CreditorTable({ Creditors, DisabledCreditors }: ICreditorTable) 
                                 <>
                                     {DisabledCreditors.map((item, index) => {
                                         return (
-                                            <tr key={index} className={`odd:bg-gray-100 even:bg-gray-200 dark:odd:bg-slate-500 dark:even:bg-slate-600`}>
+                                            <tr key={index} className={`odd:bg-gray-100 even:bg-gray-200 dark:odd:bg-zinc-700 dark:even:bg-zinc-800`}>
 
                                                 <td className={`p-2 text-center capitalize`}>
                                                     {item.Id_Creditor}
@@ -97,7 +97,7 @@ export function CreditorTable({ Creditors, DisabledCreditors }: ICreditorTable) 
                                     {Creditors.map((item, index) => {
                                         return (
 
-                                            <tr key={index} className={`odd:bg-gray-100 even:bg-gray-200 dark:odd:bg-slate-500 dark:even:bg-slate-600`}>
+                                            <tr key={index} className={`odd:bg-gray-100 even:bg-gray-200 dark:odd:bg-zinc-700 dark:even:bg-zinc-800`}>
 
                                                 <td className={`p-2 text-center capitalize`}>
                                                     {item.Id_Creditor}

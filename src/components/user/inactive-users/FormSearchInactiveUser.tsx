@@ -93,6 +93,7 @@ export function SearchInactiveUser({ allUsers, filterData, totalPage, backend_do
                             name="searchUser"
                             title="Pressione enter ou clique no botão"
                             placeholder="Nome do usuário ou Identificador"
+                            autoComplete="off"
                             value={watch("searchUser")}
                             styles={`
                                 w-full block

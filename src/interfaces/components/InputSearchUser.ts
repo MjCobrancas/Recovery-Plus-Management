@@ -11,6 +11,7 @@ interface IInputSearchUser {
     styles: string
     onForm: boolean
     value: string
+    autoComplete: string
     register?: UseFormRegister<FieldValue<any>>
     onChangeFunction?: (event: ChangeEvent<HTMLInputElement>) => void
 }
