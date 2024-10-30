@@ -67,4 +67,3 @@ export function Input({ type, name, id, value = "", required = false, placeholde
     )
 
 }
-

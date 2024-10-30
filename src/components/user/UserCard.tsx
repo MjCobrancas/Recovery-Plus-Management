@@ -52,7 +52,7 @@ export function UserCard({ Id_User, Name, Last_Name, UserName, Position, Backend
                     >
                         {Name} {Last_Name}
                     </h3>
-                    <span className="font-medium text-slate-500 truncate">{Position}</span>
+                    <span className="w-[150px] font-medium text-slate-500 truncate">{Position}</span>
                 </div>
             </div>
             <div

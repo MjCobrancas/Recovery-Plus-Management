@@ -69,7 +69,7 @@ export function CreateCreditorModal() {
                 <h2
                     className={`text-2xl font-bold text-center text-slate-500 my-2 mb-8 dark:text-slate-100`}
                 >
-                    Crie o Credor
+                    Crie a Equipe
                 </h2>
 
                 <form
@@ -78,7 +78,7 @@ export function CreateCreditorModal() {
                     <div className={`grid grid-cols-3 gap-2 mb-6`}>
                         <FieldForm
                             label="idCreditor"
-                            name="Id do credor:"
+                            name="Id da equipe:"
                             error={errors.idCreditor && " "}
                         >
                             <Input
@@ -248,7 +248,7 @@ export function CreateCreditorModal() {
             </dialog>
 
             <Button
-                text="Criar credor"
+                text="Criar equipe"
                 type="button"
                 styles={`w-fit text-md p-2 ml-2 border border-green-500 rounded-md bg-transparent duration-200 text-green-500 hover:bg-green-500 dark:bg-transparent dark:hover:bg-green-500 focus:bg-transparent focus:text-green-500`}
                 OnClick={() => dialog.current?.showModal()}

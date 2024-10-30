@@ -13,7 +13,7 @@ type IInput = {
     type: string
     name: string
     id: string
-    value: string | number
+    value?: string | number
     required?: boolean
     placeholder?: string
     maxlength?: number | undefined
@@ -26,6 +26,7 @@ type IInput = {
     disabled?: boolean
     styles?: string
     onForm?: boolean
+    checked?: boolean
 }
 
 interface IInputForm extends IInput, IInputLoginFormRegister {}

@@ -117,7 +117,7 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                         <h2
                             className={`text-2xl font-bold text-center text-slate-500 my-2 mb-8 dark:text-slate-100`}
                         >
-                            Editar Credor
+                            Editar Equipe
                         </h2>
 
                         <form
@@ -126,7 +126,7 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                             <div className={`grid grid-cols-3 gap-2 mb-6`}>
                                 <FieldForm
                                     label="creditor"
-                                    name="Edite o credor:"
+                                    name="Edite a equipe:"
                                     obrigatory={false}
                                     error={errors.creditor && " "}
                                 >
@@ -134,7 +134,7 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                                         type="text"
                                         id="creditor"
                                         name="creditor"
-                                        placeholder="Digite o credor"
+                                        placeholder="Digite o nome da equipe"
                                         maxlength={150}
                                         required
                                         onForm={true}

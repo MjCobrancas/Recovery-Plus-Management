@@ -12,7 +12,7 @@ export default async function registerCreditor() {
 
     return (
         <PaperBlock>
-            <TextPrincipal text="Credores" />
+            <TextPrincipal text="Equipes" />
 
             <CreditorTable
                 Creditors={registerCreditor}

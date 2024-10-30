@@ -15,7 +15,7 @@ export function CreditorTable({ Creditors, DisabledCreditors }: ICreditorTable) 
                 <CreateCreditorModal />
 
                 <div className="flex flex-row-reverse justify-center items-center gap-2">
-                    <label htmlFor="filterCreditor">Visualizar credores desativados</label>
+                    <label htmlFor="filterCreditor">Visualizar equipes desativadas</label>
                     <input 
                         id="filterCreditor" 
                         type="checkbox" 

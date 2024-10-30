@@ -155,6 +155,11 @@ export const actionRoutes: Array<ActionRoutes> = [
         route: "/register/questions",
     },
     {
+        level: 6,
+        permissions: [1, 2, 3, 4],
+        route: "/register/tasks"
+    },
+    {
         level: 8,
         permissions: [1, 2, 3, 4],
         route: "/monitoring/config-monitoring"
