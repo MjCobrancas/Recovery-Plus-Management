@@ -17,7 +17,7 @@ export async function updateSchedules<T>(data: T) {
     })
         .then(async (value) => {
 
-            if (value.status != 204 || value.statusText != "No Content") {
+            if (value.status != 201) {
                 return {
                     status: false
                 }

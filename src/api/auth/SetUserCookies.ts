@@ -52,5 +52,17 @@ export default async function SetUserCookies(response: IResult, status: boolean)
             console.log("Erro ao logar na aplicação de workout")
             return
         })
+
+        await fetch(`${process.env.TASKS_DOMAIN}/api/auth/login`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(object)
+        }).catch((err) => {
+            console.log("Erro ao logar na aplicação de tasks")
+            return
+        })
     }
 }
