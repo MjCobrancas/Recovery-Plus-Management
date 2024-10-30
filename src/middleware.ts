@@ -12,6 +12,16 @@ export async function middleware(request: NextRequest) {
 	const regex = /\/[a-z-]+\/*[\w-]*/g
 	const { pathname } = request.nextUrl
 
+	if (pathname == "/login") {
+		const isValidToken = await verifyUserToken()
+
+		if (!isValidToken) {
+			return
+		}
+
+		return NextResponse.redirect(`${process.env.FRONTEND_DOMAIN}/`)
+	}
+
 	let path = pathname.match(regex)
 
 	if (!token) {
@@ -77,5 +87,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/', '/user', '/user/:path*', '/register', '/register/:path*']
+	matcher: ['/', '/login', '/user', '/user/:path*', '/register', '/register/:path*']
 }

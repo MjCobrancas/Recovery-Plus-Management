@@ -25,6 +25,11 @@ const nextConfig = {
             },
             {
                 protocol: "http",
+                hostname: "localhost",
+                port: "3339"
+            },
+            {
+                protocol: "http",
                 hostname: "144.91.80.153",
                 port: "3335"
             },
@@ -42,6 +47,11 @@ const nextConfig = {
                 protocol: "http",
                 hostname: "144.91.80.153",
                 port: "3338"
+            },
+            {
+                protocol: "http",
+                hostname: "144.91.80.153",
+                port: "3339"
             },
             {
                 protocol: "http",
@@ -67,6 +77,11 @@ const nextConfig = {
                 destination: `${process.env.WORKOUT_DOMAIN}/workout/:path*`,
                 permanent: true
             },
+            {
+                source: '/tasks/:path*',
+                destination: `${process.env.TASKS_DOMAIN}/tasks/:path*`,
+                permanent: true
+            }
         ]
     },
 };

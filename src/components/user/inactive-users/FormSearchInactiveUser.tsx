@@ -46,7 +46,11 @@ export function SearchInactiveUser({ allUsers, filterData, totalPage, backend_do
         const result: IncompleteUserValuesData = await getUsersByName(data.searchUser) as IncompleteUserValuesData
         setDisableButton(false)
 
-        filterData(result)
+        const object = result
+
+        object.users.data = object.users.data.filter((item) => item.Status == false)
+
+        filterData(object)
     }
 
     async function handleNextPage(nextPage: number) {
