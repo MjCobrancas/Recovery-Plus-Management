@@ -11,7 +11,7 @@ export default async function RegisterNotes() {
 
     return (
         <PaperBlock styles="mb-4">
-            <TextPrincipal text="Configure as notas" styles={`max-md:text-[2rem] mb-6`} />
+            <TextPrincipal text="Configure a Agenda" styles={`max-md:text-[2rem] mb-6`} />
 
             <EditNotesTable
                 Notes={notes}

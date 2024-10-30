@@ -25,7 +25,7 @@ export const primaryRoutes: Array<PrimaryRoutes> = [
     {
         name: "Tarefas",
         level: 10,
-        permissions: [1, 2, 3, 4]
+        permissions: [1]
     },
     {
       name: "Treinamento",
@@ -153,12 +153,12 @@ export const actionRoutes: Array<ActionRoutes> = [
     },
     {
         level: 6,
-        permissions: [1, 2, 3, 4],
+        permissions: [1],
         route: "/register/notes",
     },
     {
         level: 6,
-        permissions: [1, 2, 3, 4],
+        permissions: [1],
         route: "/register/agendas",
     },
     {
@@ -168,12 +168,12 @@ export const actionRoutes: Array<ActionRoutes> = [
     },
     {
         level: 6,
-        permissions: [1, 2, 3, 4],
+        permissions: [1],
         route: "/register/questions",
     },
     {
         level: 6,
-        permissions: [1, 2, 3, 4],
+        permissions: [1],
         route: "/register/tasks"
     },
     {

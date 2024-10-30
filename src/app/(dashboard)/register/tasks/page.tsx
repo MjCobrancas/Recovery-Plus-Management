@@ -18,6 +18,8 @@ export default async function Page() {
     const creditors: ICreditorGetAllCreditors[] = await getAllCreditors()
     const managerUsers: IManagerUsers[] = await getManagerUsers()
 
+    console.log(managerUsers)
+
     return (
         <>
             <PaperBlock>

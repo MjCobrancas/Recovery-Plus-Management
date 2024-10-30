@@ -16,7 +16,7 @@ export default async function Page() {
 
     return (
         <PaperBlock>
-            <TextPrincipal text="Configure as agendas" />
+            <TextPrincipal text="Configure as Ocorrências" />
 
             <ContainerSchedule 
                 creditors={creditors} 
