@@ -32,9 +32,9 @@ export function SidebarCards({ name, userName, position, permission, userImage }
                     id="arrowButton"
                 >
                     {showSideBar ? (
-                        <FontAwesomeIcon icon={faBars} />
-                    ) : (
                         <FontAwesomeIcon icon={faArrowLeft} />
+                    ) : (
+                        <FontAwesomeIcon icon={faBars} />
                     )}
                 </button>
 
