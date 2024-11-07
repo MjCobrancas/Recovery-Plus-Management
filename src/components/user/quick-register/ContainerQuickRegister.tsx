@@ -67,21 +67,27 @@ export function ContainerQuickRegister({ creditors, userRoles }: IContainerQuick
 
         setDisableAllButtons(true)
 
-        const responseStatus = await createQuickUser<typeof requestObject>(requestObject)
+        const { messages, status } = await createQuickUser<typeof requestObject>(requestObject)
 
         setDisableAllButtons(false)
 
-        if (!responseStatus) {
-            toast.error("Houve um erro na criação do usuário, revise os valores e tente novamente!", {
-                duration: 5000
-            })
+        if (!status) {
+            for (let i = 0; i < messages.length; i++) {
+                const message = messages[i].message
+
+                toast.error(message, {
+                    duration: 10000
+                })
+            }
 
             return
         }
 
         reset()
 
-        toast.success("Usuário criado com sucesso!")
+        toast.success(messages[0].message, {
+            duration: 5000
+        })
     }
 
     return (

@@ -16,7 +16,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 export function ContainerTasks({ creditors, managerUsers }: IContainerTasks) {
 
-    const { control, register, handleSubmit, watch, formState: { errors }, setError, reset } = useForm<createTaskData>({
+    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<createTaskData>({
         defaultValues: {
             creditor: "0",
             responsable: "0",

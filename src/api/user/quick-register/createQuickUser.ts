@@ -1,11 +1,14 @@
 'use server'
 
 import { ITokenUserInitialValues } from "@/interfaces/Generics"
+import { IQuickRegisterResponse } from "@/interfaces/user/quick-register/IQuickRegisterResponse"
 import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function createQuickUser<T>(object: T) {
 
     const userParse: ITokenUserInitialValues = GetUserToken()
+
+    const errorDefaultMessage = [{ message: "Houve um erro na criação do usuário, revise os valores e tente novamente!" }]
 
     const resp = await fetch(`${process.env.BACKEND_DOMAIN}/create-quick-user`, {
         method: "POST",
@@ -17,17 +20,26 @@ export async function createQuickUser<T>(object: T) {
         body: JSON.stringify(object),
     })
         .then(async (data) => {
-            const datas = await data.json()
+            const { status, customErrorMessage }: IQuickRegisterResponse = await data.json()
 
-            if (datas.status != 201) {
-                return false
+            if (status != 201) {
+                return {
+                    messages: customErrorMessage.length > 0 ? customErrorMessage : errorDefaultMessage,
+                    status: false
+                }
             }
 
-            return true
+            return {
+                messages: [{ message: "Usuário criado com sucesso!" }],
+                status: true
+            }
 
         })
-        .catch((error) => {
-            return false
+        .catch(() => {
+            return {
+                messages: errorDefaultMessage,
+                status: false
+            }
         })
 
     return resp

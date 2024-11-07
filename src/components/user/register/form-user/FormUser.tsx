@@ -13,8 +13,9 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { FieldValues, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export function FormUser({ creditors, userRoles, userEducation, userMaritalStatus, updatePage, setUserFormValue, userForm, BACKEND_DOMAIN, avatar, setAvatar, setPicture }: IFormUser) {
     const { register, handleSubmit, watch, setValue, setError, clearErrors, formState: { errors } } = useForm<CreateUserFormData>({
@@ -23,17 +24,21 @@ export function FormUser({ creditors, userRoles, userEducation, userMaritalStatu
 
     async function handleFormUserSubmit(data: FieldValues) {
 
-        const result = await verifyUserData(data.userName, data.cpf, "true")
+        const { status, errors } = await verifyUserData(data.userName, data.cpf, "true")
 
-        if (!result.status) {
-            if (result.message == "cpfCnpj") {
+        if (!status) {
+            if (errors.filter((error) => error.message == "cpfCnpjExists").length > 0) {
                 setError("cpf", { message: "invalid cpf" })
 
-                return
+                toast.error("Este CPF pertence a outro usuário do Recovery Plus!")
             }
 
-            setError("userName", { message: "invalid username" })
+            if (errors.filter((error) => error.message == "userNameExists").length > 0) {
+                setError("userName", { message: "invalid username" })
 
+                toast.error("Este nome de usuário pertence a outro usuário do Recovery Plus!")
+            }
+            
             return
         }
 

@@ -1,6 +1,7 @@
 'use server'
 
 import { ITokenUserInitialValues } from "@/interfaces/Generics"
+import { IVerifyUserDataResponse } from "@/interfaces/user/register/IVerifyUserData"
 import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function verifyUserData(userName: string, cpf: string, toggleBoolean: string) {
@@ -21,17 +22,19 @@ export async function verifyUserData(userName: string, cpf: string, toggleBoolea
         }
     )
         .then(async (data) => {
-            const values = await data.json()
+            const { message, errors }: IVerifyUserDataResponse = await data.json()
 
             return {
                 status: data.ok,
-                message: values.message,
+                message,
+                errors
             }
         })
         .catch((error) => {
             return {
                 status: false,
                 message: "",
+                errors: [{ message: String(error) }]
             }
         })
 
