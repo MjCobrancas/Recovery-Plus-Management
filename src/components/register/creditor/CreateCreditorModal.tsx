@@ -99,14 +99,14 @@ export function CreateCreditorModal() {
 
                         <FieldForm
                             label="creditor"
-                            name="Nome do credor:"
+                            name="Nome do equipe:"
                             error={errors.creditor && " "}
                         >
                             <Input
                                 type="text"
                                 id="creditor"
                                 name="creditor"
-                                placeholder="Digite o nome do credor"
+                                placeholder="Digite o nome da equipe"
                                 maxlength={150}
                                 required
                                 onForm={true}

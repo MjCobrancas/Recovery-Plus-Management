@@ -36,7 +36,7 @@ export function CreditorTable({ Creditors, DisabledCreditors }: ICreditorTable) 
                                 </th>
 
                                 <th className={`font-semibold p-2 dark:text-white/80`}>
-                                    Credor
+                                    Equipe
                                 </th>
 
                                 <th className={`font-semibold p-2 dark:text-white/80`}>

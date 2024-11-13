@@ -2,20 +2,21 @@
 
 import { ITokenUserInitialValues } from "@/interfaces/Generics"
 import { GetUserToken } from "@/utils/GetUserToken"
+import { revalidateTag } from "next/cache"
 
-export async function updateTasks<T>(object: T) {
+export async function updateUniqueCreditor<T>(object: T) {
 
     const userParse: ITokenUserInitialValues = GetUserToken()
 
     const resp = await fetch(
-        `${process.env.BACKEND_DOMAIN}/update-tasks`, {
+        `${process.env.BACKEND_DOMAIN}/update-unique-creditor`, {
         method: "PUT",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             Authorization: "Bearer " + userParse.accessToken,
         },
-        body: JSON.stringify({ dataTasks: object })
+        body: JSON.stringify({ uniqueCreditor: object })
     })
         .then(async (value) => {
             const data = await value.json()
@@ -40,5 +41,6 @@ export async function updateTasks<T>(object: T) {
             }
         })
 
+    revalidateTag("uniqueCreditor")
     return resp
 }

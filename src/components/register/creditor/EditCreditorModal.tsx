@@ -5,6 +5,7 @@ import { Button } from "@/components/Button";
 import { FieldForm } from "@/components/FieldForm";
 import { Input } from "@/components/Input";
 import { InputWithMask } from "@/components/InputWithMask";
+import { Option } from "@/components/Option";
 import { IEditCreditorModal, IEditRequestCreditorModal, editCreditorModalData, editCreditorModalSchema } from "@/interfaces/register/creditor/EditCreditorModal";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -253,14 +254,15 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                                 `}
                                     />
                                 </FieldForm>
+                            </div>
 
-                                {getValues("active") ? (
+                            {getValues("active") ? (
                                     <button
                                         type="button"
                                         className="w-1/2 bg-red-400 text-white font-bold px-2 py-2 mt-10 rounded-md hover:bg-red-500 duration-300"
                                         onClick={() => handleIsCreditorActive(isCreditorActive)}
                                     >
-                                        Desativar credor
+                                        Desativar equipe
                                     </button>
                                 ) : (
                                     <button
@@ -268,10 +270,9 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                                         className="w-1/2 bg-green-400 text-white font-bold px-2 py-2 mt-10 rounded-md hover:bg-green-500 duration-300"
                                         onClick={() => handleIsCreditorActive(isCreditorActive)}
                                     >
-                                        Ativar credor
+                                        Ativar equipe
                                     </button>
                                 )}
-                            </div>
 
 
                             <div className={`flex items-end justify-end gap-2 mt-[3rem]`}>
