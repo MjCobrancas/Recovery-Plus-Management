@@ -14,6 +14,9 @@ export async function getAllUniqueCreditors() {
             "Content-Type": "application/json",
             Authorization: "Bearer " + userParse.accessToken,
         },
+        next: {
+            tags: ["allUniqueCreditors"]
+        }
     })
         .then(async (value) => {
             const data = await value.json()
