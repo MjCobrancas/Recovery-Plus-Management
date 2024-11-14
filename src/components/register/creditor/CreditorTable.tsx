@@ -5,14 +5,14 @@ import { CreateCreditorModal } from "./CreateCreditorModal";
 import { EditCreditorModal } from "./EditCreditorModal";
 import { useState } from "react";
 
-export function CreditorTable({ Creditors, DisabledCreditors }: ICreditorTable) {
+export function CreditorTable({ Creditors, CreditorsUnique, DisabledCreditors }: ICreditorTable) {
 
     const [isFilterActive, setIsFilterActive] = useState(false)
 
     return (
         <>
             <div className="flex justify-start items-center gap-2">
-                <CreateCreditorModal />
+                <CreateCreditorModal CreditorsUnique={CreditorsUnique} />
 
                 <div className="flex flex-row-reverse justify-center items-center gap-2">
                     <label htmlFor="filterCreditor">Visualizar equipes desativadas</label>
@@ -85,7 +85,9 @@ export function CreditorTable({ Creditors, DisabledCreditors }: ICreditorTable) 
                                                 </td>
 
                                                 <td className={`p-2 flex justify-center items-center text-center`}>
-                                                    <EditCreditorModal Id_Creditor={item.Id_Creditor} />
+                                                    <EditCreditorModal 
+                                                        Id_Creditor={item.Id_Creditor} 
+                                                    />
                                                 </td>
 
                                             </tr>
@@ -120,7 +122,9 @@ export function CreditorTable({ Creditors, DisabledCreditors }: ICreditorTable) 
                                                 </td>
 
                                                 <td className={`p-2 flex justify-center items-center text-center`}>
-                                                    <EditCreditorModal Id_Creditor={item.Id_Creditor} />
+                                                    <EditCreditorModal 
+                                                        Id_Creditor={item.Id_Creditor} 
+                                                    />
                                                 </td>
 
                                             </tr>

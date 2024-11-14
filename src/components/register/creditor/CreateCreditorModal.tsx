@@ -1,28 +1,45 @@
 import { verifyUserToken } from "@/api/generics/verifyToken";
 import { createCreditor } from "@/api/register/creditor/createCreditor";
-import { Ancora } from "@/components/Ancora";
 import { Button } from "@/components/Button";
 import { FieldForm } from "@/components/FieldForm";
 import { Input } from "@/components/Input";
 import { InputWithMask } from "@/components/InputWithMask";
-import { createCreditorModalData, createCreditorModalSchema } from "@/interfaces/register/creditor/CreateCreditorModal";
+import { createCreditorModalData, createCreditorModalSchema, ICreateCreditorModal } from "@/interfaces/register/creditor/CreateCreditorModal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { useMemo, useRef, useState } from "react";
+import { FieldValues, useFieldArray, useForm } from "react-hook-form";
+import { ButtonTeamAppendStatus } from "./ButtonTeamAppendStatus";
 
-export function CreateCreditorModal() {
+export function CreateCreditorModal({ CreditorsUnique }: ICreateCreditorModal) {
     const router = useRouter()
 
     const [result, setResult] = useState<"Created" | false>(false)
     const [saveForm, setSaveForm] = useState(false)
     const [disableButton, setDisableButton] = useState(false)
 
-    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<createCreditorModalData>({
+    const { control, register, handleSubmit, watch, formState: { errors }, reset } = useForm<createCreditorModalData>({
+        defaultValues: {
+            creditorsUniqueArray: useMemo(() => {
+                return CreditorsUnique.map((item) => {
+                    return { idCreditorUnique: item.Id_Unique_Creditor, creditorName: item.Creditor, appendToTeam: false }
+                })
+            }, [CreditorsUnique])
+        },
         resolver: zodResolver(createCreditorModalSchema)
     })
 
+    const { fields, update } = useFieldArray({ control, name: "creditorsUniqueArray" })
+
     const dialog = useRef<HTMLDialogElement>(null)
+
+    function changeStatusAppendToTeam(status: boolean, index: number) {
+        const object = fields[index]
+
+        object.appendToTeam = !status
+
+        update(index, object)
+    }
 
     async function handleCreateCreditor(data: FieldValues) {
 
@@ -30,6 +47,21 @@ export function CreateCreditorModal() {
 
         if (!isValidToken) {
             return router.push("/login")
+        }
+
+        const creditorsUniqueList: { idCreditorUnique: number, appendToTeam: boolean }[] = []
+
+        for (let i = 0; i < data.creditorsUniqueArray.length; i++) {
+            const item = data.creditorsUniqueArray[i]
+
+            if (!item.appendToTeam) {
+                continue
+            }
+
+            creditorsUniqueList.push({
+                idCreditorUnique: item.idCreditorUnique,
+                appendToTeam: item.appendToTeam
+            })
         }
 
         setDisableButton(true)
@@ -43,8 +75,8 @@ export function CreateCreditorModal() {
                 numberOperators: Number(data.operatorsNumber),
                 workingDays: Number(data.workingDays),
                 idCreditor: Number(data.idCreditor)
-            }
-
+            },
+            creditorsUniqueList
         }
 
         const cCreateCreditor: { message: "Created" } = await createCreditor<typeof object>(object)
@@ -99,7 +131,7 @@ export function CreateCreditorModal() {
 
                         <FieldForm
                             label="creditor"
-                            name="Nome do equipe:"
+                            name="Nome da equipe:"
                             error={errors.creditor && " "}
                         >
                             <Input
@@ -222,6 +254,28 @@ export function CreateCreditorModal() {
                         </FieldForm>
                     </div>
 
+                    <h2 className="font-bold text-[--text-label-login]"><span className="text-red-500 font-bold mr-1">*</span>Selecione um ou mais credores para sua equipe:</h2>
+                    <div className="w-[400px] h-[250px] overflow-y-scroll">
+                        <div className="flex flex-col gap-4 py-10 px-2">
+                            {fields.map((creditorUnique, index) => {
+                                return (
+                                    <div
+                                        key={creditorUnique.id}
+                                        className="flex justify-between items-center"
+                                    >
+                                        {creditorUnique.creditorName}
+                                        
+                                        <ButtonTeamAppendStatus 
+                                            status={creditorUnique.appendToTeam} 
+                                            OnClick={() => changeStatusAppendToTeam(creditorUnique.appendToTeam, index)}
+                                        />
+                                        
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+
                     <div className={`flex justify-end gap-2`}>
                         <div className={`flex justify-between items-center mr-2 gap-2`}>
                             {saveForm &&
@@ -232,7 +286,7 @@ export function CreateCreditorModal() {
                                 type="button"
                                 text="Fechar"
                                 styles={`w-fit h-10 border-red-400 bg-red-400 text-white hover:bg-red-500 focus:bg-red-400 text-md px-2 py-2 hover:border-red-500`}
-                                OnClick={() => {reset(); dialog.current?.close()}}
+                                OnClick={() => { reset(); dialog.current?.close() }}
                             />
 
                             <Button

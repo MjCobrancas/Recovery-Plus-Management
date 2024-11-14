@@ -19,8 +19,6 @@ export async function updateQuestion<T>(question: T) {
         .then(async (value) => {
             const data = await value.json()
 
-            console.log(data)
-
             if (value.status == 400) {
                 return false
             }

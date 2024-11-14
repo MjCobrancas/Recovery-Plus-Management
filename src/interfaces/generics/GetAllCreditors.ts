@@ -1,3 +1,5 @@
+import { IUniqueCreditor } from "../register/unique-creditor/IUniqueCreditor"
+
 interface ICreditorGetAllCreditors {
     Id_Creditor: number
     Identifier: number
@@ -10,6 +12,7 @@ interface ICreditorGetAllCreditors {
 
 interface ICreditorTable {
     Creditors: ICreditorGetAllCreditors[]
+    CreditorsUnique: IUniqueCreditor[]
     DisabledCreditors: ICreditorGetAllCreditors[]
 }
 

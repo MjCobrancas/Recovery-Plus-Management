@@ -5,13 +5,24 @@ interface IEditCreditorModal {
 }
 
 interface IEditRequestCreditorModal {
-    Active: boolean
+    creditor: {
+        Active: boolean
+        Creditor: string
+        Identifier: number
+        Returns: number
+        Target: number
+        Number_Operators: number
+        Working_Days: number
+    }    
+    creditorsUniqueRelation: ICreditorsUniqueRelation[]
+    creditorsUniqueGeneric: ICreditorsUniqueRelation[]
+}
+
+interface ICreditorsUniqueRelation {
+    Id_Unique_Creditor: number
     Creditor: string
-    Identifier: number
-    Returns: number
-    Target: number
-    Number_Operators: number
-    Working_Days: number
+    Status: boolean
+    Is_New_Element: boolean
 }
 
 export const editCreditorModalSchema = z.object({
@@ -27,7 +38,19 @@ export const editCreditorModalSchema = z.object({
     meta: z.string().min(1),
     operatorsNumber: z.string().min(1),
     workingDays: z.string().min(1),
-    active: z.boolean()
+    active: z.boolean(),
+    creditorUniqueRelation: z.array(z.object({
+        Id_Unique_Creditor: z.number().min(1),
+        Creditor: z.string().min(1),
+        Status: z.boolean(),
+        Is_New_Element: z.boolean()
+    })),
+    creditorUniqueGeneric: z.array(z.object({
+        Id_Unique_Creditor: z.number().min(1),
+        Creditor: z.string().min(1),
+        Status: z.boolean(),
+        Is_New_Element: z.boolean()
+    }))
 })
 
 export type { IEditCreditorModal, IEditRequestCreditorModal }

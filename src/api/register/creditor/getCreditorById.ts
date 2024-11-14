@@ -21,7 +21,7 @@ export async function getCreditorById(id: number) {
           return false
         }
   
-        return data.creditor
+        return data
       })
       .catch((error) => {
         return false
