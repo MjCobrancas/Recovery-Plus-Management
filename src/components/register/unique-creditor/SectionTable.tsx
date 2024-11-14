@@ -3,13 +3,16 @@
 import { IUniqueCreditorTable } from "@/interfaces/register/unique-creditor/IUniqueCreditor"
 import { useState } from "react"
 import { DialogEditUniqueCreditor } from "./DialogEditUniqueCreditor"
+import { DialogCreateUniqueCreditor } from "./DialogCreateUniqueCreditor"
 
-export function SectionTable({ creditors }: IUniqueCreditorTable) {
+export function SectionTable({ UniqueCreditors, DisabledUniqueCreditors }: IUniqueCreditorTable) {
     const [isFilterActive, setIsFilterActive] = useState(false)
 
     return (
         <>
             <div className={`flex justify-start items-center gap-2`}>
+
+                <DialogCreateUniqueCreditor />
 
                 <div className="flex flex-row-reverse justify-center items-center gap-2">
                     <label htmlFor="filterCreditor">Visualizar credores desativados</label>
@@ -45,10 +48,28 @@ export function SectionTable({ creditors }: IUniqueCreditorTable) {
                         <tbody className={`items-center p-1 bg-slate-100`}>
                             {isFilterActive ? (
                                 <>
+                                    {DisabledUniqueCreditors.map((disabled, index) => {
+                                        return (
+                                            <tr key={index} className={`odd:bg-gray-100 even:bg-gray-200 dark:odd:bg-zinc-700 dark:even:bg-zinc-800`}>
+                                                
+                                                <td className={`p-2 text-center capitalize`}>
+                                                    {disabled.Id_Unique_Creditor}
+                                                </td>
+
+                                                <td className={`p-2 text-center capitalize`}>
+                                                    {disabled.Creditor}
+                                                </td>
+
+                                                <td className={`p-2 flex justify-center items-center text-center`}>
+                                                    <DialogEditUniqueCreditor Id_Unique_Creditor={disabled.Id_Unique_Creditor} />
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
                                 </>
                             ) : (
                                 <>
-                                    {creditors.map((creditor, i) => {
+                                    {UniqueCreditors.map((creditor, i) => {
                                         return (
                                             <tr key={i} className={`odd:bg-gray-100 even:bg-gray-200 dark:odd:bg-zinc-700 dark:even:bg-zinc-800`}>
                                                 

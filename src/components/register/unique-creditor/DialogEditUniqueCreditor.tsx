@@ -6,7 +6,7 @@ import { updateUniqueCreditor } from "@/api/register/unique-creditor/updateUniqu
 import { Button } from "@/components/Button";
 import { FieldForm } from "@/components/FieldForm";
 import { Input } from "@/components/Input";
-import { editUniqueCreditorData, editUniqueCreditorSchema, IUniqueCreditorDialog, IUniqueCreditorRequest } from "@/interfaces/register/unique-creditor/IUniqueCreditor";
+import { editUniqueCreditorData, editUniqueCreditorSchema, IUniqueCreditorEditDialog, IUniqueCreditorRequest } from "@/interfaces/register/unique-creditor/IUniqueCreditor";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
-export function DialogEditUniqueCreditor({ Id_Unique_Creditor }: IUniqueCreditorDialog) {
+export function DialogEditUniqueCreditor({ Id_Unique_Creditor }: IUniqueCreditorEditDialog) {
 
     const dialog = useRef<HTMLDialogElement>(null)
     const router = useRouter()

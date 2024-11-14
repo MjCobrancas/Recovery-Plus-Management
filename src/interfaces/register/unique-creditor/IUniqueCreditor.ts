@@ -6,11 +6,18 @@ interface IUniqueCreditor {
     Status: boolean
 }
 
-interface IUniqueCreditorTable {
-    creditors: IUniqueCreditor[]
+interface IDisabledUniqueCreditor {
+    Id_Unique_Creditor: number
+    Creditor: string
+    Status: boolean
 }
 
-interface IUniqueCreditorDialog {
+interface IUniqueCreditorTable {
+    UniqueCreditors: IUniqueCreditor[]
+    DisabledUniqueCreditors: IDisabledUniqueCreditor[]
+}
+
+interface IUniqueCreditorEditDialog {
     Id_Unique_Creditor: number
 }
 
@@ -20,10 +27,15 @@ interface IUniqueCreditorRequest {
     Status: boolean
 }
 
+export const createUniqueCreditorSchema = z.object({
+    uniqueCreditor: z.string().min(1)
+})
+
 export const editUniqueCreditorSchema = z.object({
     uniqueCreditor: z.string().min(1),
     status: z.boolean()
 })
 
-export type { IUniqueCreditor, IUniqueCreditorTable, IUniqueCreditorDialog, IUniqueCreditorRequest }
+export type { IUniqueCreditor, IDisabledUniqueCreditor, IUniqueCreditorTable, IUniqueCreditorEditDialog, IUniqueCreditorRequest }
+export type createUniqueCreditorData = z.infer<typeof createUniqueCreditorSchema>
 export type editUniqueCreditorData = z.infer<typeof editUniqueCreditorSchema>
