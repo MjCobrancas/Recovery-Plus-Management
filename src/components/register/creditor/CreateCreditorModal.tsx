@@ -254,7 +254,7 @@ export function CreateCreditorModal({ CreditorsUnique }: ICreateCreditorModal) {
                         </FieldForm>
                     </div>
 
-                    <h2 className="font-bold text-[--text-label-login]"><span className="text-red-500 font-bold mr-1">*</span>Selecione um ou mais credores para sua equipe:</h2>
+                    <h2 className="font-bold text-[--text-label-login] dark:text-slate-100"><span className="text-red-500 font-bold mr-1">*</span>Selecione um ou mais credores para sua equipe:</h2>
                     <div className="w-[400px] h-[250px] overflow-y-scroll">
                         <div className="flex flex-col gap-4 py-10 px-2">
                             {fields.map((creditorUnique, index) => {
@@ -263,7 +263,9 @@ export function CreateCreditorModal({ CreditorsUnique }: ICreateCreditorModal) {
                                         key={creditorUnique.id}
                                         className="flex justify-between items-center"
                                     >
-                                        {creditorUnique.creditorName}
+                                        <p className={`dark:text-slate-100`}>
+                                            {creditorUnique.creditorName}
+                                        </p>          
                                         
                                         <ButtonTeamAppendStatus 
                                             status={creditorUnique.appendToTeam} 
@@ -304,7 +306,7 @@ export function CreateCreditorModal({ CreditorsUnique }: ICreateCreditorModal) {
             <Button
                 text="Criar equipe"
                 type="button"
-                styles={`w-fit text-md p-2 ml-2 border border-green-500 rounded-md bg-transparent duration-200 text-green-500 hover:bg-green-500 dark:bg-transparent dark:hover:bg-green-500 focus:bg-transparent focus:text-green-500`}
+                styles={`w-fit text-md p-2 ml-2 border border-green-500 rounded-md bg-transparent duration-200 text-green-500 hover:bg-green-500 dark:bg-transparent dark:hover:bg-green-500 focus:bg-transparent focus:text-white-500`}
                 OnClick={() => dialog.current?.showModal()}
             />
         </>

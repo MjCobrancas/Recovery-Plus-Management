@@ -11,8 +11,6 @@ export default async function registerCreditor() {
     const uniqueCreditors: IUniqueCreditor[] = await getAllUniqueCreditors()
     const disabledUniqueCreditors: IDisabledUniqueCreditor[] = await getAllDisabledUniqueCreditors()
 
-    console.log(uniqueCreditors)
-
     return (
         <PaperBlock>
             <TextPrincipal text="Credores" />

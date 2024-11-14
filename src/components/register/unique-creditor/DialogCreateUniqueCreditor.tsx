@@ -55,7 +55,7 @@ export function DialogCreateUniqueCreditor() {
         <>
             <dialog
                 id="createUniqueCreditorModal"
-                className={`w-2/4 max-lg:w-3/4 p-2 rounded-lg dark:zinc-bg-800 max-sm:w-full`}
+                className={`w-2/4 max-lg:w-3/4 p-2 rounded-lg dark:bg-zinc-800 max-sm:w-full`}
                 ref={dialog}
             >
                 <h2
@@ -119,7 +119,7 @@ export function DialogCreateUniqueCreditor() {
             <Button
                 text="Criar credor"
                 type="button"
-                styles={`w-fit text-md p-2 ml-2 border border-green-500 rounded-md bg-transparent duration-200 text-green-500 hover:bg-green-500 dark:bg-transparent dark:hover:bg-green-500 focus:bg-transparent focus:text-green-500`}
+                styles={`w-fit text-md p-2 ml-2 border border-green-500 rounded-md bg-transparent duration-200 text-green-500 hover:bg-green-500 dark:bg-transparent dark:hover:bg-green-500 focus:bg-transparent focus:text-white-500`}
                 OnClick={() => dialog.current?.showModal()}
             />
         </>

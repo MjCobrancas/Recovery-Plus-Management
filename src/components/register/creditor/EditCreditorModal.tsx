@@ -356,7 +356,7 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                                 )}
                             </div>
 
-                            <h2 className="font-bold text-[--text-label-login] text-left">Credores relacionados com a equipe:</h2>
+                            <h2 className="font-bold text-[--text-label-login] text-left dark:text-slate-100">Credores relacionados com a equipe:</h2>
                             <div className="w-[400px] h-[250px] overflow-y-scroll">
                                 <div className="flex flex-col gap-4 py-10 px-2">
                                     {fields.map((creditorUnique, index) => {
@@ -365,7 +365,9 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                                                 key={creditorUnique.id}
                                                 className="flex justify-between items-center"
                                             >
-                                                {creditorUnique.Creditor}
+                                                <p className={`dark:text-slate-100`}>
+                                                    {creditorUnique.Creditor}
+                                                </p>
 
                                                 <ButtonTeamAppendStatus
                                                     status={creditorUnique.Status}
@@ -382,7 +384,9 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                                                 key={creditorUnique.id}
                                                 className="flex justify-between items-center"
                                             >
-                                                {creditorUnique.Creditor}
+                                                <p className={`dark:text-slate-100`}>
+                                                    {creditorUnique.Creditor}
+                                                </p>
 
                                                 <ButtonTeamAppendStatus
                                                     status={creditorUnique.Status}

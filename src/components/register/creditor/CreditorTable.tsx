@@ -51,7 +51,7 @@ export function CreditorTable({ Creditors, CreditorsUnique, DisabledCreditors }:
                                     Dias Trabalhados
                                 </th>
 
-                                <th className={`font-semibold p-2 dark:text-white/80`}>
+                                <th className={`rounded-tr-md font-semibold p-2 dark:text-white/80`}>
                                     Ações
                                 </th>
 
