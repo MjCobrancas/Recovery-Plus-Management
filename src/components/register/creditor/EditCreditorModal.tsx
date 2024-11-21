@@ -11,13 +11,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues, useFieldArray, useForm } from "react-hook-form";
+import { ButtonTeamAppendStatus } from "./ButtonTeamAppendStatus";
+import toast from "react-hot-toast";
 
 export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
     const router = useRouter()
 
-    const { register, handleSubmit, watch, setValue, formState: { errors }, getValues } = useForm<editCreditorModalData>({
+    const { control, register, handleSubmit, watch, setValue, formState: { errors }, getValues } = useForm<editCreditorModalData>({
         resolver: zodResolver(editCreditorModalSchema)
+    })
+
+    const { fields, update } = useFieldArray({
+        control,
+        name: "creditorUniqueRelation"
+    })
+
+    const { fields: fields2 } = useFieldArray({
+        control,
+        name: "creditorUniqueGeneric"
     })
 
     const [isLoadingData, setIsLoadingData] = useState(false)
@@ -42,15 +54,17 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
             return
         }
 
-        setValue("creditor", cGetCreditorById.Creditor)
-        setValue("identifier", String(cGetCreditorById.Identifier))
-        setValue("returns", String(cGetCreditorById.Returns))
-        setValue("meta", String(cGetCreditorById.Target))
-        setValue("operatorsNumber", String(cGetCreditorById.Number_Operators))
-        setValue("workingDays", String(cGetCreditorById.Working_Days))
-        setValue("active", cGetCreditorById.Active)
+        setValue("creditor", cGetCreditorById.creditor.Creditor)
+        setValue("identifier", String(cGetCreditorById.creditor.Identifier))
+        setValue("returns", String(cGetCreditorById.creditor.Returns))
+        setValue("meta", String(cGetCreditorById.creditor.Target))
+        setValue("operatorsNumber", String(cGetCreditorById.creditor.Number_Operators))
+        setValue("workingDays", String(cGetCreditorById.creditor.Working_Days))
+        setValue("active", cGetCreditorById.creditor.Active)
+        setValue("creditorUniqueRelation", cGetCreditorById.creditorsUniqueRelation)
+        setValue("creditorUniqueGeneric", cGetCreditorById.creditorsUniqueGeneric)
 
-        setIsCreditorActive(cGetCreditorById.Active)
+        setIsCreditorActive(cGetCreditorById.creditor.Active)
     }
 
     async function handleUpdateCreditor(data: FieldValues) {
@@ -63,6 +77,18 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
 
         setDisableButton(true)
 
+        const creditorsUniqueRelation: { Id_Unique_Creditor: number, Status: boolean, Is_New_Element: boolean }[] = []
+
+        for (let i = 0; i < data.creditorUniqueRelation.length; i++) {
+            const item = data.creditorUniqueRelation[i]
+
+            creditorsUniqueRelation.push({
+                Id_Unique_Creditor: item.Id_Unique_Creditor,
+                Is_New_Element: item.Is_New_Element,
+                Status: item.Status
+            })
+        }
+
         const object = {
             creditors: {
                 creditor: data.creditor,
@@ -73,13 +99,18 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                 workingDays: Number(data.workingDays),
                 idCreditor: Id_Creditor,
                 active: data.active
-            }
+            },
+            creditorsUniqueRelation
         }
 
         const cEditCreditor: { status: boolean, data: string | null } = await updateCreditor<typeof object>(object)
 
         setResult(cEditCreditor.status)
         setSaveForm(true)
+        dialog.current?.close()
+        toast.success("Equipe atualizada com sucesso!", {
+            duration: 5000
+        })
 
         setTimeout(() => {
             setSaveForm(false)
@@ -91,6 +122,58 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
     function handleIsCreditorActive(isCreditorActive: boolean) {
         setIsCreditorActive(!isCreditorActive)
         setValue("active", !isCreditorActive)
+    }
+
+    function handleChangeStatusCreditor(status: boolean, isNewElement: boolean, index: number) {
+
+        if (isNewElement) {
+
+            if (!status) {
+
+                const fieldsArray = fields2.filter((_item, indexArray) => indexArray != index)
+
+                const object = fields2[index]
+                object.Status = true
+
+                const fieldsArrayCreditorUnique = fields
+                fieldsArrayCreditorUnique.push(object)
+
+                setValue("creditorUniqueRelation", fieldsArrayCreditorUnique)
+
+                setValue("creditorUniqueGeneric", fieldsArray)
+
+                return
+            }
+
+            const fieldsArray = fields.filter((_item, indexArray) => indexArray != index)
+
+            const object = fields[index]
+
+            object.Status = false
+
+            let fieldsArrayGeneric = fields2
+            fieldsArrayGeneric.push(object)
+
+            fieldsArrayGeneric.sort((a, b) => {
+                if (a.Creditor < b.Creditor) {
+                    return -1
+                } else if (a.Creditor > b.Creditor) {
+                    return 1
+                }
+
+                return 0
+            })
+
+            setValue("creditorUniqueRelation", fieldsArray)
+            setValue("creditorUniqueGeneric", fieldsArrayGeneric)
+
+            return
+        }
+
+        const fieldElement = fields[index]
+        fieldElement.Status = !status
+        update(index, fieldElement)
+
     }
 
     return (
@@ -257,20 +340,63 @@ export function EditCreditorModal({ Id_Creditor }: IEditCreditorModal) {
                                 {getValues("active") ? (
                                     <button
                                         type="button"
-                                        className="w-1/2 bg-red-400 text-white font-bold px-2 py-2 mt-10 rounded-md hover:bg-red-500 duration-300"
+                                        className="w-1/2 bg-red-400 text-white font-bold mt-8 mb-5 px-2 py-2 rounded-md hover:bg-red-500 duration-300"
                                         onClick={() => handleIsCreditorActive(isCreditorActive)}
                                     >
-                                        Desativar credor
+                                        Desativar equipe
                                     </button>
                                 ) : (
                                     <button
                                         type="button"
-                                        className="w-1/2 bg-green-400 text-white font-bold px-2 py-2 mt-10 rounded-md hover:bg-green-500 duration-300"
+                                        className="w-1/2 bg-green-400 text-white font-bold mt-8 mb-5 px-2 py-2 rounded-md hover:bg-green-500 duration-300"
                                         onClick={() => handleIsCreditorActive(isCreditorActive)}
                                     >
-                                        Ativar credor
+                                        Ativar equipe
                                     </button>
                                 )}
+                            </div>
+
+                            <h2 className="font-bold text-[--text-label-login] text-left dark:text-slate-100">Credores relacionados com a equipe:</h2>
+                            <div className="w-[400px] h-[250px] overflow-y-scroll">
+                                <div className="flex flex-col gap-4 py-10 px-2">
+                                    {fields.map((creditorUnique, index) => {
+                                        return (
+                                            <div
+                                                key={creditorUnique.id}
+                                                className="flex justify-between items-center"
+                                            >
+                                                <p className={`dark:text-slate-100`}>
+                                                    {creditorUnique.Creditor}
+                                                </p>
+
+                                                <ButtonTeamAppendStatus
+                                                    status={creditorUnique.Status}
+                                                    OnClick={() => handleChangeStatusCreditor(creditorUnique.Status, creditorUnique.Is_New_Element, index)}
+                                                />
+
+                                            </div>
+                                        )
+                                    })}
+
+                                    {fields2.map((creditorUnique, index) => {
+                                        return (
+                                            <div
+                                                key={creditorUnique.id}
+                                                className="flex justify-between items-center"
+                                            >
+                                                <p className={`dark:text-slate-100`}>
+                                                    {creditorUnique.Creditor}
+                                                </p>
+
+                                                <ButtonTeamAppendStatus
+                                                    status={creditorUnique.Status}
+                                                    OnClick={() => handleChangeStatusCreditor(creditorUnique.Status, creditorUnique.Is_New_Element, index)}
+                                                />
+
+                                            </div>
+                                        )
+                                    })}
+                                </div>
                             </div>
 
 

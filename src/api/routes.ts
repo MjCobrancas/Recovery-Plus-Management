@@ -153,6 +153,11 @@ export const actionRoutes: Array<ActionRoutes> = [
     },
     {
         level: 6,
+        permissions: [1, 2, 3, 4],
+        route: "/register/unique-creditor"
+    },
+    {
+        level: 6,
         permissions: [1],
         route: "/register/notes",
     },

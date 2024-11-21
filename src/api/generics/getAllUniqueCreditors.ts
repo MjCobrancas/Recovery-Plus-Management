@@ -2,19 +2,21 @@
 
 import { ITokenUserInitialValues } from "@/interfaces/Generics"
 import { GetUserToken } from "@/utils/GetUserToken"
-import { revalidateTag } from "next/cache"
 
-export async function updateQuestion<T>(question: T) {
+export async function getAllUniqueCreditors() {
     const userParse: ITokenUserInitialValues = GetUserToken()
 
-    const resp = await fetch(`${process.env.BACKEND_DOMAIN}/update-question`, {
-        method: "PUT",
+
+    const resp = await fetch(`${process.env.BACKEND_DOMAIN}/get-all-unique-creditors`, {
+        method: "GET",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             Authorization: "Bearer " + userParse.accessToken,
         },
-        body: JSON.stringify(question),
+        next: {
+            tags: ["allUniqueCreditors"]
+        }
     })
         .then(async (value) => {
             const data = await value.json()
@@ -23,14 +25,11 @@ export async function updateQuestion<T>(question: T) {
                 return false
             }
 
-            return true
+            return data
         })
-        .catch((err) => {
-            console.log(err)
+        .catch((error) => {
             return false
         })
 
-    revalidateTag("questions")
-    
     return resp
 }
