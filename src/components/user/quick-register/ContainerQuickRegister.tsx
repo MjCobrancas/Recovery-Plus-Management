@@ -14,7 +14,7 @@ import { ChangeEvent, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-export function ContainerQuickRegister({ creditors, userRoles }: IContainerQuickRegisterProps) {
+export function ContainerQuickRegister({ creditors, userTurns, userRoles }: IContainerQuickRegisterProps) {
     const router = useRouter()
 
     const { register, handleSubmit, watch, formState: { errors }, setValue, reset } = useForm<IContainerQuickRegisterForm>({
@@ -62,7 +62,8 @@ export function ContainerQuickRegister({ creditors, userRoles }: IContainerQuick
             cpf: String(data.cpf).replace('.', '').replace('.', '').replace('-', '')
             .replace('/', '').toString(),
             id_creditor: Number(data.creditor),
-            user_role: Number(data.profession)
+            user_role: Number(data.profession),
+            id_turn: Number(data.id_turn)
         }
 
         setDisableAllButtons(true)
@@ -226,6 +227,33 @@ export function ContainerQuickRegister({ creditors, userRoles }: IContainerQuick
                         )
                     })}
 
+                </SelectField>
+            </FieldForm>
+
+            <FieldForm
+                label="id_turn"
+                name="Turno do usuário"
+                error={errors.id_turn && "Inválido"}
+            >
+                <SelectField 
+                    id="id_turn" 
+                    name="id_turn"
+                    onForm={true}
+                    register={register}
+                    value={watch("id_turn")}
+                    styles={errors.id_turn ? "border-[--label-color-error] dark:border-[--label-color-error]" : ""}
+                >
+                    <Option value={"0"} firstValue="Selecione um turno" />
+
+                    {userTurns.map((turn) => {
+                        return (
+                            <Option
+                                key={turn.Id_Turn}
+                                value={turn.Id_Turn}
+                                firstValue={turn.Turn}
+                            />
+                        )
+                    })}
                 </SelectField>
             </FieldForm>
 

@@ -14,6 +14,7 @@ interface IUserProps {
     Education_Level_Id: number,
     id_credor: number,
     Status: boolean,
+    Id_User_Turn: number
     UsersAddresses: IUserAdresses[]
     UsersContacts: IUserContacts[]
     UsersEmail: IUsersEmail[]

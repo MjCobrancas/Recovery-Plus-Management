@@ -16,7 +16,7 @@ import Image from "next/image";
 import { ChangeEvent } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
-export function FormUser({ creditors, updatePage, setUserFormValue, userForm, user, userStatus, changeUserStatus, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN, avatar, setAvatar, setPicture }: IFormUser) {
+export function FormUser({ creditors, updatePage, setUserFormValue, userForm, user, userStatus, changeUserStatus, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN, avatar, setAvatar, setPicture, usersTurns }: IFormUser) {
     const { register, handleSubmit, watch, clearErrors, formState: { errors } } = useForm<CreateUserFormDataEdit>({
         resolver: zodResolver(CreateUserFormSchemaEdit)
     })
@@ -277,6 +277,37 @@ export function FormUser({ creditors, updatePage, setUserFormValue, userForm, us
                         register={register}
                         value={watch("position", userForm != null ? userForm.position : user!.Position)}
                     />
+                </FieldForm>
+
+                <FieldForm
+                    label="id_turn"
+                    name="Nível de permissão"
+                    error={errors.id_turn && " "}
+                >
+                    <SelectField
+                        name="id_turn"
+                        id="id_turn"
+                        required
+
+                        styles={`${errors.id_turn
+                            ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                            : ""
+                            }`}
+                        onForm={true}
+                        register={register}
+                        value={watch("id_turn", userForm != null ? userForm.id_turn : String(user!.Id_User_Turn))}
+                    >
+                        {usersTurns.map((turn) => {
+                            return (
+                                <Option
+                                    key={turn.Id_Turn}
+                                    value={turn.Id_Turn}
+                                    selectedValue={userForm != null ? String(userForm.id_turn) : String(user!.Id_User_Turn)}
+                                    firstValue={turn.Turn}
+                                />
+                            ) 
+                        })}
+                    </SelectField>
                 </FieldForm>
 
                 <FieldForm

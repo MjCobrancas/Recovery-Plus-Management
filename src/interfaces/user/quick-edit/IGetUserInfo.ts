@@ -6,6 +6,7 @@ interface IGetUserInfo {
     Status: boolean
     Id_User: number
     Permission_Level_Id: number
+    Id_User_Turn: number
 }
 
 export type { IGetUserInfo }

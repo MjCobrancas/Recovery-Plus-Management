@@ -3,13 +3,14 @@ import { getUserById } from "@/api/user/edit/getUserById"
 import { getUserEducation } from "@/api/user/getUserEducation"
 import { getUserMaritalStatus } from "@/api/user/getUserMaritalStatus"
 import { getUserRoles } from "@/api/user/getUserRoles"
+import { getUserTurns } from "@/api/user/getUserTurns"
 import { PaperBlock } from "@/components/PaperBlock"
 import { ContainerEdit } from "@/components/user/edit/ContainerEdit"
 import { IResultDefaultResponse } from "@/interfaces/Generics"
 import { ICreditors } from "@/interfaces/generics/Creditors"
 import { IUserProps } from "@/interfaces/user/User"
 import { IEditUserProps } from "@/interfaces/user/edit/EditUser"
-import { IUserEducation, IUserMaritalStatus, IUserRoles } from "@/interfaces/user/register/ContainerRegisterProps"
+import { IUserEducation, IUserMaritalStatus, IUserRoles, IUsersTurns } from "@/interfaces/user/register/ContainerRegisterProps"
 import { IFormAdresses } from "@/interfaces/user/register/FormAdresses"
 import { IFormContacts } from "@/interfaces/user/register/FormContacts"
 import { IFormEmail } from "@/interfaces/user/register/FormEmail"
@@ -21,6 +22,7 @@ export default async function EditUser({ params }: IEditUserProps) {
     const userEducation: IResultDefaultResponse<IUserEducation[] | []> = await getUserEducation()
     const userMaritalStatus: IResultDefaultResponse<IUserMaritalStatus[] | []> = await getUserMaritalStatus()
     const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN
+    const usersTurns: IUsersTurns[] = await getUserTurns()
 
     const userAdresses: IFormAdresses[] = []
     const userContacts: IFormContacts[] = []
@@ -80,6 +82,7 @@ export default async function EditUser({ params }: IEditUserProps) {
                 creditors={creditors} 
                 user={user} 
                 idUser={params.idUser}
+                usersTurns={usersTurns}
             />
         </PaperBlock>
     )

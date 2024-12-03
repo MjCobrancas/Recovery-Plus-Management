@@ -1,12 +1,13 @@
 import { ICreditorGetAllCreditors } from "@/interfaces/generics/GetAllCreditors";
 import { IGetUserInfo } from "./IGetUserInfo";
 import { z } from "zod";
-import { IUserRoles } from "../register/ContainerRegisterProps";
+import { IUserRoles, IUsersTurns } from "../register/ContainerRegisterProps";
 
 interface IContainerQuickEdit {
     creditors: ICreditorGetAllCreditors[]
     userInfo: IGetUserInfo
     userRoles: IUserRoles[]
+    userTurns: IUsersTurns[]
 }
 
 interface IContainerQuickEditForm {
@@ -16,6 +17,7 @@ interface IContainerQuickEditForm {
     operatorStatus: string
     creditor: string
     profession: string
+    id_turn: string
 }
 
 export const IContainerQuickEditFormSchema = z.object({
@@ -41,6 +43,17 @@ export const IContainerQuickEditFormSchema = z.object({
         return true
     }),
     profession: z.string().min(1).refine((value) => {
+        if (String(Number(value)) == "NaN") {
+            return false
+        }
+
+        if (Number(value) <= 0) {
+            return false
+        }
+
+        return true
+    }),
+    id_turn: z.string().min(1).refine((value) => {
         if (String(Number(value)) == "NaN") {
             return false
         }

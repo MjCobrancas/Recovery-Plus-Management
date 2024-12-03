@@ -1,5 +1,6 @@
 import { getAllCreditors } from "@/api/generics/getAllCreditors";
 import { getUserRoles } from "@/api/user/getUserRoles";
+import { getUserTurns } from "@/api/user/getUserTurns";
 import { getUserInfo } from "@/api/user/quick-edit/getUserInfo";
 import { Ancora } from "@/components/Ancora";
 import { PaperBlock } from "@/components/PaperBlock";
@@ -8,7 +9,7 @@ import { ContainerQuickEdit } from "@/components/user/quick-edit/ContainerQuickE
 import { IResultDefaultResponse } from "@/interfaces/Generics";
 import { ICreditorGetAllCreditors } from "@/interfaces/generics/GetAllCreditors";
 import { IGetUserInfo } from "@/interfaces/user/quick-edit/IGetUserInfo";
-import { IUserRoles } from "@/interfaces/user/register/ContainerRegisterProps";
+import { IUserRoles, IUsersTurns } from "@/interfaces/user/register/ContainerRegisterProps";
 import { Toaster } from "react-hot-toast";
 
 export default async function Page({ params }: { params: { id_user: string } }) {
@@ -16,6 +17,7 @@ export default async function Page({ params }: { params: { id_user: string } }) 
     const user: IResultDefaultResponse<IGetUserInfo | null> = await getUserInfo(params.id_user)
     const creditors: ICreditorGetAllCreditors[] = await getAllCreditors()
     const userRoles: IResultDefaultResponse<IUserRoles[] | []> = await getUserRoles()
+    const userTurns: IUsersTurns[] = await getUserTurns()
 
     return (
         <PaperBlock>
@@ -28,6 +30,7 @@ export default async function Page({ params }: { params: { id_user: string } }) 
                     creditors={creditors}
                     userInfo={user.data}
                     userRoles={userRoles.data!}
+                    userTurns={userTurns}
                 />
             )}
 

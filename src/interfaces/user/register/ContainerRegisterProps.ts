@@ -1,9 +1,9 @@
 import { ICreditors } from "@/interfaces/generics/Creditors";
-import { CreateUserFormData } from "./FormUser";
 import { IUserProps } from "../User";
 import { IFormAdresses } from "./FormAdresses";
 import { IFormContacts } from "./FormContacts";
 import { IFormEmail } from "./FormEmail";
+import { CreateUserFormData } from "./FormUser";
 
 interface IContainerRegisterProps {
     creditors: ICreditors[]
@@ -16,6 +16,7 @@ interface IContainerRegisterProps {
     userContactsFormat?: IFormContacts[]
     userEmailsFormat?: IFormEmail[]
     idUser?: string
+    usersTurns: IUsersTurns[]
 }
 
 interface IUserRoles {
@@ -33,6 +34,11 @@ interface IUserMaritalStatus {
     Marital_Status: string
 }
 
+interface IUsersTurns {
+    Id_Turn: number
+    Turn: string
+}
+
 interface IFormUser extends IContainerRegisterProps {
     updatePage: (value: number) => void
     setUserFormValue: Function
@@ -44,4 +50,4 @@ interface IFormUser extends IContainerRegisterProps {
     setPicture: (value: string | File) => void
 }
 
-export type { IContainerRegisterProps, IFormUser, IUserRoles, IUserEducation, IUserMaritalStatus }
+export type { IContainerRegisterProps, IFormUser, IUserEducation, IUserMaritalStatus, IUserRoles, IUsersTurns };

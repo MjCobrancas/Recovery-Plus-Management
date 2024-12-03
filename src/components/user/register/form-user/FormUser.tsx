@@ -17,7 +17,7 @@ import { ChangeEvent } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-export function FormUser({ creditors, userRoles, userEducation, userMaritalStatus, updatePage, setUserFormValue, userForm, BACKEND_DOMAIN, avatar, setAvatar, setPicture }: IFormUser) {
+export function FormUser({ creditors, usersTurns, userRoles, userEducation, userMaritalStatus, updatePage, setUserFormValue, userForm, BACKEND_DOMAIN, avatar, setAvatar, setPicture }: IFormUser) {
     const { register, handleSubmit, watch, setValue, setError, clearErrors, formState: { errors } } = useForm<CreateUserFormData>({
         resolver: zodResolver(CreateUserFormSchema)
     })
@@ -348,6 +348,43 @@ export function FormUser({ creditors, userRoles, userEducation, userMaritalStatu
                         register={register}
                         value={watch("position", userForm != null ? userForm.position : "")}
                     />
+                </FieldForm>
+
+                <FieldForm
+                    label="id_turn"
+                    name="Turno do usuário"
+                    error={errors.id_turn && " "}
+                >
+                    <SelectField
+                        name="id_turn"
+                        id="id_turn"
+                        required
+
+                        styles={`${errors.id_turn
+                            ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                            : ""
+                            }`}
+                        onForm={true}
+                        register={register}
+                        value={watch("id_turn", userForm != null ? userForm.id_turn : "")}
+                    >
+                        <Option
+                            value="0"
+                            selectedValue={userForm != null ? String(userForm.id_turn) : ""}
+                            firstValue="Escolha um turno"
+                        />
+
+                        {usersTurns.map((turn, index) => {
+                            return (
+                                <Option
+                                    key={index}
+                                    value={turn.Id_Turn}
+                                    selectedValue={userForm != null ? String(userForm.id_turn) : ""}
+                                    firstValue={turn.Turn}
+                                />
+                            )
+                        })}
+                    </SelectField>
                 </FieldForm>
 
                 <FieldForm

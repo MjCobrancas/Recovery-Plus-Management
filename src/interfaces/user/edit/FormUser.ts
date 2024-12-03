@@ -33,7 +33,18 @@ export const CreateUserFormSchemaEdit = z.object({
             return true
         }
     }),
-    id_credor: z.string().min(1)
+    id_credor: z.string().min(1),
+    id_turn: z.string().min(1).refine((value) => {
+        if (String(Number(value)) == "NaN") {
+            return false
+        }
+
+        if (Number(value) <= 0) {
+            return false
+        }
+
+        return true
+    })
 })
 
 export type CreateUserFormDataEdit = z.infer<typeof CreateUserFormSchemaEdit>

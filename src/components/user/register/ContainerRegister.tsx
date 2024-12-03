@@ -17,7 +17,7 @@ import { uploadImageOfUser } from "@/api/user/uploadUserPicture"
 import { verifyUserToken } from "@/api/generics/verifyToken"
 import { useRouter } from "next/navigation"
 
-export function ContainerRegister({ creditors, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN }: IContainerRegisterProps) {
+export function ContainerRegister({ creditors, usersTurns, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN }: IContainerRegisterProps) {
     const router = useRouter()
 
     const [page, setPage] = useState(0)
@@ -65,7 +65,7 @@ export function ContainerRegister({ creditors, userRoles, userEducation, userMar
             return
         }
 
-        const { name, lastName, userName, password, cpf, birthDate, mother, father, admission, dismissal, position, id_credor, educationStatus, maritalStatus, permission } = userForm
+        const { name, lastName, userName, password, cpf, birthDate, mother, father, admission, dismissal, position, id_credor, educationStatus, maritalStatus, permission, id_turn } = userForm
 
         const objectValues = {
             user: {
@@ -84,12 +84,15 @@ export function ContainerRegister({ creditors, userRoles, userEducation, userMar
                 id_credor,
                 educationStatus,
                 maritalStatus,
-                permission
+                permission,
+                id_turn: Number(id_turn)
             },
             address: adressesForm,
             contact: contactsForm,
             email: value
         }
+
+        console.log(objectValues)
 
         const formData = new FormData()
         formData.append("picture", picture)
@@ -122,7 +125,7 @@ export function ContainerRegister({ creditors, userRoles, userEducation, userMar
                 <HeaderRegister page={page} />
             </header>
             <section>
-                {page == 0 && <FormUser BACKEND_DOMAIN={BACKEND_DOMAIN} userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} avatar={avatar} setAvatar={setValueAvatar} setPicture={setValuePicture} />}
+                {page == 0 && <FormUser BACKEND_DOMAIN={BACKEND_DOMAIN} usersTurns={usersTurns} userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} avatar={avatar} setAvatar={setValueAvatar} setPicture={setValuePicture} />}
                 {page == 1 && <FormAdresses adressesForm={adressesForm} setAdressesFormValue={setAdressesFormValue} updatePage={updatePage} />}
                 {page == 2 && <FormContacts contactsForm={contactsForm} setContactsFormValue={setContactsFormValue} updatePage={updatePage} />}
                 {page == 3 && <FormEmail emailsForm={emailsForm} setEmailsFormValue={setEmailsFormValue} updatePage={updatePage} />}

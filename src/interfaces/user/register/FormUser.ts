@@ -66,6 +66,17 @@ export const CreateUserFormSchema = z.object({
         }
 
         return true
+    }),
+    id_turn: z.string().min(1).refine((value) => {
+        if (String(Number(value)) == "NaN") {
+            return false
+        }
+
+        if (Number(value) <= 0) {
+            return false
+        }
+
+        return true
     })
 })
 

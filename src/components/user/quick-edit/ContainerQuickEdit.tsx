@@ -14,7 +14,7 @@ import { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-export function ContainerQuickEdit({ creditors, userInfo, userRoles }: IContainerQuickEdit) {
+export function ContainerQuickEdit({ creditors, userInfo, userRoles, userTurns }: IContainerQuickEdit) {
 
     const [disableAllButtons, setDisableAllButtons] = useState(false)
     const router = useRouter()
@@ -26,7 +26,8 @@ export function ContainerQuickEdit({ creditors, userInfo, userRoles }: IContaine
             userName: userInfo.UserName,
             operatorStatus: userInfo.Status ? "1" : "0",
             creditor: String(userInfo.id_credor),
-            profession: String(userInfo.Permission_Level_Id)
+            profession: String(userInfo.Permission_Level_Id),
+            id_turn: String(userInfo.Id_User_Turn)
         },
         resolver: zodResolver(IContainerQuickEditFormSchema)
     })
@@ -46,7 +47,8 @@ export function ContainerQuickEdit({ creditors, userInfo, userRoles }: IContaine
             user_name: String(data.userName),
             status: String(data.operatorStatus) == "1" ? true : false,
             id_creditor: Number(data.creditor),
-            user_role: Number(data.profession)
+            user_role: Number(data.profession),
+            id_turn: Number(data.id_turn)
         }
 
         setDisableAllButtons(true)
@@ -204,6 +206,34 @@ export function ContainerQuickEdit({ creditors, userInfo, userRoles }: IContaine
                                 key={index}
                                 value={item.Id_Creditor}
                                 firstValue={item.Creditor}
+                            />
+                        )
+                    })}
+                </SelectField>
+            </FieldForm>
+
+            <FieldForm
+                label="id_turn"
+                name="Turno do operador"
+                error={errors.id_turn && "Inválido!"}
+            >
+                <SelectField
+                    id="id_turn"
+                    name="id_turn"
+                    styles={errors.id_turn ? "border-[--label-color-error] dark:border-[--label-color-error]" : ""}
+                    onForm={true}
+                    register={register}
+                    value={watch("id_turn")}
+                >
+                    <Option value="0" firstValue="Selecione" />
+
+                    {userTurns.map((turn) => {
+                        return (
+                            <Option 
+                                key={turn.Id_Turn}
+                                value={String(turn.Id_Turn)}
+                                firstValue={turn.Turn}
+                                selectedValue={getValues("id_turn")}
                             />
                         )
                     })}

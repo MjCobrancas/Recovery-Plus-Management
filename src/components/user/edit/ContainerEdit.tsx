@@ -18,7 +18,7 @@ import { uploadImageOfUser } from "@/api/user/uploadUserPicture"
 import { verifyUserToken } from "@/api/generics/verifyToken"
 import { useRouter } from "next/navigation"
 
-export function ContainerEdit({ creditors, user, userAdressesFormat, userContactsFormat, userEmailsFormat, idUser, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN }: IContainerRegisterProps) {
+export function ContainerEdit({ creditors, user, userAdressesFormat, userContactsFormat, userEmailsFormat, idUser, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN, usersTurns }: IContainerRegisterProps) {
     const router = useRouter()
 
     const [page, setPage] = useState(0)
@@ -72,7 +72,7 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
             return
         }
 
-        const { name, lastName, birthDate, mother, father, admission, dismissal, position, id_credor, educationStatus, maritalStatus, permission } = userForm
+        const { name, lastName, birthDate, mother, father, admission, dismissal, position, id_credor, educationStatus, maritalStatus, permission, id_turn } = userForm
     
         const adressesFormat: IAdressesFormat[] = []
         const contactsFormat: IContactsFormat[] = []
@@ -126,7 +126,8 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
                 educationStatus: Number(educationStatus),
                 maritalStatus: Number(maritalStatus),
                 permission: Number(permission),
-                profilePicture: null
+                profilePicture: null,
+                id_turn: Number(id_turn)
             },
             address: adressesFormat,
             contact: contactsFormat,
@@ -164,7 +165,7 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
                 <HeaderRegister page={page} />
             </header>
             <section>
-                {page == 0 && <FormUser BACKEND_DOMAIN={BACKEND_DOMAIN} userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} changeUserStatus={changeUserStatus} userStatus={userStatus} user={user} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} avatar={avatar} setAvatar={setValueAvatar} setPicture={setValuePicture} />}
+                {page == 0 && <FormUser BACKEND_DOMAIN={BACKEND_DOMAIN} usersTurns={usersTurns} userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} changeUserStatus={changeUserStatus} userStatus={userStatus} user={user} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} avatar={avatar} setAvatar={setValueAvatar} setPicture={setValuePicture} />}
                 {page == 1 && <FormAdresses userAdresses={userAdressesFormat!} adressesForm={adressesForm} setAdressesFormValue={setAdressesFormValue} updatePage={updatePage} />}
                 {page == 2 && <FormContacts userContacts={userContactsFormat!} contactsForm={contactsForm} setContactsFormValue={setContactsFormValue} updatePage={updatePage} />}
                 {page == 3 && <FormEmail userEmails={userEmailsFormat!} emailsForm={emailsForm} setEmailsFormValue={setEmailsFormValue} updatePage={updatePage} />}
