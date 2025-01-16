@@ -6,6 +6,7 @@ interface IGetQuestionById {
     Question: string
     Status: boolean
     Type: number
+    Is_Critical_Question: boolean
     MonitoringSubquestions: ISubQuestions[]
 }
 

@@ -4,7 +4,7 @@ import { ITokenUserInitialValues } from "@/interfaces/Generics"
 import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function getUniqueCreditorById(id_unique_creditor: number) {
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${process.env.BACKEND_DOMAIN}/get-unique-creditor-by-id/${id_unique_creditor}`, {
       method: "GET",

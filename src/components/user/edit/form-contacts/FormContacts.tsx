@@ -31,10 +31,12 @@ export function FormContacts({ updatePage, setContactsFormValue, contactsForm, u
 
     function addContact() {
         const objectContact = {
+            contact_owner: "",
             ddd: "",
             phone: "",
             type: "",
-            saved: false
+            saved: false,
+            status: true
         }
 
         setContacts((state) => state.concat(objectContact))

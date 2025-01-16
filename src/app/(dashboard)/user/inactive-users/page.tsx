@@ -39,7 +39,7 @@ export default async function Home() {
                 </div>
             </header>
 
-            <ContainerInactiveUserCard all={data} backend_domain={BACKEND_DOMAIN!} token={userParse.accessToken} />
+            <ContainerInactiveUserCard all={data} backend_domain={BACKEND_DOMAIN!} token={userParse.accessToken} countQuantityUsersNotUpdate={0} />
         </PaperBlock>
     )
 }

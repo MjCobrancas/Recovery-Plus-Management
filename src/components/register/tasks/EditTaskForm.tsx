@@ -59,6 +59,7 @@ export function EditTaskForm({ tasks, closeDialog }: IEditTaskFormProps) {
         const taskData = []
 
         for (let i = 0; i < data.tasksList.length; i++) {
+            let foundModificationToUpdate = false
             const task = data.tasksList[i];
 
             const days = [task.Sunday, task.Monday, task.Tuesday, task.Wednesday, task.Thursday, task.Friday, task.Saturday]
@@ -84,7 +85,19 @@ export function EditTaskForm({ tasks, closeDialog }: IEditTaskFormProps) {
                 Minutes: Number(splitHour[1])
             }
 
-            taskData.push(object)
+            const arrayItemsNewValues = [object.Id_Task_Config, object.Task, object.Observation, object.Status, object.Days, object.Hours, object.Minutes]
+            const arrayItemsOldValues = [tasks[i].Id_Task_Config, tasks[i].Task, tasks[i].Observation, tasks[i].Status, tasks[i].Days, tasks[i].Hours, tasks[i].Minutes]
+
+            for (let j = 0; j < arrayItemsNewValues.length; j++) {
+                if (arrayItemsNewValues[j] != arrayItemsOldValues[j]) {
+                    foundModificationToUpdate = true
+                    break
+                }
+            }
+
+            if (foundModificationToUpdate) {
+                taskData.push(object)
+            }
         }
 
         setDisableButton(true)
@@ -144,8 +157,8 @@ export function EditTaskForm({ tasks, closeDialog }: IEditTaskFormProps) {
                             >
                                 <td className="p-2 text-center">
                                     <Input
-                                        id="Hours"
-                                        name="Hours"
+                                        id={`tasksList.${index}.Hours`}
+                                        name={`tasksList.${index}.Hours`}
                                         type="text"
                                         onForm={true}
                                         register={register}

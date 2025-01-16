@@ -5,7 +5,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function updateTasks<T>(object: T) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(
         `${process.env.BACKEND_DOMAIN}/update-tasks`, {

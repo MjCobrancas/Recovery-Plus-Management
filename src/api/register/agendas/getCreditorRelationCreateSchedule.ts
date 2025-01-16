@@ -5,7 +5,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function getCreditorRelationToCreateSchedule(id_creditor: number, id_ocorrences: number[]) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     let ocorrencesArray: { id_ocorrence: number }[] = []
 

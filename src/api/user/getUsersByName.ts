@@ -6,7 +6,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 const backendDomain = process.env.BACKEND_DOMAIN
 
 export async function getUsersByName(userName: string) {
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(
         `${backendDomain}/get-user-by-name-id/${userName}`,

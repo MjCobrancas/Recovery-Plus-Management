@@ -18,7 +18,7 @@ import { uploadImageOfUser } from "@/api/user/uploadUserPicture"
 import { verifyUserToken } from "@/api/generics/verifyToken"
 import { useRouter } from "next/navigation"
 
-export function ContainerEdit({ creditors, user, userAdressesFormat, userContactsFormat, userEmailsFormat, idUser, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN, usersTurns }: IContainerRegisterProps) {
+export function ContainerEdit({ creditors, user, userAdressesFormat, userContactsFormat, userEmailsFormat, idUser, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN, usersTurns, usersResponsables, usersResponsablesTechnicals }: IContainerRegisterProps) {
     const router = useRouter()
 
     const [page, setPage] = useState(0)
@@ -72,7 +72,7 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
             return
         }
 
-        const { name, lastName, birthDate, mother, father, admission, dismissal, position, id_credor, educationStatus, maritalStatus, permission, id_turn } = userForm
+        const { name, lastName, birthDate, mother, father, admission, dismissal, position, id_credor, educationStatus, maritalStatus, permission, id_turn, contract, id_responsable, is_responsable, payment_method, salary, bonus, registration, is_responsable_technical, id_responsable_technical, userName } = userForm
     
         const adressesFormat: IAdressesFormat[] = []
         const contactsFormat: IContactsFormat[] = []
@@ -88,16 +88,17 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
                 neighborhood: item.neighborhood,
                 city: item.city,
                 states: item.states,
-                status: item.status == "" ? true : item.status == true ? true : false
+                status: item.status ? true : false
             })
         })
 
         contactsForm.map((item) => {
             contactsFormat.push({
                 idContact: item.id!.length == 0 ? null : Number(item.id),
+                contact_owner: item.contact_owner,
                 ddd: Number(item.ddd),
                 phone: item.phone,
-                status: item.status == "" ? true : item.status == true ? true : false,
+                status: item.status ? true : false,
                 type: item.type
             })
         })
@@ -105,8 +106,9 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
         value.map((item) => {
             emailsFormat.push({
                 idEmail: item.id!.length == 0 ? null : Number(item.id),
+                email_owner: item.email_owner,
                 email: item.userEmail,
-                status: item.status == "" ? true : item.status == true ? true : false
+                status: item.status ? true : false
             })
         })
 
@@ -114,6 +116,7 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
             user: {
                 idUser: Number(idUser),
                 name,
+                userName,
                 lastName,
                 statusUser: userStatus,
                 birthDate,
@@ -127,7 +130,16 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
                 maritalStatus: Number(maritalStatus),
                 permission: Number(permission),
                 profilePicture: null,
-                id_turn: Number(id_turn)
+                id_turn: Number(id_turn),
+                contract,
+                is_responsable: is_responsable == "1" ? true : false,
+                id_responsable: Number(id_responsable),
+                payment_method: payment_method == "" ? null : payment_method,
+                salary,
+                bonus,
+                registration,
+                is_responsable_technical: is_responsable_technical == "1" ? true : false,
+                id_responsable_technical: id_responsable_technical == "disabled" ? 0 : Number(id_responsable_technical)
             },
             address: adressesFormat,
             contact: contactsFormat,
@@ -165,7 +177,7 @@ export function ContainerEdit({ creditors, user, userAdressesFormat, userContact
                 <HeaderRegister page={page} />
             </header>
             <section>
-                {page == 0 && <FormUser BACKEND_DOMAIN={BACKEND_DOMAIN} usersTurns={usersTurns} userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} changeUserStatus={changeUserStatus} userStatus={userStatus} user={user} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} avatar={avatar} setAvatar={setValueAvatar} setPicture={setValuePicture} />}
+                {page == 0 && <FormUser usersResponsablesTechnicals={usersResponsablesTechnicals} BACKEND_DOMAIN={BACKEND_DOMAIN} usersResponsables={usersResponsables} usersTurns={usersTurns} userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} changeUserStatus={changeUserStatus} userStatus={userStatus} user={user} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} avatar={avatar} setAvatar={setValueAvatar} setPicture={setValuePicture} />}
                 {page == 1 && <FormAdresses userAdresses={userAdressesFormat!} adressesForm={adressesForm} setAdressesFormValue={setAdressesFormValue} updatePage={updatePage} />}
                 {page == 2 && <FormContacts userContacts={userContactsFormat!} contactsForm={contactsForm} setContactsFormValue={setContactsFormValue} updatePage={updatePage} />}
                 {page == 3 && <FormEmail userEmails={userEmailsFormat!} emailsForm={emailsForm} setEmailsFormValue={setEmailsFormValue} updatePage={updatePage} />}

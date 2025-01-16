@@ -6,7 +6,7 @@ import { revalidateTag } from "next/cache"
 
 export async function createUniqueCreditor<T>(object: T) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(
         `${process.env.BACKEND_DOMAIN}/create-unique-creditor`, {

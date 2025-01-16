@@ -5,7 +5,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function getUserInfo(idUser: string) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${process.env.BACKEND_DOMAIN}/get-user-info/${idUser}`, {
         method: "GET",

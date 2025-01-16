@@ -18,7 +18,7 @@ export function ContainerTasks({ creditors, managerUsers }: IContainerTasks) {
 
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<createTaskData>({
         defaultValues: {
-            creditor: "0",
+            creditor: "40",
             responsable: "0",
             hour: "",
             task: "",
@@ -101,11 +101,11 @@ export function ContainerTasks({ creditors, managerUsers }: IContainerTasks) {
                                 value={watch("creditor")}
                                 register={register}
                             >
-                                <Option value={"0"} firstValue={"Selecione"} />
+                                <Option value={"40"} firstValue={"TAREFA EVENTUAL"} />
 
                                 {creditors.map((creditor, index) => {
                                     return (
-                                        <Option key={index} value={creditor.Id_Creditor} firstValue={creditor.Creditor} />
+                                        <Option key={index} value={creditor.Id_Unique_Creditor} firstValue={creditor.Creditor} />
                                     )
                                 })}
                             </SelectField>

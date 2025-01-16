@@ -8,7 +8,7 @@ const backendDomain = process.env.BACKEND_DOMAIN
 
 export async function getUserRoles() {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
     const userTokenValues: ITokenUserValues = parseJWT(userParse.accessToken)
 
     const resp = await fetch(`${backendDomain}/get-user-roles`, {

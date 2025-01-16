@@ -15,7 +15,7 @@ import { getUsersPagination } from "@/api/user/getUsersPagination"
 import { verifyUserToken } from "@/api/generics/verifyToken"
 import { useRouter } from "next/navigation"
 
-export function SearchUser({ allUsers, filterData, totalPage, backend_domain, token }: { allUsers: IncompleteUserValuesData, filterData: Function, totalPage: number, backend_domain: string, token: string }) {
+export function SearchUser({ allUsers, filterData, totalPage, backend_domain, token, countQuantityUsersNotUpdate }: { allUsers: IncompleteUserValuesData, filterData: Function, totalPage: number, backend_domain: string, token: string, countQuantityUsersNotUpdate: number }) {
     const router = useRouter()
 
     const [disableButton, setDisableButton] = useState(false)
@@ -90,46 +90,54 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
 
     return (
         <div className={`flex justify-between items-end px-2`}>
-            <form
-                className="flex items-end"
-                onSubmit={handleSubmit(handleFormSubmit)}
-            >
-                <FieldForm
-                    label="searchUser"
-                    name="Busque um usuário"
-                    obrigatory={false}
-                    styles={"max-sm:flex-col max-sm:mr-4 font-medium"}
-                    error={errors.searchUser ? errors.searchUser.message : ""}
-                    message={errors.searchUser?.message}
+            <div className="flex justify-center items-center gap-1">
+                <form
+                    className="flex items-end"
+                    onSubmit={handleSubmit(handleFormSubmit)}
                 >
-                    <div className="flex max-sm:flex-col max-sm:gap-1 items-end">
-                        <InputSearchUser
-                            id="searchUser"
-                            name="searchUser"
-                            title="Pressione enter ou clique no botão"
-                            placeholder="Nome do usuário ou Identificador"
-                            value={watch("searchUser")}
-                            autoComplete="off"
-                            styles={`
+                    <FieldForm
+                        label="searchUser"
+                        name="Busque um usuário"
+                        obrigatory={false}
+                        styles={"max-sm:flex-col max-sm:mr-4 font-medium"}
+                        error={errors.searchUser ? errors.searchUser.message : ""}
+                        message={errors.searchUser?.message}
+                    >
+                        <div className="flex max-sm:flex-col max-sm:gap-1 items-end">
+                            <InputSearchUser
+                                id="searchUser"
+                                name="searchUser"
+                                title="Pressione enter ou clique no botão"
+                                placeholder="Nome do usuário ou Identificador"
+                                value={watch("searchUser")}
+                                autoComplete="off"
+                                styles={`
                                 w-full block
                                 ${errors.searchUser
-                                    ? "border-[--label-color-error] dark:border-[--label-color-error] focus:border-[--label-color-error] dark:focus:border-[--label-color-error]"
-                                    : ""
-                                }`}
-                            onForm={true}
-                            register={register}
-                            onChangeFunction={(event: ChangeEvent<HTMLInputElement>) => resetValues(event)}
-                        />
+                                        ? "border-[--label-color-error] dark:border-[--label-color-error] focus:border-[--label-color-error] dark:focus:border-[--label-color-error]"
+                                        : ""
+                                    }`}
+                                onForm={true}
+                                register={register}
+                                onChangeFunction={(event: ChangeEvent<HTMLInputElement>) => resetValues(event)}
+                            />
 
-                        <Button
-                            type="submit"
-                            text="Buscar"
-                            styles={`w-24 h-[43px] p-0 ml-1 text-[17px] max-sm:ml-0 max-sm:w-full`}
-                            disabled={disableButton}
-                        />
-                    </div>
-                </FieldForm>
-            </form>
+                            <Button
+                                type="submit"
+                                text="Buscar"
+                                styles={`w-24 h-[43px] p-0 ml-1 text-[17px] max-sm:ml-0 max-sm:w-full`}
+                                disabled={disableButton}
+                            />
+                        </div>
+                    </FieldForm>
+                </form>
+                <div 
+                    className="flex justify-center items-center gap-1 bg-amber-600 dark:bg-amber-500 rounded-md p-2 font-medium text-black/80 text-white self-end"
+                >
+                    Operadores com dados incompletos:
+                    <p className="ml-2 bg-slate-200 dark:bg-zinc-500 px-2 py-1 rounded-md text-black dark:text-white">{countQuantityUsersNotUpdate}</p>
+                </div>
+            </div>
             <form>
                 <div className="flex items-center">
                     <button
@@ -139,7 +147,7 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
                         disabled={actualPage == 1 || disableButton}
                         onClick={() => handleInitialPage()}
                     >
-                        <FontAwesomeIcon icon={faAnglesLeft} className={ actualPage != 1 && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
+                        <FontAwesomeIcon icon={faAnglesLeft} className={actualPage != 1 && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70"} />
                     </button>
 
                     <button
@@ -150,7 +158,7 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
                         onClick={() => handleBackPage(actualPage - 1)}
                     >
 
-                        <FontAwesomeIcon icon={faAngleLeft} className={ actualPage != 1 && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
+                        <FontAwesomeIcon icon={faAngleLeft} className={actualPage != 1 && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70"} />
                     </button>
 
                     <div className={`rounded-full flex items-start justify-center px-1`}>
@@ -168,7 +176,7 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
                         onClick={() => handleNextPage(actualPage + 1)}
                         disabled={actualPage == totalPage || disableButton}
                     >
-                        <FontAwesomeIcon icon={faAngleRight} className={ actualPage != totalPage && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
+                        <FontAwesomeIcon icon={faAngleRight} className={actualPage != totalPage && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70"} />
                     </button>
 
                     <button
@@ -178,7 +186,7 @@ export function SearchUser({ allUsers, filterData, totalPage, backend_domain, to
                         disabled={actualPage == totalPage || disableButton}
                         onClick={() => handleEndPage()}
                     >
-                        <FontAwesomeIcon icon={faAnglesRight} className={ actualPage != totalPage && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70" } />
+                        <FontAwesomeIcon icon={faAnglesRight} className={actualPage != totalPage && !disableButton ? "text-blue-600 hover:bg-slate-200 rounded-full duration-75 p-2 dark:hover:bg-slate-70" : "text-slate-700 rounded-full duration-75 p-2 dark:hover:bg-slate-70"} />
                     </button>
                 </div>
             </form>

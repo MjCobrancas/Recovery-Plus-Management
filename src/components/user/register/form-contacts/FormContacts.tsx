@@ -1,9 +1,9 @@
+import { ButtonNextOrBack } from "@/components/ButtonNextOrBack";
+import { IFormContacts, IFormContactsProps } from "@/interfaces/user/register/FormContacts";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { CardContactForm } from "./CardContactForm";
-import { IFormContacts, IFormContactsProps } from "@/interfaces/user/register/FormContacts";
-import { ButtonNextOrBack } from "@/components/ButtonNextOrBack";
 
 export function FormContacts({ updatePage, setContactsFormValue, contactsForm }: IFormContactsProps) {
     const [contacts, setContacts] = useState<IFormContacts[]>(contactsForm.length > 0 ? contactsForm : [])
@@ -23,6 +23,7 @@ export function FormContacts({ updatePage, setContactsFormValue, contactsForm }:
 
     function addContact() {
         const objectContact = {
+            contact_owner: "",
             ddd: "",
             phone: "",
             type: "",

@@ -5,7 +5,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function createTask<T>(object: T) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(
         `${process.env.BACKEND_DOMAIN}/create-task`, {
@@ -19,6 +19,8 @@ export async function createTask<T>(object: T) {
     })
         .then(async (value) => {
             const data = await value.json()
+
+            console.log(data.errors)
 
             if (data.errors.length > 0) {
                 return {

@@ -7,7 +7,7 @@ const backendDomain = process.env.BACKEND_DOMAIN
 
 export async function getUserMaritalStatus() {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${backendDomain}/get-user-marital-status`, {
         method: "GET",

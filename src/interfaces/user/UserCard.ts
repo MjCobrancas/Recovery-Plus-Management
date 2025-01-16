@@ -5,6 +5,7 @@ interface IncompleteUserValues {
     Position: string
     UserName: string
     Status?: boolean
+    Is_User_Data_Updated: boolean
 }
 
 interface IncompleteUserValuesData {
@@ -21,6 +22,7 @@ interface IUserContainerCard {
     all: IncompleteUserValuesData
     backend_domain: string
     token: string
+    countQuantityUsersNotUpdate: number
 }
 
 interface IUserCard extends IncompleteUserValues {

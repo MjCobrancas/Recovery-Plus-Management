@@ -5,7 +5,7 @@ import { GetUserToken } from "./GetUserToken"
 import { parseJWT } from "./ParseJWT"
 
 export async function verifyUserPermission() {
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
     const userTokenValues: ITokenUserValues = parseJWT(userParse.accessToken)
 
     return userTokenValues.permission == 1 ? true : false

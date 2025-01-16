@@ -6,7 +6,6 @@ import { Input } from "@/components/Input";
 import { InputMask } from "@/components/InputMask";
 import { Option } from "@/components/Option";
 import { SelectField } from "@/components/SelectField";
-import { ICreditors } from "@/interfaces/generics/Creditors";
 import { IFormUser } from "@/interfaces/user/register/ContainerRegisterProps";
 import { CreateUserFormData, CreateUserFormSchema } from "@/interfaces/user/register/FormUser";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -17,14 +16,35 @@ import { ChangeEvent } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-export function FormUser({ creditors, usersTurns, userRoles, userEducation, userMaritalStatus, updatePage, setUserFormValue, userForm, BACKEND_DOMAIN, avatar, setAvatar, setPicture }: IFormUser) {
-    const { register, handleSubmit, watch, setValue, setError, clearErrors, formState: { errors } } = useForm<CreateUserFormData>({
+export function FormUser({ creditors, usersResponsables, usersTurns, userRoles, userEducation, userMaritalStatus, updatePage, setUserFormValue, userForm, BACKEND_DOMAIN, avatar, setAvatar, setPicture, usersResponsablesTechnicals }: IFormUser) {
+    const { register, handleSubmit, watch, setValue, setError, clearErrors, formState: { errors }, getValues } = useForm<CreateUserFormData>({
+        defaultValues: {
+            id_credor: "58",
+            id_responsable: userForm == null ? "0" : userForm.id_responsable,
+            password: "123456",
+            is_responsable: userForm != null ? userForm.is_responsable : "0",
+            is_responsable_technical: userForm != null ? userForm.is_responsable_technical : "0",
+            id_responsable_technical: userForm != null ? userForm.id_responsable_technical : "0",
+            userName: ""
+        },
         resolver: zodResolver(CreateUserFormSchema)
     })
 
     async function handleFormUserSubmit(data: FieldValues) {
 
-        const { status, errors } = await verifyUserData(data.userName, data.cpf, "true")
+        const { status, errors } = await verifyUserData(data.cpf, "true")
+
+        if (data.id_responsable != "disabled") {
+            if (String(Number(data.id_responsable)) == "NaN") {
+                setError("id_responsable", { message: "Invalid id_responsable" })
+                return
+            }
+
+            if (Number(data.id_responsable) <= 0) {
+                setError("id_responsable", { message: "Invalid id_responsable" })
+                return
+            }
+        }
 
         if (!status) {
             if (errors.filter((error) => error.message == "cpfCnpjExists").length > 0) {
@@ -33,12 +53,6 @@ export function FormUser({ creditors, usersTurns, userRoles, userEducation, user
                 toast.error("Este CPF pertence a outro usuário do Recovery Plus!")
             }
 
-            if (errors.filter((error) => error.message == "userNameExists").length > 0) {
-                setError("userName", { message: "invalid username" })
-
-                toast.error("Este nome de usuário pertence a outro usuário do Recovery Plus!")
-            }
-            
             return
         }
 
@@ -70,6 +84,26 @@ export function FormUser({ creditors, usersTurns, userRoles, userEducation, user
         setTimeout(() => {
             clearErrors()
         }, 5000);
+    }
+
+    function handleIsResponsable(value: string) {
+        if (value == "1") {
+            setValue("id_responsable", "disabled")
+
+            return
+        }
+
+        setValue("id_responsable", "0")
+    }
+
+    function handleIsResponsableTechnical(value: string) {
+        if (value == "1") {
+            setValue("id_responsable_technical", "disabled")
+
+            return
+        }
+
+        setValue("id_responsable_technical", "0")
     }
 
     function formatCpfOrCnpj(event: ChangeEvent<HTMLInputElement>) {
@@ -144,30 +178,6 @@ export function FormUser({ creditors, usersTurns, userRoles, userEducation, user
                 </FieldForm>
 
                 <FieldForm
-                    label="userName"
-                    name="Usuário"
-                    error={errors.userName && " "}
-                >
-                    <Input
-                        type="text"
-                        id="userName"
-                        name="userName"
-                        placeholder="Usuário"
-                        styles={`
-                        ${errors.userName
-                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
-                                : ""
-                            } 
-                        `}
-                        maxlength={50}
-                        required
-                        onForm={true}
-                        register={register}
-                        value={watch("userName", userForm != null ? userForm.userName : "")}
-                    />
-                </FieldForm>
-
-                <FieldForm
                     label="password"
                     name="Senha"
                     error={errors.password && " "}
@@ -185,9 +195,9 @@ export function FormUser({ creditors, usersTurns, userRoles, userEducation, user
                                 : ""
                             }
                         `}
-                        onForm={true}
-                        register={register}
-                        value={watch("password", userForm ? userForm.password : "")}
+                        onForm={false}
+                        disabled={true}
+                        value={getValues("password")}
                     />
                 </FieldForm>
 
@@ -255,6 +265,78 @@ export function FormUser({ creditors, usersTurns, userRoles, userEducation, user
                         onForm={true}
                         register={register}
                         value={watch("father", userForm != null ? userForm.father : "")}
+                    />
+                </FieldForm>
+
+                <FieldForm
+                    label="salary"
+                    name="Salário"
+                    error={errors.salary && " "}
+                >
+                    <Input
+                        type="number"
+                        id="salary"
+                        name="salary"
+                        placeholder="Salário"
+                        required={true}
+                        maxlength={80}
+                        styles={`
+                        ${errors.salary
+                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                                : ""
+                            }
+                        `}
+                        onForm={true}
+                        register={register}
+                        value={watch("salary", userForm != null ? userForm.salary : "")}
+                    />
+                </FieldForm>
+
+                <FieldForm
+                    label="bonus"
+                    name="Bonificação"
+                    error={errors.bonus && " "}
+                >
+                    <Input
+                        type="number"
+                        id="bonus"
+                        name="bonus"
+                        placeholder="Bonificação"
+                        required={true}
+                        maxlength={80}
+                        styles={`
+                            ${errors.bonus
+                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                                : ""
+                            }
+                        `}
+                        onForm={true}
+                        register={register}
+                        value={watch("bonus", userForm != null ? userForm.bonus : "")}
+                    />
+                </FieldForm>
+
+                <FieldForm
+                    label="payment_method"
+                    name="Chave Pix"
+                    obrigatory={false}
+                >
+                    <Input
+                        type="string"
+                        id="payment_method"
+                        name="payment_method"
+                        placeholder="Salário"
+                        required={false}
+                        maxlength={80}
+                        styles={`
+                        ${errors.payment_method
+                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                                : ""
+                            }
+                        `}
+                        onForm={true}
+                        register={register}
+                        value={watch("payment_method", userForm != null ? userForm.payment_method : "")}
                     />
                 </FieldForm>
 
@@ -327,6 +409,28 @@ export function FormUser({ creditors, usersTurns, userRoles, userEducation, user
                 </FieldForm>
 
                 <FieldForm
+                    label="contract"
+                    name="Fim do contrato"
+                    error={errors.contract && " "}
+                >
+                    <Input
+                        type="date"
+                        id="contract"
+                        name="contract"
+                        required
+                        styles={`
+                        ${errors.contract
+                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                                : ""
+                            }
+                        `}
+                        onForm={true}
+                        register={register}
+                        value={watch("contract", userForm != null ? userForm.contract : "")}
+                    />
+                </FieldForm>
+
+                <FieldForm
                     label="position"
                     name="Cargo"
                     error={errors.position && " "}
@@ -359,7 +463,6 @@ export function FormUser({ creditors, usersTurns, userRoles, userEducation, user
                         name="id_turn"
                         id="id_turn"
                         required
-
                         styles={`${errors.id_turn
                             ? "border-[--label-color-error] dark:border-[--label-color-error]"
                             : ""
@@ -388,6 +491,30 @@ export function FormUser({ creditors, usersTurns, userRoles, userEducation, user
                 </FieldForm>
 
                 <FieldForm
+                    label="registration"
+                    name="Mátricula"
+                    error={errors.registration && " "}
+                >
+                    <Input
+                        type="text"
+                        id="registration"
+                        name="registration"
+                        placeholder="Mátricula"
+                        required={true}
+                        maxlength={80}
+                        styles={`
+                        ${errors.registration
+                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                                : ""
+                            }
+                        `}
+                        onForm={true}
+                        register={register}
+                        value={watch("registration", userForm != null ? userForm.registration : "")}
+                    />
+                </FieldForm>
+
+                <FieldForm
                     label="permission"
                     name="Nível de permissão"
                     error={errors.permission && " "}
@@ -411,7 +538,7 @@ export function FormUser({ creditors, usersTurns, userRoles, userEducation, user
                             firstValue="Permissão"
                         />
 
-                        {userRoles.map((role, index) => {
+                        {userRoles.map((role) => {
                             return (
                                 <Option
                                     key={role.Id_Permissions}
@@ -501,37 +628,168 @@ export function FormUser({ creditors, usersTurns, userRoles, userEducation, user
                 <FieldForm
                     label="id_credor"
                     name="Compania"
-                    error={errors.id_credor && " "}
                 >
                     <SelectField
                         name="id_credor"
                         id="id_credor"
                         required
-                        styles={`
-                        ${errors.id_credor
-                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
-                                : ""
+                        onForm={false}
+                        disabled={true}
+                    >
+                        <Option
+                            value={"58"}
+                            firstValue="TREINAMENTO"
+                        />
+                    </SelectField>
+                </FieldForm>
+
+                <FieldForm
+                    label="is_responsable_technical"
+                    name="É da equipe de responsáveis técnicos?"
+                    error={errors.is_responsable_technical && " "}
+                    obrigatory={true}
+                    styles="text-sm pt-[6.8px]"
+                >
+                    <SelectField
+                        id="is_responsable_technical"
+                        name="is_responsable_technical"
+                        required
+                        styles={`${errors.is_responsable_technical
+                            ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                            : ""
                             }`}
                         onForm={true}
                         register={register}
-                        value={watch("id_credor", userForm != null ? userForm.id_credor : "")}
+                        value={watch("is_responsable_technical", userForm != null ? userForm.is_responsable_technical : "")}
+                        OnChange={((event: ChangeEvent<HTMLSelectElement>) => handleIsResponsableTechnical(event.target.value))}
                     >
                         <Option
-                            value={"Selecione"}
+                            value={"0"}
+                            firstValue="Não"
+                            selectedValue={userForm != null ? userForm.is_responsable : ""}
                         />
-
-                        {creditors.length > 0 && creditors.map((company: ICreditors) => {
-                            return (
-                                <Option
-                                    key={company.Id_Creditor}
-                                    value={company.Id_Creditor}
-                                    firstValue={company.Creditor}
-                                    selectedValue={userForm != null ? userForm.id_credor : ""}
-                                />
-                            )
-                        })}
+                        <Option
+                            value={"1"}
+                            firstValue="Sim"
+                            selectedValue={userForm != null ? userForm.is_responsable : ""}
+                        />
                     </SelectField>
                 </FieldForm>
+
+                {getValues("id_responsable_technical") != "disabled" && (
+                    <FieldForm
+                        label="id_responsable_technical"
+                        name="Responsável técnico"
+                        error={errors.id_responsable_technical && " "}
+                        obrigatory={true}
+                    >
+                        <SelectField
+                            id="id_responsable_technical"
+                            name="id_responsable_technical"
+                            required
+                            styles={`${errors.id_responsable_technical
+                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                                : ""
+                                }`}
+                            onForm={true}
+                            register={register}
+                            value={watch("id_responsable_technical", userForm != null ? userForm.id_responsable_technical : "0")}
+                        >
+                            <Option
+                                value={"0"}
+                                firstValue="Não possui responsável técnico"
+                                selectedValue={userForm != null ? userForm.id_responsable_technical : ""}
+                            />
+
+                            {usersResponsablesTechnicals.map((user, index) => {
+
+                                return (
+                                    <Option
+                                        key={index}
+                                        value={user.Id_User}
+                                        firstValue={user.Name}
+                                    />
+                                )
+
+                            })}
+                        </SelectField>
+
+                    </FieldForm>
+                )}
+
+                <FieldForm
+                    label="is_responsable"
+                    name="É da equipe de responsáveis do curso?"
+                    error={errors.is_responsable && " "}
+                    obrigatory={true}
+                    styles="text-sm pt-[6.8px]"
+                >
+                    <SelectField
+                        id="is_responsable"
+                        name="is_responsable"
+                        required
+                        styles={`${errors.is_responsable
+                            ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                            : ""
+                            }`}
+                        onForm={true}
+                        register={register}
+                        value={watch("is_responsable", userForm != null ? userForm.is_responsable : "")}
+                        OnChange={((event: ChangeEvent<HTMLSelectElement>) => handleIsResponsable(event.target.value))}
+                    >
+                        <Option
+                            value={"0"}
+                            firstValue="Não"
+                            selectedValue={userForm != null ? userForm.is_responsable : ""}
+                        />
+                        <Option
+                            value={"1"}
+                            firstValue="Sim"
+                            selectedValue={userForm != null ? userForm.is_responsable : ""}
+                        />
+                    </SelectField>
+
+                </FieldForm>
+                {getValues("id_responsable") != "disabled" && (
+                    <FieldForm
+                        label="id_responsable"
+                        name="Responsável do curso"
+                        error={errors.id_responsable && " "}
+                        obrigatory={true}
+                    >
+                        <SelectField
+                            id="id_responsable"
+                            name="id_responsable"
+                            required
+                            styles={`${errors.id_responsable
+                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                                : ""
+                                }`}
+                            onForm={true}
+                            register={register}
+                            value={watch("id_responsable", userForm != null ? userForm.id_responsable : "0")}
+                        >
+                            <Option
+                                value={"0"}
+                                firstValue="Responsável do curso"
+                                selectedValue={userForm != null ? userForm.id_responsable : ""}
+                            />
+
+                            {usersResponsables.map((user, index) => {
+
+                                return (
+                                    <Option
+                                        key={index}
+                                        value={user.Id_User}
+                                        firstValue={user.Name}
+                                    />
+                                )
+
+                            })}
+                        </SelectField>
+
+                    </FieldForm>
+                )}
 
                 <FieldForm label="profilePicture" name="Foto" obrigatory={false}>
                     <div className={`flex items-center mt-2 mb-2 relative w-72`}>

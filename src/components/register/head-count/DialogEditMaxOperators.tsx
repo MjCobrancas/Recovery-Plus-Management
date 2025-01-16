@@ -71,7 +71,7 @@ export function DialogEditMaxOperators({ operatorsCount }: IDialogEditMaxOperato
         <>
             <button
                 type="button"
-                className="absolute bottom-4 right-1 py-1 px-2 bg-blue-400 text-white rounded-md hover:bg-blue-500 duration-300"
+                className="absolute bottom-1 right-[2px] py-1 px-2 bg-blue-400 text-white rounded-md hover:bg-blue-500 duration-300"
                 onClick={() => openDialog()}
             >
                 <FontAwesomeIcon icon={faPencil} />

@@ -37,6 +37,7 @@ export function ContainerInactiveUserCard({ all, backend_domain, token }: IUserC
                         if (!user.Status) {
                             return (
                                 <InactiveUserCard
+                                    Is_User_Data_Updated={true}
                                     key={user.Id_User}
                                     Id_User={user.Id_User}
                                     Name={user.Name}

@@ -5,7 +5,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function getCreditorRelationWithOcorrence(id_creditor: number, id_ocorrences: number[]) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${process.env.BACKEND_DOMAIN}/get-creditor-relations`, {
         method: "POST",

@@ -2,7 +2,7 @@ import { ITokenUserInitialValues } from "@/interfaces/Generics"
 import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function getAllDisabledUniqueCreditors() {
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${process.env.BACKEND_DOMAIN}/get-all-disabled-unique-creditors`, {
       method: "GET",

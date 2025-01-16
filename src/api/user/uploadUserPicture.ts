@@ -5,7 +5,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function uploadImageOfUser(nameOfUser: string, file: any, removed: boolean) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const uploadImage = await fetch(
         `${process.env.BACKEND_DOMAIN}/upload-image/${nameOfUser}?&remove=${removed}`,

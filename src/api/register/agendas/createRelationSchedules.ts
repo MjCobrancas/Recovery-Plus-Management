@@ -4,7 +4,7 @@ import { ITokenUserInitialValues } from "@/interfaces/Generics"
 import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function createRelationToSchedules<T>(object: T[]) {
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     let data = [
         ...object

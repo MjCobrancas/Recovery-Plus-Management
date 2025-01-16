@@ -8,6 +8,7 @@ interface IFormEmailProps {
 }
 
 interface IFormEmail {
+    email_owner: string
     userEmail: string
     saved: boolean
     status?: string | boolean
@@ -30,7 +31,8 @@ export const createFormEmailSchema = z.object({
 
         return regexEmail.test(value)
     }),
-    status: z.string().or(z.boolean())
+    status: z.string().or(z.boolean()),
+    email_owner: z.string().min(1)
 })
 
 export type createFormEmailData = z.infer<typeof createFormEmailSchema>

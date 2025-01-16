@@ -44,7 +44,61 @@ export const CreateUserFormSchemaEdit = z.object({
         }
 
         return true
-    })
+    }),
+    contract: z.string().refine((value) => {
+        const regexContract = /\d{4}-\d{2}-\d{2}/g
+
+        return regexContract.test(value)
+    }),
+    salary: z.string().min(1),
+    payment_method: z.string(),
+    is_responsable: z.string().refine((value) => {
+        if (String(value) != "1" && String(value) != "0") {
+            return false
+        }
+
+        return true
+    }),
+    id_responsable: z.string().refine((value) => {
+        if (String(value) == "disabled") {
+            return true
+        }
+
+        if (String(Number(value)) == "NaN") {
+            return false
+        }
+
+        if (Number(value) <= 0) {
+            return false
+        }
+
+        return true
+    }),
+    bonus: z.string().min(1),
+    registration: z.string().min(1),
+    is_responsable_technical: z.string().refine((value) => {
+        if (String(value) != "1" && String(value) != "0") {
+            return false
+        }
+
+        return true
+    }),
+    id_responsable_technical: z.string().refine((value) => {
+        if (value == "disabled") {
+            return true
+        }
+
+        if (String(Number(value)) == "NaN") {
+            return false
+        }
+
+        if (Number(value) < 0) {
+            return false
+        }
+
+        return true
+    }),
+    userName: z.string()
 })
 
 export type CreateUserFormDataEdit = z.infer<typeof CreateUserFormSchemaEdit>

@@ -109,18 +109,6 @@ export default function ManagementData() {
                     />
                 </CardConfigMonitoria>
 
-                <CardConfigMonitoria
-                    title="Head Count"
-                    subTitle="Configure as quantidades de operadores em determinados credores"
-                    styles={`bg-red-600 border-red-700 border-2 dark:opacity-90 dark:hover:opacity-80`}
-                >
-                    <Ancora
-                        title="Configurar Head count"
-                        toGo="/register/head-count"
-                        styles={`text-center cursor-pointer rounded-md py-2 px-1 text-md duration-300 text-white bg-transparent border border-red-500 hover:bg-red-700 hover:border-red-500 dark:bg-transparent dark:hover:bg-red-700`}
-                    />
-                </CardConfigMonitoria>
-
             </div>
         </PaperBlock>
 

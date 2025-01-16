@@ -6,7 +6,7 @@ import { UserCard } from "./UserCard";
 import { SearchUser } from "./FormSearchUser";
 import { Toaster } from "react-hot-toast";
 
-export function ContainerUserCard({ all, backend_domain, token }: IUserContainerCard) {
+export function ContainerUserCard({ all, backend_domain, token, countQuantityUsersNotUpdate }: IUserContainerCard) {
     const [data, setData] = useState(all)
     const [totalPage, setTotalPage] = useState(getTotalPages)
 
@@ -26,8 +26,14 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
 
     return (
         <>
-
-            <SearchUser allUsers={all} backend_domain={backend_domain} filterData={filterUsers} totalPage={totalPage} token={token} />
+            <SearchUser 
+                allUsers={all} 
+                backend_domain={backend_domain} 
+                filterData={filterUsers} 
+                totalPage={totalPage} 
+                token={token} 
+                countQuantityUsersNotUpdate={countQuantityUsersNotUpdate}
+            />
 
             <div className={`flex justify-between items-end px-2`}>
                 <section
@@ -43,6 +49,7 @@ export function ContainerUserCard({ all, backend_domain, token }: IUserContainer
                                     Last_Name={user.Last_Name}
                                     Position={user.Position}
                                     UserName={user.UserName}
+                                    Is_User_Data_Updated={user.Is_User_Data_Updated}
                                     Backend_Domain={backend_domain}
                                 />
                             )

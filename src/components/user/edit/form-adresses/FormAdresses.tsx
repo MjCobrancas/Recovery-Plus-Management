@@ -43,7 +43,8 @@ export function FormAdresses({ userAdresses, updatePage, setAdressesFormValue, a
             neighborhood: "",
             postalCode: "",
             states: "",
-            saved: false
+            saved: false,
+            status: true
         })
 
         setAdresses((state) => state.concat(data))

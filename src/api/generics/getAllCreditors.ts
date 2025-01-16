@@ -2,7 +2,7 @@ import { ITokenUserInitialValues } from "@/interfaces/Generics"
 import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function getAllCreditors() {
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${process.env.BACKEND_DOMAIN}/get-all-creditors`, {
       method: "GET",
@@ -19,13 +19,13 @@ export async function getAllCreditors() {
         const data = await value.json()
   
         if (value.status == 400) {
-          return false
+          return []
         }
   
         return data
       })
       .catch((error) => {
-        return false
+        return []
       })
   
     return resp

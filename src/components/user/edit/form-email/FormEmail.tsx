@@ -38,9 +38,11 @@ export function FormEmail({ updatePage, setEmailsFormValue, emailsForm, userEmai
 
     function addUserEmail() {
         const objectEmail: IFormEmail = {
+            email_owner: "",
             id: "",
             userEmail: "",
-            saved: false
+            saved: false,
+            status: true
         }
 
         setEmails((state) => state.concat(objectEmail))

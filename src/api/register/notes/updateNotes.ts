@@ -6,7 +6,7 @@ import { revalidateTag } from "next/cache"
 
 export async function updateNotes<T>(value: T) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${process.env.BACKEND_DOMAIN}/update-days-notes`, {
       method: "PUT",

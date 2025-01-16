@@ -9,6 +9,7 @@ interface IFormContactsProps {
 }
 
 interface IFormContacts {
+    contact_owner: string
     ddd: string
     phone: string
     type: string
@@ -28,23 +29,37 @@ interface IFormContactCardFormProps {
 }
 
 export const createFormContactsSchema = z.object({
+    contact_owner: z.string().min(1).refine((value) => {
+        if (typeof value != "string" || value.trim().length <= 0) {
+            return false
+        }
+
+        return true
+    }),
     ddd: z.string().refine((value) => {
         const isValidDDD = verifyDDD(value)
 
         return isValidDDD
     }),
     phone: z.string().refine((value) => {
-        const phoneLength = value.length == 9 ? true : false
+        const phoneLength = value.length == 8 ? true : false
+        const phoneLength2 = value.length == 9 ? true : false
         const phoneNumber = Number(value) > 0 ? true : false
 
-        if (phoneLength && phoneNumber) {
-            return true
+        if (phoneLength || phoneLength2) {
+            if (phoneNumber) {
+                return true
+            }
         }
 
         return false
     }),
     type: z.string().refine((value) => {
-        return value == "Residencial" || value == "Pessoal"
+        if (value == "Residencial" || value == "Pessoal") {
+            return true
+        }
+
+        return false
     }),
     status: z.string().or(z.boolean())
 })

@@ -15,7 +15,7 @@ export const IDialogEditCreditorHeadCountSchema = z.object({
             return false
         }
 
-        if (Number(value) <= 0) {
+        if (Number(value) < 0) {
             return false
         }
 
@@ -24,4 +24,3 @@ export const IDialogEditCreditorHeadCountSchema = z.object({
 })
 
 export type { IDialogEditCreditorHeadCountFormData, IDialogEditCreditorHeadCountProps };
-

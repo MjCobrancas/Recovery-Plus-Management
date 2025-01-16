@@ -5,7 +5,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 import { revalidateTag } from "next/cache"
 
 export async function updateQuestion<T>(question: T) {
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${process.env.BACKEND_DOMAIN}/update-question`, {
         method: "PUT",

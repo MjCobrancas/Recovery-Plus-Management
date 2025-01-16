@@ -13,7 +13,7 @@ export function SelectField({ id, name, required = false, disabled = false, mult
                     disabled={disabled}
                     className={twMerge(
                         `
-                        border-2 text-[--text-label-login]
+                        border-2 text-[--text-label-login] focus:border-blue-500
                         dark:bg-[--bg-dark-options] dark:border-[--border-dark] dark:[color-scheme:dark]
                         dark:text-[--text-input-dark] outline-none p-2 mt-1 rounded-md flex flex-col w-full
                         disabled:cursor-not-allowed
@@ -36,7 +36,7 @@ export function SelectField({ id, name, required = false, disabled = false, mult
                     disabled={disabled}
                     className={twMerge(
                         `
-                        border-2 text-[--text-label-login]
+                        border-2 text-[--text-label-login] focus:border-blue-500
                         dark:bg-[--bg-dark-options] dark:border-[--border-dark] dark:[color-scheme:dark]
                         dark:text-[--text-input-dark] outline-none p-2 mt-1 rounded-md flex flex-col w-full
                         disabled:cursor-not-allowed

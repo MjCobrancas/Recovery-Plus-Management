@@ -12,6 +12,7 @@ interface IAdressesFormat {
 
 interface IContactsFormat {
     idContact: number | null
+    contact_owner: string
     ddd: number
     phone: string
     status: boolean
@@ -20,6 +21,7 @@ interface IContactsFormat {
 
 interface IEmailFormat {
     idEmail: number | null
+    email_owner: string
     email: string
     status: boolean
 }

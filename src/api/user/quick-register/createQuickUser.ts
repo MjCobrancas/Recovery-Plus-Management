@@ -6,7 +6,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function createQuickUser<T>(object: T) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const errorDefaultMessage = [{ message: "Houve um erro na criação do usuário, revise os valores e tente novamente!" }]
 

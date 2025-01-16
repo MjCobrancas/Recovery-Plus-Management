@@ -1,9 +1,9 @@
-import { ICreditorGetAllCreditors } from "@/interfaces/generics/GetAllCreditors";
-import { IManagerUsers } from "./IManagerUsers";
 import { z } from "zod";
+import { IManagerUsers } from "./IManagerUsers";
+import { IUniqueCreditor } from "../unique-creditor/IUniqueCreditor";
 
 interface IContainerTasks {
-    creditors: ICreditorGetAllCreditors[]
+    creditors: IUniqueCreditor[]
     managerUsers: IManagerUsers[]
 }
 
@@ -46,4 +46,4 @@ export const createTaskSchema = z.object({
 
 export type createTaskData = z.infer<typeof createTaskSchema>
 
-export type { IContainerTasks }
+export type { IContainerTasks };

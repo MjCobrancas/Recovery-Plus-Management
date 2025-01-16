@@ -20,6 +20,7 @@ export function CardEmailForm({ index, item, removeUserEmail, resetEmail, saveEm
     function saveEmailForm(data: FieldValues) {
         const objectValues = {
             id: id ? id : "",
+            email_owner: String(data.email_owner),
             userEmail: String(data.userEmail),
             saved: true,
             status: data.status == "" ? "" : (data.status == "true" ? true : false)
@@ -36,8 +37,30 @@ export function CardEmailForm({ index, item, removeUserEmail, resetEmail, saveEm
 
     return (
         <form key={index} onSubmit={handleSubmit(saveEmailForm)}>
-            <input {...register("status")} value={item.status == true || item.status == false ? String(item.status) : ""} className="sr-only"/>
+            <input {...register("status")} value={item.status == true || item.status == false ? String(item.status) : ""} className="sr-only" />
             <div className="grid tablet:grid-cols-2 laptop:grid-cols-2 desktop:grid-cols-3 gap-4 py-4 pl-2 ">
+                <FieldForm
+                    label={"email_owner" + index}
+                    name="Dono do email"
+                    error={errors.userEmail && " "}
+                >
+                    <Input
+                        onInput={() => resetEmail(index)}
+                        value={watch("email_owner", item.email_owner != "" ? item.email_owner : "")}
+                        type="text"
+                        id={"email_owner" + index}
+                        name="email_owner"
+                        placeholder="Dono do email"
+                        required
+                        styles={`${errors.email_owner
+                            ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                            : ""
+                            }
+                        `}
+                        onForm={true}
+                        register={register}
+                    />
+                </FieldForm>
                 <FieldForm
                     label={"userEmail" + index}
                     name="Email"
@@ -52,8 +75,8 @@ export function CardEmailForm({ index, item, removeUserEmail, resetEmail, saveEm
                         placeholder="abc@gmail.com"
                         required
                         styles={`${errors.userEmail
-                                ? "border-[--label-color-error] dark:border-[--label-color-error]"
-                                : ""
+                            ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                            : ""
                             }
                         `}
                         onForm={true}

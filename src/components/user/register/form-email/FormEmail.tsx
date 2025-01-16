@@ -30,6 +30,7 @@ export function FormEmail({ updatePage, setEmailsFormValue, emailsForm }: IFormE
 
     function addUserEmail() {
         const objectEmail: IFormEmail = {
+            email_owner: "",
             userEmail: "",
             saved: false
         }

@@ -1,23 +1,22 @@
 'use client'
 
-import { useState } from "react"
-import { HeaderRegister } from "./HeaderRegister"
+import { verifyUserToken } from "@/api/generics/verifyToken"
+import { createUser } from "@/api/user/register/createUser"
 import { IContainerRegisterProps } from "@/interfaces/user/register/ContainerRegisterProps"
-import { CreateUserFormData } from "@/interfaces/user/register/FormUser"
-import { FormUser } from "./form-user/FormUser"
-import { FormAdresses } from "./form-adresses/FormAdresses"
 import { IFormAdresses } from "@/interfaces/user/register/FormAdresses"
-import { FormContacts } from "./form-contacts/FormContacts"
-import { FormEmail } from "./form-email/FormEmail"
 import { IFormContacts } from "@/interfaces/user/register/FormContacts"
 import { IFormEmail } from "@/interfaces/user/register/FormEmail"
-import { createUser } from "@/api/user/register/createUser"
-import toast, { Toaster } from "react-hot-toast"
-import { uploadImageOfUser } from "@/api/user/uploadUserPicture"
-import { verifyUserToken } from "@/api/generics/verifyToken"
+import { CreateUserFormData } from "@/interfaces/user/register/FormUser"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
+import toast, { Toaster } from "react-hot-toast"
+import { FormAdresses } from "./form-adresses/FormAdresses"
+import { FormContacts } from "./form-contacts/FormContacts"
+import { FormEmail } from "./form-email/FormEmail"
+import { FormUser } from "./form-user/FormUser"
+import { HeaderRegister } from "./HeaderRegister"
 
-export function ContainerRegister({ creditors, usersTurns, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN }: IContainerRegisterProps) {
+export function ContainerRegister({ creditors, usersResponsables, usersTurns, userRoles, userEducation, userMaritalStatus, BACKEND_DOMAIN , usersResponsablesTechnicals}: IContainerRegisterProps) {
     const router = useRouter()
 
     const [page, setPage] = useState(0)
@@ -65,13 +64,12 @@ export function ContainerRegister({ creditors, usersTurns, userRoles, userEducat
             return
         }
 
-        const { name, lastName, userName, password, cpf, birthDate, mother, father, admission, dismissal, position, id_credor, educationStatus, maritalStatus, permission, id_turn } = userForm
+        const { name, lastName, password, cpf, birthDate, mother, father, admission, dismissal, position, educationStatus, maritalStatus, permission, id_turn, contract, id_responsable, is_responsable, payment_method, salary, bonus, registration, id_responsable_technical, is_responsable_technical } = userForm
 
         const objectValues = {
             user: {
                 name,
                 lastName,
-                userName,
                 password,
                 cpfCnpj: cpf,
                 statusUser: true,
@@ -81,18 +79,25 @@ export function ContainerRegister({ creditors, usersTurns, userRoles, userEducat
                 admission,
                 dismissal,
                 position,
-                id_credor,
+                id_credor: 58,
                 educationStatus,
                 maritalStatus,
                 permission,
-                id_turn: Number(id_turn)
+                id_turn: Number(id_turn),
+                contract,
+                id_responsable: Number(id_responsable),
+                is_responsable: is_responsable == "1" ? true : false,
+                salary,
+                payment_method,
+                bonus,
+                registration, 
+                id_responsable_technical: id_responsable_technical == "disabled" ? 0 : Number(id_responsable_technical),
+                is_responsable_technical: is_responsable_technical == "1" ? true : false
             },
             address: adressesForm,
             contact: contactsForm,
             email: value
         }
-
-        console.log(objectValues)
 
         const formData = new FormData()
         formData.append("picture", picture)
@@ -105,9 +110,9 @@ export function ContainerRegister({ creditors, usersTurns, userRoles, userEducat
             return
         }
 
-        if (picture != "") {
-            await uploadImageOfUser(userName, formData, true)
-        }
+        // if (picture != "") {
+        //     await uploadImageOfUser(userName, formData, true)
+        // }
 
         toast.success("Usuário criado com sucesso!", {
             duration: 10000
@@ -125,7 +130,7 @@ export function ContainerRegister({ creditors, usersTurns, userRoles, userEducat
                 <HeaderRegister page={page} />
             </header>
             <section>
-                {page == 0 && <FormUser BACKEND_DOMAIN={BACKEND_DOMAIN} usersTurns={usersTurns} userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} avatar={avatar} setAvatar={setValueAvatar} setPicture={setValuePicture} />}
+                {page == 0 && <FormUser BACKEND_DOMAIN={BACKEND_DOMAIN} usersResponsablesTechnicals={usersResponsablesTechnicals} usersResponsables={usersResponsables} usersTurns={usersTurns} userMaritalStatus={userMaritalStatus} userEducation={userEducation} userRoles={userRoles} userForm={userForm} creditors={creditors} updatePage={updatePage} setUserFormValue={setUserFormValue} avatar={avatar} setAvatar={setValueAvatar} setPicture={setValuePicture} />}
                 {page == 1 && <FormAdresses adressesForm={adressesForm} setAdressesFormValue={setAdressesFormValue} updatePage={updatePage} />}
                 {page == 2 && <FormContacts contactsForm={contactsForm} setContactsFormValue={setContactsFormValue} updatePage={updatePage} />}
                 {page == 3 && <FormEmail emailsForm={emailsForm} setEmailsFormValue={setEmailsFormValue} updatePage={updatePage} />}

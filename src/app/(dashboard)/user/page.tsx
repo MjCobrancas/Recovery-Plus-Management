@@ -1,3 +1,4 @@
+import { getQuantityUsersNotUpdate } from "@/api/user/getQuantityUsersNotUpdate";
 import { getUsersPagination } from "@/api/user/getUsersPagination";
 import { Ancora } from "@/components/Ancora";
 import { PaperBlock } from "@/components/PaperBlock";
@@ -21,6 +22,7 @@ export default async function Home() {
 
     const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN
     const data: IncompleteUserValuesData = await getUsersPagination(BACKEND_DOMAIN!, 0, 24, userParse.accessToken, "true")
+    const countQuantityUsersNotUpdate = await getQuantityUsersNotUpdate()
 
     return (
         <PaperBlock>
@@ -57,7 +59,12 @@ export default async function Home() {
                 </div>
             </header>
 
-            <ContainerUserCard all={data} backend_domain={BACKEND_DOMAIN!} token={userParse.accessToken} />
+            <ContainerUserCard 
+                all={data} 
+                backend_domain={BACKEND_DOMAIN!} 
+                token={userParse.accessToken} 
+                countQuantityUsersNotUpdate={countQuantityUsersNotUpdate}
+            />
 
         </PaperBlock >
     )

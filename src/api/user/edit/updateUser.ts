@@ -8,7 +8,7 @@ const backendDomain = process.env.BACKEND_DOMAIN
 
 export async function updateUser<T>(object: T, userName: string, id: string) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${backendDomain}/update-user/${userName}`, {
         method: "PUT",
@@ -19,7 +19,7 @@ export async function updateUser<T>(object: T, userName: string, id: string) {
         },
         body: JSON.stringify(object),
     })
-        .then(async (data) => {
+        .then(async () => {
             return {
                 status: true
             }
@@ -30,7 +30,6 @@ export async function updateUser<T>(object: T, userName: string, id: string) {
                 status: false
             }
         })
-
 
     revalidateTag(`user-edit-${id}`)
 

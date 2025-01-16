@@ -3,7 +3,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function getUserById(id: number) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${process.env.BACKEND_DOMAIN}/get-user-by-id/${id}`, {
         method: "GET",

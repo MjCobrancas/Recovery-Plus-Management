@@ -1,6 +1,7 @@
 'use client'
 
 import { updateCreditorCapacity } from "@/api/register/creditor/updateCreditorCapacity";
+import { updateCreditorUniqueCapacity } from "@/api/register/creditor/updateCreditorUniqueCapacity";
 import { Button } from "@/components/Button";
 import { FieldForm } from "@/components/FieldForm";
 import { Input } from "@/components/Input";
@@ -37,8 +38,14 @@ export function DialogEditCreditorHeadCount({ creditor }: IDialogEditCreditorHea
 
         setDisableAllButtons(true)
 
-        const responseStatus = await updateCreditorCapacity(creditor.Id_Creditor, Number(data.capacity))
+        let responseStatus: boolean
 
+        if (creditor.Is_Team) {
+            responseStatus = await updateCreditorCapacity(creditor.Id_Creditor, Number(data.capacity))
+        } else {
+            responseStatus = await updateCreditorUniqueCapacity(creditor.Id_Creditor, Number(data.capacity))
+        }
+        
         setDisableAllButtons(false)
 
         if (!responseStatus) {

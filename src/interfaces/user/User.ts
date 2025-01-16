@@ -15,6 +15,15 @@ interface IUserProps {
     id_credor: number,
     Status: boolean,
     Id_User_Turn: number
+    Is_Responsable: boolean
+    Id_Responsable: number
+    Salary: string
+    Payment_Method: string
+    Contract: string
+    Bonus: string
+    Registration: string
+    Is_Responsable_Technical: boolean
+    Id_Responsable_Technical: number
     UsersAddresses: IUserAdresses[]
     UsersContacts: IUserContacts[]
     UsersEmail: IUsersEmail[]
@@ -34,6 +43,7 @@ interface IUserAdresses {
 
 interface IUserContacts {
     Id_Contacts: number
+    Contact_Owner: string | null
     DDD: number
     Phone: number
     Status: boolean
@@ -42,6 +52,7 @@ interface IUserContacts {
 
 interface IUsersEmail {
     Id_Email: number
+    Email_Owner: string | null
     Email: string
     Status: boolean
 }

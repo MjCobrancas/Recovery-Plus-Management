@@ -7,7 +7,7 @@ const backendDomain = process.env.BACKEND_DOMAIN
 
 export async function getUserEducation() {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${backendDomain}/get-user-education`, {
         method: "GET",

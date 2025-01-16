@@ -7,7 +7,7 @@ const backendDomain = process.env.BACKEND_DOMAIN
 
 export async function createUser<T>(object: T) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(`${backendDomain}/create-user`, {
         method: "POST",

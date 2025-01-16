@@ -1,7 +1,9 @@
+'use server'
+
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
-export function GetUserToken() {
+export async function GetUserToken() {
     const user = cookies().get("user")
 
     if (!user) {

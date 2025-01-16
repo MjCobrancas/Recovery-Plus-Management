@@ -6,7 +6,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 export async function verifyUserToken() {
 
     try {
-        const userParse: ITokenUserInitialValues = GetUserToken()
+        const userParse: ITokenUserInitialValues = await GetUserToken()
 
         const resp = await fetch(`${process.env.BACKEND_DOMAIN}/verify-token`, {
             method: "GET",

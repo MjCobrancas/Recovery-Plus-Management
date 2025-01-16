@@ -1,17 +1,17 @@
 'use server'
 
-import { getAllCreditors } from "@/api/generics/getAllCreditors";
+import { getAllUniqueCreditors } from "@/api/generics/getAllUniqueCreditors";
 import { getManagerUsers } from "@/api/register/tasks/getManagerUsers";
 import { PaperBlock } from "@/components/PaperBlock";
 import { ContainerTasks } from "@/components/register/tasks/ContainerTasks";
 import { EditTask } from "@/components/register/tasks/EditTask";
 import { TextPrincipal } from "@/components/TextPrincipal";
-import { ICreditorGetAllCreditors } from "@/interfaces/generics/GetAllCreditors";
 import { IManagerUsers } from "@/interfaces/register/tasks/IManagerUsers";
+import { IUniqueCreditor } from "@/interfaces/register/unique-creditor/IUniqueCreditor";
 
 export default async function Page() {
 
-    const creditors: ICreditorGetAllCreditors[] = await getAllCreditors()
+    const creditors: IUniqueCreditor[] = await getAllUniqueCreditors()
     const managerUsers: IManagerUsers[] = await getManagerUsers()
 
     return (

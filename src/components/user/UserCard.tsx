@@ -2,25 +2,26 @@
 
 import { verifyUserPermission } from "@/api/user/verifyUserPermission";
 import { IUserCard } from "@/interfaces/user/UserCard";
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPencil, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-export function UserCard({ Id_User, Name, Last_Name, UserName, Position, Backend_Domain }: IUserCard) {
+export function UserCard({ Id_User, Name, Last_Name, UserName, Position, Backend_Domain, Is_User_Data_Updated }: IUserCard) {
     const router = useRouter()
 
     async function redirectUserToEditPage(id_operator: number, isQuickEdit: boolean) {
-        const { status, canChange } = await verifyUserPermission(id_operator)
 
-        if (!status || !canChange) {
-            toast.error("Você não tem permissão suficiente para fazer alterações nesse usuário!", {
-                duration: 5000
-            })
+        // const { status, canChange } = await verifyUserPermission(id_operator)
 
-            return
-        }
+        // if (!status || !canChange) {
+        //     toast.error("Você não tem permissão suficiente para fazer alterações nesse usuário!", {
+        //         duration: 5000
+        //     })
+
+        //     return
+        // }
 
         if (isQuickEdit) {
             router.push(`/user/quick-edit/${id_operator}`)
@@ -77,6 +78,21 @@ export function UserCard({ Id_User, Name, Last_Name, UserName, Position, Backend
                     <FontAwesomeIcon icon={faPencil} className="fa-solid fa-pencil fa-sm text-white bg-blue-500 px-2 py-2 rounded-md rounded-br-md hover:bg-blue-400 duration-100" />
                 </button>
             </div>
+            {!Is_User_Data_Updated ? (
+                <div
+                    className="absolute top-1 right-1 text-amber-400"
+                    title="Operador está com cadastro incompleto"
+                >
+                    <FontAwesomeIcon icon={faWarning} className="w-6 h-6" />
+                </div>
+            ) : (
+                <div
+                    className="absolute top-1 right-1 text-green-500"
+                    title="Operador está com o cadastro atualizado"
+                >
+                    <FontAwesomeIcon icon={faCheck} className="w-6 h-6" />
+                </div>
+            )}
         </article>
     )
 }

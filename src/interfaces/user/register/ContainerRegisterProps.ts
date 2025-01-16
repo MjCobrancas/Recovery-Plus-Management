@@ -4,6 +4,7 @@ import { IFormAdresses } from "./FormAdresses";
 import { IFormContacts } from "./FormContacts";
 import { IFormEmail } from "./FormEmail";
 import { CreateUserFormData } from "./FormUser";
+import { IUsersResponsables } from "@/interfaces/generics/IUsersResponsables";
 
 interface IContainerRegisterProps {
     creditors: ICreditors[]
@@ -17,6 +18,8 @@ interface IContainerRegisterProps {
     userEmailsFormat?: IFormEmail[]
     idUser?: string
     usersTurns: IUsersTurns[]
+    usersResponsables: IUsersResponsables[]
+    usersResponsablesTechnicals: IUsersResponsables[]
 }
 
 interface IUserRoles {

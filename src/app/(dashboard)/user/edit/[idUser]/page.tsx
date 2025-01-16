@@ -1,8 +1,10 @@
 import { getAllCompany } from "@/api/generics/getAllCompany"
+import { getAllUserRoles } from "@/api/generics/getAllUserRoles"
 import { getUserById } from "@/api/user/edit/getUserById"
+import { getAllUsersResponsables } from "@/api/user/getAllUsersResponsables"
+import { getAllUsersResponsablesTechnicals } from "@/api/user/getAllUsersResponsablesTechnicals"
 import { getUserEducation } from "@/api/user/getUserEducation"
 import { getUserMaritalStatus } from "@/api/user/getUserMaritalStatus"
-import { getUserRoles } from "@/api/user/getUserRoles"
 import { getUserTurns } from "@/api/user/getUserTurns"
 import { PaperBlock } from "@/components/PaperBlock"
 import { ContainerEdit } from "@/components/user/edit/ContainerEdit"
@@ -18,11 +20,13 @@ import { IFormEmail } from "@/interfaces/user/register/FormEmail"
 export default async function EditUser({ params }: IEditUserProps) {
     const creditors: ICreditors[] = await getAllCompany()
     const user: IUserProps = await getUserById(Number(params.idUser))
-    const userRoles: IResultDefaultResponse<IUserRoles[] | []> = await getUserRoles()
+    const userRoles: IResultDefaultResponse<IUserRoles[] | []> = await getAllUserRoles()
     const userEducation: IResultDefaultResponse<IUserEducation[] | []> = await getUserEducation()
     const userMaritalStatus: IResultDefaultResponse<IUserMaritalStatus[] | []> = await getUserMaritalStatus()
     const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN
     const usersTurns: IUsersTurns[] = await getUserTurns()
+    const usersResponsables = await getAllUsersResponsables()
+    const usersResponsablesTechnicals = await getAllUsersResponsablesTechnicals()
 
     const userAdresses: IFormAdresses[] = []
     const userContacts: IFormContacts[] = []
@@ -49,9 +53,10 @@ export default async function EditUser({ params }: IEditUserProps) {
         user?.UsersContacts.map((item) => {
             userContacts.push({
                 id: String(item.Id_Contacts),
+                contact_owner: item.Contact_Owner == null ? "" : String(item.Contact_Owner),
                 ddd: String(item.DDD),
                 phone: String(item.Phone),
-                saved: true,
+                saved: item.Contact_Owner == null ? false : true,
                 type: String(item.Type),
                 status: item.Status
             })
@@ -62,8 +67,9 @@ export default async function EditUser({ params }: IEditUserProps) {
         user?.UsersEmail.map((item) => {
             userEmails.push({
                 id: String(item.Id_Email),
+                email_owner: item.Email_Owner == null ? "" : String(item.Email_Owner),
                 userEmail: item.Email,
-                saved: true,
+                saved: item.Email_Owner == null ? false : true,
                 status: item.Status
             })
         })
@@ -72,6 +78,7 @@ export default async function EditUser({ params }: IEditUserProps) {
     return (
         <PaperBlock>
             <ContainerEdit 
+                usersResponsables={usersResponsables.data}
                 BACKEND_DOMAIN={BACKEND_DOMAIN!}
                 userMaritalStatus={userMaritalStatus.data!}
                 userEducation={userEducation.data!}
@@ -83,6 +90,7 @@ export default async function EditUser({ params }: IEditUserProps) {
                 user={user} 
                 idUser={params.idUser}
                 usersTurns={usersTurns}
+                usersResponsablesTechnicals={usersResponsablesTechnicals.data}
             />
         </PaperBlock>
     )

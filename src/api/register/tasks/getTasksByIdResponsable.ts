@@ -5,7 +5,7 @@ import { GetUserToken } from "@/utils/GetUserToken"
 
 export async function getTasksByIdResponsable(id_user: number) {
 
-    const userParse: ITokenUserInitialValues = GetUserToken()
+    const userParse: ITokenUserInitialValues = await GetUserToken()
 
     const resp = await fetch(
         `${process.env.BACKEND_DOMAIN}/get-tasks-by-id-responsable`, {

@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 
 export function CardContactForm({ id, item, index, removeContact, resetContact, saveContact, changeContactsStatus }: IFormContactCardFormProps) {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<createFormContactsData>({
+    const { register, handleSubmit, watch, formState: { errors }, setError } = useForm<createFormContactsData>({
         resolver: zodResolver(createFormContactsSchema)
     })
 
@@ -20,8 +20,25 @@ export function CardContactForm({ id, item, index, removeContact, resetContact, 
     }
 
     function saveContactsForm(data: FieldValues) {
+        let foundError = false
+        for (let i = 0; i < data.length; i++) {
+            if (data.contact_owner.trim().length <= 0) {
+
+                setError(`contact_owner`, {
+                    type: "Invalid contact_owner"
+                })
+
+                foundError = true
+            }
+        }
+
+        if (foundError) {
+            return
+        }
+
         const objectValues = {
             id: id ? id : "",
+            contact_owner: String(data.contact_owner),
             ddd: String(data.ddd),
             phone: String(data.phone),
             type: String(data.type),
@@ -36,8 +53,30 @@ export function CardContactForm({ id, item, index, removeContact, resetContact, 
         <form onSubmit={handleSubmit(saveContactsForm)}>
             <input {...register("status")} value={item.status == true || item.status == false ? String(item.status) : ""} className="sr-only"/>
             <div
-                className={`grid tablet:grid-cols-2 laptop:grid-cols-2 desktop:grid-cols-3 gap-4 py-4 pl-2 `}
+                className={`grid tablet:grid-cols-2 laptop:grid-cols-2 desktop:grid-cols-4 gap-4 py-4 pl-2 `}
             >
+                <FieldForm
+                    label={"contact_owner" + index}
+                    name="Dono do contato"
+                    error={errors.contact_owner && " "}
+                >
+                    <Input
+                        onInput={() => resetContact(index)}
+                        value={watch("contact_owner", item.contact_owner != "" ? item.contact_owner : "")}
+                        type="text"
+                        id={"contact_owner" + index}
+                        name="contact_owner"
+                        required
+                        placeholder="Dono do contato"
+                        onForm={true}
+                        register={register}
+                        styles={`
+                            ${errors.contact_owner}
+                            ? "border-[--label-color-error] dark:border-[--label-color-error]"
+                            : ""
+                        }`}
+                    />
+                </FieldForm>
                 <FieldForm
                     label={"ddd" + index}
                     name="DDD"
