@@ -26,6 +26,18 @@ export default function ManagementData() {
                 </CardConfigMonitoria>
 
                 <CardConfigMonitoria
+                    title="Responsáveis por carteira"
+                    subTitle="Crie ou atualize os responsáveis das carteiras"
+                    styles={`bg-sky-700 border-sky-900 border-2 dark:opacity-90 dark:hover:opacity-80`}
+                >
+                    <ButtonManagement
+                        title="Ir para página"
+                        toGo="/register/responsable-creditor"
+                        styles={`text-center cursor-pointer rounded-md py-2 px-2 text-md duration-300 text-white bg-transparent border border-sky-500 hover:bg-sky-800 hover:border-sky-600 dark:bg-transparent dark:hover:bg-sky-800`}
+                    />
+                </CardConfigMonitoria>
+
+                <CardConfigMonitoria
                     title="Equipes"
                     subTitle="Crie ou atualize suas equipes"
                     styles={`bg-blue-700 border-blue-900 border-2 dark:opacity-90 dark:hover:opacity-80`}

@@ -1,36 +1,37 @@
-'use server'
-
 import { ITokenUserInitialValues, ITokenUserValues } from "@/interfaces/Generics"
+import { IGetUserPermission } from "@/interfaces/generics/IGetUserPermission"
 import { GetUserToken } from "@/utils/GetUserToken"
 import { parseJWT } from "@/utils/ParseJWT"
 
-export async function updateUserAbsenteeism(id_absenteeism_schedule: number, is_on_company: boolean, is_justified_absence: boolean, observation: string) {
+export async function getUserPermission() {
 
     const userParse: ITokenUserInitialValues = await GetUserToken()
     const userValues: ITokenUserValues = parseJWT(userParse.accessToken)
-
-    const resp = await fetch(`${process.env.BACKEND_DOMAIN}/update-user-absenteeism`, {
-        method: "PUT",
+    
+    const resp = await fetch(`${process.env.BACKEND_DOMAIN}/get-user-permission/${userValues.id}`, {
+        method: "GET",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             Authorization: "Bearer " + userParse.accessToken,
-        },
-        body: JSON.stringify({ id_absenteeism_schedule, is_on_company, is_justified_absence, observation, id_responsable: userValues.id })
+        }
     })
-        .then(async (value) => {
+        .then(async (value: any) => {
             const data = await value.json()
 
             if (data.errors.length > 0) {
-                return false
+                return {
+                    Permission_Level_Id: 6
+                }
             }
 
-            return true
+            return data.data as IGetUserPermission
         })
         .catch((error) => {
-            return false
+            return {
+                Permission_Level_Id: 6
+            }
         })
 
     return resp
-
 }

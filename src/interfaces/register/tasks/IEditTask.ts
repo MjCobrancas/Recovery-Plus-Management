@@ -1,8 +1,10 @@
 import { z } from "zod";
 import { IManagerUsers } from "./IManagerUsers";
+import { IUniqueCreditor } from "../unique-creditor/IUniqueCreditor";
 
 interface IEditTaskData {
     managerUsers: IManagerUsers[]
+    creditors: IUniqueCreditor[]
 }
 
 interface ITaskById {
@@ -19,7 +21,28 @@ interface ITaskById {
 }
 
 export const editTaskSchema = z.object({
-    responsable: z.string().min(1),
+    responsable: z.string().min(1).refine((value) => {
+        if (String(Number(value)) == "NaN") {
+            return false
+        }
+
+        if (Number(value) <= 0) {
+            return false
+        }
+
+        return true
+    }),
+    id_unique_creditor: z.string().min(1).refine((value) => {
+        if (String(Number(value)) == "NaN") {
+            return false
+        }
+
+        if (Number(value) < 0) {
+            return false
+        }
+
+        return true
+    })
 })
 
 export type editTaskData = z.infer<typeof editTaskSchema>

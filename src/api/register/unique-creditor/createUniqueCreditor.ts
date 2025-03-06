@@ -34,7 +34,6 @@ export async function createUniqueCreditor<T>(object: T) {
             }
         })
         .catch((error) => {
-            console.log(error)
 
             return {
                 data: [],

@@ -25,7 +25,6 @@ export async function updateUser<T>(object: T, userName: string, id: string) {
             }
         })
         .catch((error) => {
-            console.log(error)
             return {
                 status: false
             }

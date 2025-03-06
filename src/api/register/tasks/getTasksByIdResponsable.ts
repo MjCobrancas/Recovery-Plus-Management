@@ -3,7 +3,7 @@
 import { ITokenUserInitialValues } from "@/interfaces/Generics"
 import { GetUserToken } from "@/utils/GetUserToken"
 
-export async function getTasksByIdResponsable(id_user: number) {
+export async function getTasksByIdResponsable(id_user: number, id_unique_creditor: number) {
 
     const userParse: ITokenUserInitialValues = await GetUserToken()
 
@@ -16,7 +16,8 @@ export async function getTasksByIdResponsable(id_user: number) {
             Authorization: "Bearer " + userParse.accessToken,
         },
         body: JSON.stringify({
-            id_user: id_user
+            id_user,
+            id_unique_creditor
         })
     })
         .then(async (value) => {

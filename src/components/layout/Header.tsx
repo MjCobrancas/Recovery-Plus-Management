@@ -8,6 +8,7 @@ import RemoveUserCookies from '@/api/auth/RemoveUserCookies';
 import { useRouter } from 'next/navigation';
 import { getTheme } from '@/api/theme/getTheme';
 import { toggleThemeSetCookie } from '@/api/theme/toggleTheme';
+import { Ancora } from '../Ancora';
 
 export function Header() {
     const [actualTheme, setActualTheme] = useState("light")
@@ -61,17 +62,17 @@ export function Header() {
             setActualTheme("light")
 
             return
-        } 
-        
+        }
+
         if (actualTheme == "light") {
             await toggleThemeSetCookie("light")
 
             document.querySelector('html')?.classList.add("dark")
             setActualTheme("dark")
 
-            return 
+            return
         }
-        
+
     }
 
     async function disconectUser() {
@@ -85,6 +86,13 @@ export function Header() {
             className={`fixed w-full text-right z-20 duration-300 p-4 pb-0 bg-[--bg-main] dark:bg-[--bg-dark-main]`}
         >
             <div className="h-[35px] flex justify-end items-start">
+
+                <Ancora
+                    title='Alterar senha'
+                    toGo='/change-password'
+                    styles='dark:text-white'
+                />
+
                 <button
                     type="button"
                     onClick={() => toggleTheme()}
@@ -93,7 +101,7 @@ export function Header() {
                 >
 
                     {actualTheme == "light" || "" ? (
-                       <FontAwesomeIcon icon={faSun} />
+                        <FontAwesomeIcon icon={faSun} />
                     ) : (
                         <FontAwesomeIcon icon={faMoon} />
                     )}

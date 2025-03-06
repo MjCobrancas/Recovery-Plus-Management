@@ -64,8 +64,11 @@ export async function middleware(request: NextRequest) {
 	})
 
 	if (!validRoute) {
-		const pathNameWithRegex = pathname.match(/\/[\w-]+\/[\w-]+/g)
+		const pathNameWithRegex = pathname.match(/\/[\w-]+(\/[\w-]+)*/g)
 		const pathNameWithRegex2 = pathNameWithRegex != null ? pathNameWithRegex.join('') : ""
+		const pathNameWithRegex3 = pathname.match(/\/[\w-]+\/[\w-]+/g)
+		const pathNameWithRegex4 = pathNameWithRegex3 != null ? pathNameWithRegex3.join('') : ""
+
 		const validActionRoutes: Array<ActionRoutes> = actionRoutes.filter((e) => {
 			return e.permissions.some((e: number) => {
 				return e == Number(tokenUserValues.permission)
@@ -73,10 +76,14 @@ export async function middleware(request: NextRequest) {
 		})
 
 		validActionRoutes.map((item: ActionRoutes) => {
-			if (item.route == pathNameWithRegex2) {
+			if (item.route == pathNameWithRegex2 || item.route == pathNameWithRegex4) {
 				validRoute = true
 			}
 		})
+
+		if (!validRoute) {
+			return NextResponse.redirect(`${process.env.FRONTEND_DOMAIN}/login`)
+		}
 
 		if (!validRoute) {
 			return NextResponse.redirect(`${process.env.FRONTEND_DOMAIN}/login`)
@@ -87,5 +94,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/', '/login', '/user', '/user/:path*', '/register', '/register/:path*']
+	matcher: ['/', '/login', '/user', '/user/:path*', '/register', '/register/:path*', '/change-password']
 }

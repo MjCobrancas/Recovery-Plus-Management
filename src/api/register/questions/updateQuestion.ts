@@ -26,7 +26,6 @@ export async function updateQuestion<T>(question: T) {
             return true
         })
         .catch((err) => {
-            console.log(err)
             return false
         })
 

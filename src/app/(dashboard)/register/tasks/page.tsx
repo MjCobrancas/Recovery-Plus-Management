@@ -20,6 +20,7 @@ export default async function Page() {
                 <TextPrincipal text="Configure as tarefas " />
                 
                 <EditTask 
+                    creditors={creditors}
                     managerUsers={managerUsers}
                 />
 

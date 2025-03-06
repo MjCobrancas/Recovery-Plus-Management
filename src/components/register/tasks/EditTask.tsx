@@ -12,8 +12,9 @@ import { FieldValues, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { EditTaskForm } from "./EditTaskForm";
 import { ButtonError } from "@/components/ButtonError";
+import classNames from "classnames";
 
-export function EditTask({ managerUsers }: IEditTaskData) {
+export function EditTask({ managerUsers, creditors }: IEditTaskData) {
 
     const [disableButton, setDisableButton] = useState(false)
     const [didFilter, setDidFilter] = useState(false)
@@ -22,7 +23,8 @@ export function EditTask({ managerUsers }: IEditTaskData) {
     const dialog = useRef<HTMLDialogElement>(null)
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<editTaskData>({
         defaultValues: {
-            responsable: "0"
+            responsable: "0",
+            id_unique_creditor: "0"
         },
         resolver: zodResolver(editTaskSchema)
     })
@@ -40,7 +42,7 @@ export function EditTask({ managerUsers }: IEditTaskData) {
 
         setDisableButton(true)
 
-        const tasksData = await getTasksByIdResponsable(Number(data.responsable))
+        const tasksData = await getTasksByIdResponsable(Number(data.responsable), Number(data.id_unique_creditor))
 
         if (!tasksData.status) {
             toast.error("Não foi possível encontrar tarefas deste usuário, revise os valores e tente novamente!", {
@@ -114,7 +116,9 @@ export function EditTask({ managerUsers }: IEditTaskData) {
                             <SelectField
                                 name="responsable"
                                 id="responsable"
-                                styles={`h-11 w-fit`}
+                                styles={classNames(`h-11 w-fit`, {
+                                    "border-red-400": errors.responsable
+                                })}
                                 value={watch("responsable")}
                                 required
                                 disabled={false}
@@ -129,6 +133,36 @@ export function EditTask({ managerUsers }: IEditTaskData) {
                                             key={i}
                                             value={item.Id_User}
                                             firstValue={item.Name + " " + item.Last_Name}
+                                        />
+                                    )
+                                })}
+                            </SelectField>
+                        </FieldForm>
+
+                        <FieldForm
+                            name="Credor"
+                            obrigatory={false}
+                            styles="w-fit"
+                            error={errors.id_unique_creditor && "Inválido!"}
+                        >
+                            <SelectField
+                                id="id_unique_creditor"
+                                name="id_unique_creditor"
+                                styles={classNames("w-fit", {
+                                    "border-red-400": errors.id_unique_creditor
+                                })}
+                                onForm={true}
+                                register={register}
+                                value={watch("id_unique_creditor")}
+                            >
+                                <Option value={"0"} firstValue="Selecione" />
+
+                                {creditors.map((creditor, index) => {
+                                    return (
+                                        <Option 
+                                            key={index}
+                                            value={creditor.Id_Unique_Creditor}
+                                            firstValue={creditor.Creditor}
                                         />
                                     )
                                 })}

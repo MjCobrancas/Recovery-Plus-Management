@@ -30,7 +30,7 @@ export const primaryRoutes: Array<PrimaryRoutes> = [
     {
       name: "Treinamento",
       level: 9,
-      permissions: [1, 2, 3, 4],
+      permissions: [1, 2, 3, 4, 5, 6],
     },
   ]
 
@@ -102,6 +102,12 @@ export const secondRoutes: Array<SecondRoutes> = [
         route: "/monitoring/graphics"
     },
     {
+        name: "Lista de Feedbacks",
+        level: 8,
+        permissions: [1, 2, 3, 4],
+        route: "/monitoring/feedback-list"
+    },
+    {
         name: "Integrantes",
         level: 9,
         permissions: [1, 2, 3, 4],
@@ -110,7 +116,7 @@ export const secondRoutes: Array<SecondRoutes> = [
     {
         name: "Instruções",
         level: 9,
-        permissions: [1, 2, 3, 4],
+        permissions: [1, 2, 3, 4, 5, 6],
         route: "/workout/instructions"
     },
     {
@@ -130,6 +136,18 @@ export const secondRoutes: Array<SecondRoutes> = [
         level: 10,
         permissions: [1, 2, 3, 4],
         route: "/tasks/user"
+    },
+    {
+        name: "Histórico de tarefas",
+        level: 10,
+        permissions: [1, 2, 3, 4],
+        route: "/tasks/history"
+    },
+    {
+        name: "Monitorar solicitações de recurso",
+        level: 10,
+        permissions: [1],
+        route: "/tasks/appeal-monitoring"
     }
 ]
 
@@ -168,6 +186,11 @@ export const actionRoutes: Array<ActionRoutes> = [
         level: 6,
         permissions: [1, 2, 3, 4],
         route: "/register/creditors",
+    },
+    {
+        level: 6,
+        permissions: [1],
+        route: "/register/responsable-creditor"
     },
     {
         level: 6,
@@ -244,5 +267,11 @@ export const actionRoutes: Array<ActionRoutes> = [
         level: 9,
         permissions: [1, 2, 3, 4],
         route: "/workout/prepare-avaliation"
+    },
+
+    {
+        level: 0,
+        permissions: [1, 2, 3, 4, 5],
+        route: "/change-password"
     }
 ]
